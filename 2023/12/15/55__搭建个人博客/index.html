@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="google-site-verification" content="TZE0rZyIqLl10trYu3BWBWa1Vmz6HFwhb2OcNEK4u-s" />
+     <link rel="shortcut icon" href= /img/favicon.ico >
+    <title>
+        Tig3rHu&#39;s Blog
+    </title>
+    <meta name="description" content= 风萧萧兮易水寒 >
+    <meta name="keywords" content= HigerHu,vulnerability,security,cyber >
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-home
+ replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            github 博客搭建记录
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h3 id="安装npm"><a href="#安装npm" class="headerlink" title="安装npm"></a>安装npm</h3><p>下载nodejs<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215142420966.png"></p>
+<p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215142511277.png"></p>
+<h3 id="下载Hexo"><a href="#下载Hexo" class="headerlink" title="下载Hexo"></a>下载Hexo</h3><p>安装命令：npm install hexo -g<br>ps： 下载会失败，更改镜像为淘宝的npm镜像站。<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145400750.png"><br>安装成功<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145459306.png"></p>
+<h3 id="安装hexo-依赖"><a href="#安装hexo-依赖" class="headerlink" title="安装hexo 依赖"></a>安装hexo 依赖</h3><p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145617081.png"></p>
+<h3 id="把ssh-key-的-pub-公钥"><a href="#把ssh-key-的-pub-公钥" class="headerlink" title="把ssh key 的 pub 公钥"></a>把ssh key 的 pub 公钥</h3><p>把ssh key 的 pub 公钥 发送到github中<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145905798.png"><br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215180007355.png"></p>
+<p>验证ssh 是否能连接成功<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215150534676.png"></p>
+<h3 id="hexo-init-初始化"><a href="#hexo-init-初始化" class="headerlink" title="hexo init 初始化"></a>hexo init 初始化</h3><p>hexo init 初始化，可能会报permitted<br>解决方法：<a target="_blank" rel="noopener" href="https://blog.csdn.net/c327127960/article/details/116997142">https://blog.csdn.net/c327127960/article/details/116997142</a><br>修改1_blog 文件夹的user权限。</p>
+<p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215151951928.png"></p>
+<p>生成静态网页<br>hexo g<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215152110309.png"></p>
+<p>预览<br>hexo s<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215152319329.png"></p>
+<h3 id="部署到GitHub"><a href="#部署到GitHub" class="headerlink" title="部署到GitHub"></a>部署到GitHub</h3><p>错误解决：这是因为没安装<code>hexo-deployer-git</code>插件，在<strong>站点目录</strong>下输入下面的插件安装就好了：</p>
+<blockquote>
+<p>npm install hexo-deployer-git –save<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215153413338.png"></p>
+</blockquote>
+<p>部署  hexo -d</p>
+<p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215153513684.png"></p>
+<p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215154313076.png"><br>可以访问到了<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215154324906.png"></p>
+<h3 id="更改主题"><a href="#更改主题" class="headerlink" title="更改主题"></a>更改主题</h3><h4 id="更改titile"><a href="#更改titile" class="headerlink" title="更改titile"></a>更改titile</h4><p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215155927803.png"></p>
+<p>提交修改</p>
+<blockquote>
+<p>hexo clean<br>hexo g<br>hexo d</p>
+</blockquote>
+<h4 id="更改主题-1"><a href="#更改主题-1" class="headerlink" title="更改主题"></a>更改主题</h4><p>下载<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215160852822.png"><br>更改<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215160940638.png"></p>
+<p>主题<br>问题： 是因为有的东西还没加载，等一等就好了。<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215160908093.png"><br>使用Coder<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215165339843.png"></p>
+<h2 id="编写博客"><a href="#编写博客" class="headerlink" title="编写博客"></a>编写博客</h2><h3 id="上传md"><a href="#上传md" class="headerlink" title="上传md"></a>上传md</h3><p>把写好的md 复制到_post文件夹中。<br>需要先用记事本打开md，加上titile<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175541083.png"></p>
+<p>然后</p>
+<blockquote>
+<p>hexo clean<br>hexo g<br>hexo d</p>
+</blockquote>
+<p>刷新查看<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215172256746.png"></p>
+<p>但是图片显示不出来</p>
+<h3 id="加载图片"><a href="#加载图片" class="headerlink" title="加载图片"></a>加载图片</h3><p>改为true<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175200901.png"></p>
+<p>下载  </p>
+<blockquote>
+<p>npm install <a target="_blank" rel="noopener" href="https://github.com/CodeFalling/hexo-asset-image">https://github.com/CodeFalling/hexo-asset-image</a> –save</p>
+</blockquote>
+<p>图片目录，图片目录不能有空格。<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175304128.png"><br>更改md图片路径<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175329575.png"></p>
+<p>Cactus<br><a href="https://link.zhihu.com/?target=https://github.com/probberechts/hexo-theme-cactus">https://link.zhihu.com/?target=https%3A//github.com/probberechts/hexo-theme-cactus</a></p>
+
+    </div>
+
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p><h4>Copyright © 2020 | Author: HigerHu | Theme By <a class="theme-author" target="_blank" rel="noopener" href="https://github.com/Xunzhuo/hexo-theme-coder" style="font-size:14px; color: #969696">Coder</a></h4>
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_site_pv">Page Views: <span id="busuanzi_value_site_pv"></span></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">Unique Visitors: <span id="busuanzi_value_site_uv"></span></span>
+    
+    <label class="el-switch el-switch-blue el-switch-sm" style="vertical-align: sub;">
+        <input type="checkbox" name="switch" id="update_style">
+        <span class="el-switch-style"></span>
+    </label>
+
+    <!--         <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script> -->
+</p>
+</div>
+
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="">
+<input type="hidden" id="valine_appKey" value="">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+color: #698fca;
+}
+.v .vlist .vcard .vhead .vsys {
+color: #3a3e4a;
+}
+.v .vlist .vcard .vh .vmeta .vat {
+color: #638fd5;
+}
+.v .vlist .vcard .vhead .vnick {
+color: #6ba1ff;
+}
+.v a {
+color: #8696b1;
+}
+.v .vlist .vcard .vhead .vnick:hover {
+color: #669bfc;
+}
+</style>
+    <script type="text/javascript" color="173,174,173" opacity='1' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+</body>
+</html>

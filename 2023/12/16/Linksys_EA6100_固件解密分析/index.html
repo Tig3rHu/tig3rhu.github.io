@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="google-site-verification" content="TZE0rZyIqLl10trYu3BWBWa1Vmz6HFwhb2OcNEK4u-s" />
+     <link rel="shortcut icon" href= /img/favicon.ico >
+    <title>
+        Tig3rHu&#39;s Blog
+    </title>
+    <meta name="description" content= Hello World >
+    <meta name="keywords" content= HigerHu,vulnerability,security,cyber >
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-home
+ replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            Linksys EA6100 固件解密过程
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p>这一次来分享一个对固件解密的文章<br>在一次分析固件的过程中，看到了Linksys EA6100 的一款固件，很不幸，这款固件被加密了，这里接下来将固件解密的过程来做个梳理。</p>
+<h2 id="0x02-固件信息"><a href="#0x02-固件信息" class="headerlink" title="0x02 固件信息"></a>0x02 固件信息</h2><p>首先在固件的下载界面查看固件的版本，这里有两个版本，先不管那么多，全都下载下来，拿到固件 “ FW_EA6100_1.1.6.181939_prod.gpg.img “ ，我看到固件名字，感觉很奇怪，第一次到固件以 “ .gpg.img” 为结尾的固件包，正常的固件包是以 “img”、“bin”、“chk” 为结尾。bing 搜索，发现只能搜到gpg的的相关信息，在了解完了gpg信息后，知道了这是一个为文件生成签名、管理密钥以及验证签名的工具。因此固件很有可能是使用GPG生成的密钥进行加密的。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707214022160.png" alt="image-20210707214022160"></p>
+<h2 id="0x03-判断是否被加密"><a href="#0x03-判断是否被加密" class="headerlink" title="0x03 判断是否被加密"></a>0x03 判断是否被加密</h2><p>这里介绍以下判断固件是否加密的一种方式。<br>我们使用的是binwalk来分析<br>根据binwalk的熵分析，可以看到固件处于加密的状态。</p>
+<blockquote>
+<p>熵是用于表达混乱程度的名词，熵值可以表达系统中蕴含的能量，也可用于表达信息中的不确定性。</p>
+</blockquote>
+<p>根据下面的图形可以了解到，“ FW_EA6100_1.1.6.181939_prod.gpg.img ” 固件的熵值几乎为1，属于高熵，说明固件处于被加密的状态。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707215634961.png" alt="image-20210707215634961"></p>
+<p>如下图所示，这是一个没有加密的NetGear WiFi拓展器的固件，可以看到熵值有剧烈的上下波动，说明这部分的固件并没有被加密。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707220314465.png" alt="image-20210707220314465"></p>
+<h3 id="固件分析"><a href="#固件分析" class="headerlink" title="固件分析"></a>固件分析</h3><p>使用binwalk 看一下固件的信息，因为固件被加密了，所以啥都看不到。</p>
+<p>同时也file识别不出来</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707225553391.png" alt="image-20210707225553391"></p>
+<p>当我不知道下一步应该怎么做的时候，发现了下载固件页面中有这么一段话。</p>
+<blockquote>
+<p><strong>IMPORTANT:</strong>  It is <strong>highly recommended</strong> to upgrade the firmware of your router using the <strong>Auto Update</strong> feature.  However, if you prefer to do manual updates and your router is on <strong>1.1.5.162431 or older, YOU MUST download &amp; update your router using firmware version 1.1.5.172244 first before loading the latest firmware</strong>.</p>
+</blockquote>
+<p>在更新最新固件的时候，需要先下载 Ver. 1.1.5 (Build 172244) 作为中间件，来升级到最新的固件，这个设备的最新固件就是Ver. 1.1.6，但是这个固件是加密的，一般来说，需要中间件的情况是用于提供密钥来解密最新的固件，并且FW_EA6100_1.1.5.172244_prod.img 中是没有 “gpg” 后缀的，说明这个固件并没有被加密，这样一来就说的通了。</p>
+<p>根据实际的分析情况来看，这个固件确实没有被加密，可以识别出来文件系统是用 jffs2 压缩方式进行压缩的。</p>
+<p>查看固件的组成结构</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707225219915.png" alt="image-20210707225219915"></p>
+<p>计算固件熵值</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707225448879.png" alt="image-20210707225448879"></p>
+<p>file 查看</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707225532197.png" alt="image-20210707225532197"></p>
+<p>接下来我们直接使用 binwlk -Me 来提取固件jffs2-root 文件系统。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707230420894.png" alt="image-20210707230420894"></p>
+<p>我们将 Ver. 1.1.5 (Build 172244) 的固件成功解开了，在这里，我们先了解一下gpg 生成密钥的形式是什么样的。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707231205509.png" alt="image-20210707231205509"></p>
+<p>然后我就在固件中包含pub 、rsa 字符串的文件，很不幸，一无所获，找到的都是一些无关的文件。<br>于是我开始检索一些其他的密钥保存的格式之后，一般都是下面的这种方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN RSA PRIVATE KEY-----  # 私钥内容</span><br><span class="line">... (private key in base64 encoding) ...</span><br><span class="line">-----END RSA PRIVATE KEY-----</span><br><span class="line">-----BEGIN CERTIFICATE-----  # 证书信息</span><br><span class="line">... (certificate in base64 PEM encoding) ...</span><br><span class="line">-----END CERTIFICATE-----</span><br></pre></td></tr></table></figure>
+
+<p>于是顺着这个思路，我终于找到了类似 gpg 密钥的文件了，幸运的 “ keydata ” 文件</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210708153712590.png" alt="image-20210708153712590"></p>
+<p>首先将keydata 加载到 系统中的 gpg 中，然后再进行对固件包解密</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210708155023874.png" alt="image-20210708155023874"></p>
+<p>我们成功的得到了解密后的文件，使用binwalk 识别一下固件的信息。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210708155516962.png" alt="image-20210708155516962"></p>
+<p>现在用binwalk 就可以完全的解开固件包了</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210708160302575.png" alt="image-20210708160302575"></p>
+<h2 id="0x05总结"><a href="#0x05总结" class="headerlink" title="0x05总结"></a>0x05总结</h2><p>本片文章主要是讲解对固件如何解密的一种方法，这种固件就是以前的固件没有加密，但是后面的固件加密了，在需要解密的情况下，就需要一个中间过渡版本的固件，这个过渡版本的固件中带有解密程序，然后对最新的固件进行解密。</p>
+<p>这里还对固件的文件系统进行了简单的分析，虽然没有发现显著的漏洞，但是这里也简单描述一下。<br>在&#x2F;etc&#x2F;init.d&#x2F;service_httpd.sh 文件中了解到了lighttpd是设备web组件，以及web组件启动的过程。<br>lighttpd 文件是在&#x2F;usr&#x2F;sbin&#x2F;中<br>&#x2F;etc&#x2F;init.d&#x2F;中包含了设备启动初始化所有的启动文件，并且包含一些密钥信息。<br>&#x2F;www&#x2F;ui&#x2F;cgi&#x2F; 文件夹中有一些cgi 文件，但是经过分析，并没有发现有异常的风险点。<br>&#x2F;www&#x2F;ui&#x2F;local 文件夹中主要包含的是路由器设备的前端的html一些文件。<br>逆向分析了一下lighttpd，并没有发现一些风险点，可能是对lighttpd 框架了解的不多，等拜读一下源码，了解那里是二次开发的地方，再来分析这个组件。</p>
+
+    </div>
+
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p><h4>Copyright © 2023 | Author: HigerHu | </a></h4>
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_site_pv">Page Views: <span id="busuanzi_value_site_pv"></span></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">Unique Visitors: <span id="busuanzi_value_site_uv"></span></span>
+    
+    <label class="el-switch el-switch-blue el-switch-sm" style="vertical-align: sub;">
+        <input type="checkbox" name="switch" id="update_style">
+        <span class="el-switch-style"></span>
+    </label>
+
+    <!--         <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script> -->
+</p>
+</div>
+
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="">
+<input type="hidden" id="valine_appKey" value="">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+color: #698fca;
+}
+.v .vlist .vcard .vhead .vsys {
+color: #3a3e4a;
+}
+.v .vlist .vcard .vh .vmeta .vat {
+color: #638fd5;
+}
+.v .vlist .vcard .vhead .vnick {
+color: #6ba1ff;
+}
+.v a {
+color: #8696b1;
+}
+.v .vlist .vcard .vhead .vnick:hover {
+color: #669bfc;
+}
+</style>
+    <script type="text/javascript" color="173,174,173" opacity='1' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+</body>
+</html>

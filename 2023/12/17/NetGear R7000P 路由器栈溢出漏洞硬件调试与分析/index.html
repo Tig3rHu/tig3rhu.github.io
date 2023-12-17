@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="google-site-verification" content="TZE0rZyIqLl10trYu3BWBWa1Vmz6HFwhb2OcNEK4u-s" />
+     <link rel="shortcut icon" href= /img/favicon.ico >
+    <title>
+        Tig3rHu&#39;s Blog
+    </title>
+    <meta name="description" content= Hello World >
+    <meta name="keywords" content= HigerHu,vulnerability,security,cyber >
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-home
+ replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            NetGear R7000P 路由器栈溢出漏洞硬件调试与分析
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h3 id="漏洞信息"><a href="#漏洞信息" class="headerlink" title="漏洞信息"></a>漏洞信息</h3><p>NetGear 系列中的路由器存在栈缓冲区溢出漏洞，漏洞的产生是由于在对处理输入的字符串时，将字符串存入栈中，没有对字符串的长度做限制。<br>调试漏洞设备： NetGear R7000P<br>调试漏洞固件版本：R7000P-V1.3.1.64_10.1.36<br>固件下载链接：【<a target="_blank" rel="noopener" href="http://www.downloads.netgear.com/files/GDC/R7000P/R7000P-V1.3.1.64_10.1.36.zip%E3%80%91">http://www.downloads.netgear.com/files/GDC/R7000P/R7000P-V1.3.1.64_10.1.36.zip】</a><br>poc链接： 【<a target="_blank" rel="noopener" href="https://github.com/grimm-co/NotQuite0DayFriday/tree/master/2020.06.15-netgear%E3%80%91">https://github.com/grimm-co/NotQuite0DayFriday/tree/master/2020.06.15-netgear】</a></p>
+<h3 id="漏洞静态分析"><a href="#漏洞静态分析" class="headerlink" title="漏洞静态分析"></a>漏洞静态分析</h3><p>把下载好的固件包使用binwali -Me 解开。在后查看httpd 文件所在的位置<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image0-1-1621473365530.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image0-1"><br>首先根据公开的poc 开分析，漏洞产生的点有 “ upgrade_check.cgi “ 的字符串，可以定位到如下图的代码段。可以看到有两处，很明显是下面的判断才能使程序继续往下走，因为第一个判断里面讲初始化的stop_while 原本为1，设置为0，会导致程序去校验其他的文件，无法达到漏洞点。</p>
+<p><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image1-1621473388030.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image1"></p>
+<p>最终会跳转到下面代码片段，最终跳出循环。<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image2.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image2"></p>
+<p>因为在循环之前，就设置stop_while的值为 1<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image3.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image3"></p>
+<p>跳出循环后，往下继续看，发现会对数据进行判断，这里分别对“name&#x3D;”mtenFWUpload”” 和 “\r\n\r\n”进行判断，如果存在，则跳出当前循环</p>
+<p><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image4.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image4"></p>
+<p>跳出循环后，就会执行到将产生溢出点的函数<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image5-1621473639593.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image5"></p>
+<p>进入vulfunc函数，可以看到会对数据进行判断是否以”*#$^”开头。然后会将数据通过memcpy函数由src指向地址为起始地址的连续 v9 个字节的数据复制到以 s 指向地址为起始地址的空间内。并且可以看到 v9 的值是可以通过src 中的数据进行获取，因此可以进行通过控制 v9 的大小，将 src 的数据覆盖到 s 中，但 s 的大小只有140个字节，从而造成大缓冲区向小缓冲区复制的数据覆盖相邻内存内的数据。造成栈缓冲区溢出。</p>
+<p><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image6-1621473639595.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image6"></p>
+<h3 id="接入路由器UART串口"><a href="#接入路由器UART串口" class="headerlink" title="接入路由器UART串口"></a>接入路由器UART串口</h3><p>首先需要识别串口<br>识别工具：万用表、 DSLogic 、 FT232转换USB<br>拆开路由器的外壳，可以很明显的看到路由器PCB 中有UART的四根引脚，如下图所示。<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image7-1621474362325.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image7"></p>
+<h4 id="识别UART-引脚"><a href="#识别UART-引脚" class="headerlink" title="识别UART 引脚"></a>识别UART 引脚</h4><p>接下来我们来识别UART的引脚。<br>这里使用万用表来识别URAT 四个引脚的定义，<br> URAT 主要的引脚分别是：</p>
+<ul>
+<li>TX （接收）</li>
+<li>RX  （发送）</li>
+<li>GND （接地）</li>
+<li>Vcc （供电）</li>
+</ul>
+<p><strong>识别GND 引脚</strong><br>路由器PCB（通电）: 我是通电状态下测的<br>万用表：将万用表指针指向一个类似wifi 信号的符号。<br>万用表的黑色探针放在地面或者任意金属面，红色探针分别在4根引脚出逐一测试，直到听到滴滴或者哔哔的声音。下面这块PCB设备，第三根是GND引脚。<br>这种测试被称为通导性测试。<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image8-1621474546801.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image8"></p>
+<p><strong>识别Vcc 引脚</strong><br>PCB： 需要给PCB板子通电<br>万用表：指针指向20V的直流档位</p>
+<p>1、黑色探针接地，红色探针在除了GND引脚的其他引脚测量，电压值为最大值，例如3.6V，5V等。就可以确定是VCC引脚。但是我在实际测试的时候，在第二根引脚和第四根引脚都是出现了最大电压值，不好判断。<br>第四根引脚电压值如下图所示<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image9.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image9"><br>第二根引脚电压值如下图所示<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image10.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image10"></p>
+<p>2、不好判断的时候，将这两根引脚分别和GND引脚短接，设备重启，就可以判断是Vcc引脚。<br>这里我将GND引脚和第四根短接的时候，设备会重启。<br>因此第四根是Vcc引脚<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image12.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image12"></p>
+<p><strong>识别TX 引脚和RX 引脚</strong><br>PCB ： 通电<br>万用表：指针指向20V的直流档位</p>
+<p>1、 黑色探针放在GND 引脚，红色探针测试剩余的两根引脚。 测试GND 引脚和其他引脚之间的电压，由于设备在引导式会进行大量的数据传输，因此在电压有变化并且增大后固定一个值，那么这个引脚就是TX引脚。</p>
+<p>2、 如果电压波动很小，或者一直为0，那该引脚就是Rx引脚。</p>
+<h4 id="确定波特率"><a href="#确定波特率" class="headerlink" title="确定波特率"></a>确定波特率</h4><p>确定波特率有不同的方法，基本上常见的波特率都试一遍，一般都可以确定串口的波特率，但是这里介绍使用DSLogic 逻辑分析仪 来确定UART串口波特率。<br><strong>学习使用DSLogic</strong><br>首先要先学会使用逻辑分析仪，这里简单的测试让逻辑分析仪接收 “ helloworld “<br>接线： 将逻辑分析仪通道1的线接到FT232上的TXD（Tx）引脚。 然后将分析仪的黑色引线（接地线）接到GND引脚。<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image13.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image13"><br>这里的DSView 工具中参数的设置需要去看说明文档，点击“开始”按钮，采集数据，然后使用XCOM串口工具设置好波特率和串口，打开串口后，设置发送的信息，点击发送即可。然后在DSView 就可以看到采集的信息了。采集完之后设置好解析，就可以看到对应的信息了<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image14.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image14"></p>
+<p><strong>使用DSLogic 采集串口信息</strong><br>接线： 之前用万用表将引脚都识别出来了，因此直接把逻辑分析仪的通道1的线接到PCB串口的TX引脚上，然后将分析仪的黑色引线（接地线）接到GND引脚。如下图所示<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image15.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image15"></p>
+<p>1、 线接好了之后，打开DSView 软件<br>* 设置采样率为1MHZ<br>* 设置采样时间为1s ，当然你也可以设置大一些，10s 或者更大，这样采集的信息可能会更多。<br>* 设置阈值电压，用万用表测是TX和GND之间的电压为3.34V，我这里设置为4V。<br>* 设置通道为6个，这个其实是用几个就设置几个。<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image16.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image16"></p>
+<p>点击开始按钮，进行采集，然后重启路由器PCB。<br>采集结果如下图所示<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image17.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image17"><br>注意这里显示了正常的ASCII码，是因为我设置好了波特率。一般来说，常用的波特率有常见波特率1200、2400、4800、19200、38400、57600、9600、115200。<br>如下图所示，如果不对，则为乱码，因此可以确定波特率为115200<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image18.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image18"></p>
+<p><strong>PCB串口接入</strong><br>接线方式：<br>TTL    —– 路由器UART<br>GND  —– GND<br>TX   —– RX<br>RX  —– TX<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image19.jpg" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image19"><br>使用SecureCRT 接入连接<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image20.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image20"></p>
+<h3 id="远程动态调试"><a href="#远程动态调试" class="headerlink" title="远程动态调试"></a>远程动态调试</h3><p>动态调试工具：编译好的 gdbserver (arm 架构)、gdb(arm 架构)<br>poc: 【<a target="_blank" rel="noopener" href="https://github.com/grimm-co/NotQuite0DayFriday/blob/trunk/2020.06.15-netgear/exploit.py%E3%80%91">https://github.com/grimm-co/NotQuite0DayFriday/blob/trunk/2020.06.15-netgear/exploit.py】</a></p>
+<p><strong>gdbserver 启动</strong><br>在使用串口接入设备之后，把gdbserver 上传到设备的&#x2F;tmp 目录中</p>
+<pre><code>cd /tmp/;wget http://xx.xx.xx.xx:xxxx/gdbserver;chmod 777 gdbserver
+</code></pre>
+<p><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image21.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image21"><br>在设备中查找 “httpd” 的进程号<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image22.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image22"><br>将httpd 进行附加到 gdbserver</p>
+<pre><code>./gdbserver *:12345 --attach 3256
+</code></pre>
+<p><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image23.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image23"></p>
+<p><strong>gdb 远程连接gdbserver</strong></p>
+<pre><code>target remote 192.168.1.1:12345
+</code></pre>
+<p><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image24.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image24"></p>
+<p><strong>开始调试</strong><br>在关键的地点打好断点<br>打断点</p>
+<pre><code>(gdb) break *0x00017398
+Breakpoint 1 at 0x17398
+(gdb) break *0x0001CFF0
+Breakpoint 2 at 0x1cff0
+(gdb) break *0x0001D0C4
+Breakpoint 3 at 0x1d0c4
+</code></pre>
+<p>然后输入”continue”， 接着执行exploit</p>
+<p><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image25.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image25"><br>到$R0寄存器中作为vulfunc的参数<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image26.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image26"><br>接下来我们看寄存器的值，可以看到$r0 寄存器的值为 0xbe940f89</p>
+<p><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image27.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image27"></p>
+<p>查看0xbe940f89 内存地址中的值，可以看到内存中成功的被覆盖了构造好的数据。<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image28.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image28"></p>
+<p>然后接着“continue” 往下执行，执行到 0x0001cff0 断点位置会执行 memcpy 函数。<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image29.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image29"><br>查看执行到memcpy函数时，寄存器中的值，由于memcpy函数会调用 $r0 , $r1 , $r2 寄存器的值作为参数<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image30.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image30"><br>查看$r0 , 和 r1 寄存器内的值， 在执行前r0 还没被$r1 中的值覆盖。<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image31.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image31"><br>执行完memcpy 函数之后r0 被r1中的值所覆盖<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image32.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image32"><br>接着往下执行，vulfunc函数 会把栈上的地址复制到 r4~r11,pc 寄存器中<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image33.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image33"><br>接着往下执行到system 函数，可以看到 $r0 寄存器地址上的值是我们要执行的command。接着往下执行就会达到执行命令的效果<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image34.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image34"></p>
+<h3 id="构造ROP"><a href="#构造ROP" class="headerlink" title="构造ROP"></a>构造ROP</h3><p>虽然poc 中已经计算好了偏移，但是我们需要自己去计算。<br>如下图所示，我们可以知道memcpy 中 第一个参数s 的离栈底的偏移是 136<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image35.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image35"><br>最终构造的rop 链如下图所示<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image36.png" alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image36"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>通过这个漏洞的调试，可以学些到通过UART在路由器中进行远程调试。</p>
+
+    </div>
+
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p><h4>Copyright © 2023 | Author: HigerHu | </a></h4>
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_site_pv">Page Views: <span id="busuanzi_value_site_pv"></span></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">Unique Visitors: <span id="busuanzi_value_site_uv"></span></span>
+    
+    <label class="el-switch el-switch-blue el-switch-sm" style="vertical-align: sub;">
+        <input type="checkbox" name="switch" id="update_style">
+        <span class="el-switch-style"></span>
+    </label>
+
+    <!--         <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script> -->
+</p>
+</div>
+
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="">
+<input type="hidden" id="valine_appKey" value="">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+color: #698fca;
+}
+.v .vlist .vcard .vhead .vsys {
+color: #3a3e4a;
+}
+.v .vlist .vcard .vh .vmeta .vat {
+color: #638fd5;
+}
+.v .vlist .vcard .vhead .vnick {
+color: #6ba1ff;
+}
+.v a {
+color: #8696b1;
+}
+.v .vlist .vcard .vhead .vnick:hover {
+color: #669bfc;
+}
+</style>
+    <script type="text/javascript" color="173,174,173" opacity='1' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+</body>
+</html>

@@ -59,6 +59,7 @@
 <p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image5.png" alt="image-20231217162032481"></p>
 <p>下面确定buf 的偏移为-0x198 (这里的偏移都是相对栈帧fp), 并且也确定了$ra 的偏移为0x4。</p>
 <p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image6.png" alt="image-20231217162032481"></p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/t01ee5255112c6ddeb3.png" alt="image-20231217162032481"></p>
 <p>如果需要使缓冲区溢出，控制堆栈的返回地址$ra，需要覆盖的数据大小应该达到 0x4-(-0x198) &#x3D; 0x19c 字节</p>
 <p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image7.png" alt="image-20231217162032481"></p>
 <p>确定了布局变量buf到返回的地址大小后，来验证是否正确<br> python -c “print ‘A’*0x19C + ‘BBBB’+’CCCC’” &gt; passwd<br> 如图所示，PC寄存器可以读入BBBB</p>

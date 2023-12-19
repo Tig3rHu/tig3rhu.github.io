@@ -55,7 +55,8 @@
 <h2 id="什么是HOOK"><a href="#什么是HOOK" class="headerlink" title="什么是HOOK"></a>什么是HOOK</h2><p>HOOK(钩子） 通过拦截函数调用，消息或软件组件之间传递的时间来改变或增强操作系统，应用程序或其他软件组件的行为</p>
 <h3 id="HOOK-使用场景"><a href="#HOOK-使用场景" class="headerlink" title="HOOK 使用场景"></a>HOOK 使用场景</h3><h4 id="程序开发"><a href="#程序开发" class="headerlink" title="程序开发"></a>程序开发</h4><p>可以在程序开发的时候hook一些运行时的信息</p>
 <h4 id="Windows-Linux-Mac-Hook"><a href="#Windows-Linux-Mac-Hook" class="headerlink" title="Windows&#x2F;Linux&#x2F;Mac Hook"></a>Windows&#x2F;Linux&#x2F;Mac Hook</h4><h4 id="Android-IOS-Hook"><a href="#Android-IOS-Hook" class="headerlink" title="Android&#x2F;IOS Hook"></a>Android&#x2F;IOS Hook</h4><p>在脱壳的时候都会使用Hook</p>
-<h4 id="固件模拟"><a href="#固件模拟" class="headerlink" title="固件模拟"></a>固件模拟</h4><p>在固件模拟的时候在hook一些硬件需要的配置  </p>
+<hr>
+<h2 id="title-使用LD-PRELOAD进行hook"><a href="#title-使用LD-PRELOAD进行hook" class="headerlink" title="title: 使用LD_PRELOAD进行hook"></a>title: 使用LD_PRELOAD进行hook</h2><h4 id="固件模拟"><a href="#固件模拟" class="headerlink" title="固件模拟"></a>固件模拟</h4><p>在固件模拟的时候在hook一些硬件需要的配置  </p>
 <h2 id="0x03-LD-PRELOAD-进行HOOK"><a href="#0x03-LD-PRELOAD-进行HOOK" class="headerlink" title="0x03 LD_PRELOAD 进行HOOK"></a>0x03 LD_PRELOAD 进行HOOK</h2><p>由于LD_PRELOAD可以指定在程序运行前优先加载动态链接库，那我们可以重写程序运行过程中所调用的函数并编译成动态链接库文件，然后通过执行LD_PRELOAD让程序优先加载这个恶意的动态链接库，最后当程序再次运行时便会加载动态链接库中的恶意函数。具体操作步骤如下：</p>
 <ol>
 <li>定义与目标函数完全一样的函数，包括名称、变量及类型、返回值及类型等。</li>

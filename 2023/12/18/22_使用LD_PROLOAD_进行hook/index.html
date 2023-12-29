@@ -28,13 +28,12 @@
  replay-btn" aria-hidden="true"></i></a>
     <div class="post-title">
         <p>
-            
+            Linux 使用LD_PRELOAD 进行hook
         </p>
         <hr>
     </div>
     <div class="post-content">
-        <hr>
-<h2 id="Linux-使用LD-PRELOAD-进行hook"><a href="#Linux-使用LD-PRELOAD-进行hook" class="headerlink" title="Linux 使用LD_PRELOAD 进行hook"></a>Linux 使用LD_PRELOAD 进行hook</h2><h1 id="使用LD-PRELOAD-进行hook"><a href="#使用LD-PRELOAD-进行hook" class="headerlink" title="使用LD_PRELOAD 进行hook"></a>使用LD_PRELOAD 进行hook</h1><p>本文介绍了LD_PRELOAD特性，以及它如何对动态链接的可执行文件进行逆向工程。这种技术允许你劫持函数&#x2F;注入代码来操纵程序流。</p>
+        <h1 id="使用LD-PRELOAD-进行hook"><a href="#使用LD-PRELOAD-进行hook" class="headerlink" title="使用LD_PRELOAD 进行hook"></a>使用LD_PRELOAD 进行hook</h1><p>本文介绍了LD_PRELOAD特性，以及它如何对动态链接的可执行文件进行逆向工程。这种技术允许你劫持函数&#x2F;注入代码来操纵程序流。</p>
 <h2 id="0x01-什么是LD-PRELOAD"><a href="#0x01-什么是LD-PRELOAD" class="headerlink" title="0x01 什么是LD_PRELOAD"></a>0x01 什么是LD_PRELOAD</h2><p>LD_PRELOAD 是Linux系统的一个环境变量，它可以影响程序的运行时的链接，允许定义在程序运行前优先加载的动态链接库。</p>
 <p>这个功能主要是用来有选择性的载入不同动态链接库中的相同函数。通过这个环境变量，我们可以在主程序和其动态链接库的中间加载别的动态链接库，甚至覆盖正常的函数库。</p>
 <p>一方面，我们可以利用此功能来使用自己的或者更好的函数（不需要别人的源码）。</p>

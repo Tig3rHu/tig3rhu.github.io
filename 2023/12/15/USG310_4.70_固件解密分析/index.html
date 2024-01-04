@@ -1,39 +1,174 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang=en>
 <head>
-    <meta charset="UTF-8">
+    <!-- so meta -->
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="google-site-verification" content="TZE0rZyIqLl10trYu3BWBWa1Vmz6HFwhb2OcNEK4u-s" />
-     <link rel="shortcut icon" href= /img/favicon.ico >
-    <title>
-        Tig3rHu&#39;s Blog
-    </title>
-    <meta name="description" content= Hello World >
-    <meta name="keywords" content= HigerHu,vulnerability,security,cyber >
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="USG310_4.70_固件解密分析0x01 前言关于Zyxel 固件的解密和提取的分析，最近的这篇文章给了我一个很好的idea，感兴趣的可以去看一下。 文章连接：https:&#x2F;&#x2F;security.humanativaspa.it&#x2F;zyxel-firmware-extraction-and-password-analysis&#x2F; 对固件进行漏洞挖掘的第一步，就是从固件中提取我们需要的一些文件和组件，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="USG310_4.70_固件解密分析">
+<meta property="og:url" content="https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:description" content="USG310_4.70_固件解密分析0x01 前言关于Zyxel 固件的解密和提取的分析，最近的这篇文章给了我一个很好的idea，感兴趣的可以去看一下。 文章连接：https:&#x2F;&#x2F;security.humanativaspa.it&#x2F;zyxel-firmware-extraction-and-password-analysis&#x2F; 对固件进行漏洞挖掘的第一步，就是从固件中提取我们需要的一些文件和组件，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531223826053.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531232958486.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531094424948.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531233318654-1654092293991.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531233643518-1654092293991.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220601221345019.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220530230602516-1654092293991.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220530231109223-1654092354501.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531095654808-1654092377775.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531095902454-1654092377775.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531100827634-1654092501169.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220601213159701-1654092512813.png">
+<meta property="og:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220601214513234.png">
+<meta property="article:published_time" content="2023-12-15T14:47:02.978Z">
+<meta property="article:modified_time" content="2023-12-15T14:48:17.458Z">
+<meta property="article:author" content="Tig3rHu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tig3rhu.github.io/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531223826053.png">
     
-<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
-
     
-<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>USG310_4.70_固件解密分析</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
 
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
     
 <link rel="stylesheet" href="/css/style.css">
 
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
 <meta name="generator" content="Hexo 7.0.0"></head>
-<body id="bodyx">
-    <div class="hd posts">
-    <a href="/index.html"><i class="fa fa-home
- replay-btn" aria-hidden="true"></i></a>
-    <div class="post-title">
-        <p>
-            USG310_4.70_固件解密分析
-        </p>
-        <hr>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&text=USG310_4.70_固件解密分析"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&title=USG310_4.70_固件解密分析"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&is_video=false&description=USG310_4.70_固件解密分析"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=USG310_4.70_固件解密分析&body=Check out this article: https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&title=USG310_4.70_固件解密分析"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&title=USG310_4.70_固件解密分析"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&title=USG310_4.70_固件解密分析"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&title=USG310_4.70_固件解密分析"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&name=USG310_4.70_固件解密分析&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&t=USG310_4.70_固件解密分析"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
     </div>
-    <div class="post-content">
-        <h1 id="USG310-4-70-固件解密分析"><a href="#USG310-4-70-固件解密分析" class="headerlink" title="USG310_4.70_固件解密分析"></a>USG310_4.70_固件解密分析</h1><h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p>关于Zyxel 固件的解密和提取的分析，最近的这篇文章给了我一个很好的idea，感兴趣的可以去看一下。</p>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#USG310-4-70-%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">USG310_4.70_固件解密分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">0x01 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%8C%85-1"><span class="toc-number">1.2.</span> <span class="toc-text">0x02  固件解包 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-pkcrack-%E6%98%8E%E6%96%87%E6%94%BB%E5%87%BB"><span class="toc-number">1.3.</span> <span class="toc-text">0x03 pkcrack 明文攻击</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%8C%852"><span class="toc-number">1.4.</span> <span class="toc-text">0x04 固件解包2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-%E6%8F%90%E5%8F%96%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.5.</span> <span class="toc-text">0x05 提取文件系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-zld-fsextract-%E8%A7%A3%E5%BC%80%E5%9B%BA%E4%BB%B6"><span class="toc-number">1.6.</span> <span class="toc-text">0x06 zld_fsextract 解开固件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x07-%E6%80%BB%E7%BB%93"><span class="toc-number">1.7.</span> <span class="toc-text">0x07 总结</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        USG310_4.70_固件解密分析
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Tig3rHu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-12-15T14:47:02.978Z" class="dt-published" itemprop="datePublished">2023-12-15</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="USG310-4-70-固件解密分析"><a href="#USG310-4-70-固件解密分析" class="headerlink" title="USG310_4.70_固件解密分析"></a>USG310_4.70_固件解密分析</h1><h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p>关于Zyxel 固件的解密和提取的分析，最近的这篇文章给了我一个很好的idea，感兴趣的可以去看一下。</p>
 <p>文章连接：<a target="_blank" rel="noopener" href="https://security.humanativaspa.it/zyxel-firmware-extraction-and-password-analysis/">https://security.humanativaspa.it/zyxel-firmware-extraction-and-password-analysis/</a></p>
 <p>对固件进行漏洞挖掘的第一步，就是从固件中提取我们需要的一些文件和组件，从而进行漏洞分析，但是如果解开固件包的过程中，显示固件已被加密，并且无法确定如何进行解密，那么是特别难受的。从一些常见的固件解密的方式来看，有的固件是压缩的时候进行加密的，那么解密程序或者生成解密密钥的二进制文件有可能会存在和固件包一起的打包出来，那么可以根据确定一些与解密有关的关键信息，和逆向加密算法对加密方式进行对应的破解，但是，i am lazy :) 。 所以通过收集固件的信息，了解其中的加密的一些命令和方式，比如zyxel固件解密所描述，根据一些特殊的组件猜测其解密的方式，尝试去解密固件，虽然这个过程也很艰难，但相对去逆向晦涩难懂的加密算法而言，难度就小很多了。</p>
 <p>另外也可以根据linux中常见的解密工具，比如unzip 来确定固件中的解密方式，如下图所示的这个案例，通过检索unzip信息，获取到了解密的方式和解密密钥。</p>
@@ -107,66 +242,143 @@
 <p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220601214513234.png" alt="image-20220601214513234"></p>
 <h2 id="0x07-总结"><a href="#0x07-总结" class="headerlink" title="0x07 总结"></a>0x07 总结</h2><p>这个固件解密的方式主要用的方式pkcrack，利用的就是一个未加密的conf文件，进行解密，总的来说，在分析加密固件的时候，应该对那些伴随加密固件一起发布出来的其他文件进行详细的信息收集，以便了解更多与固件相关的信息，另外，加密固件在更新到设备上的时候，是需要解密后提取文件系统才能使用的，如果设备上原本是没有密钥或者生成密钥的算法，那么解密的密钥或者解密的方式大概率会和加密固件一起发布出来。</p>
 
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+        
+      </ul>
     </div>
 
     
-        <hr class="fhr">
-        <div id="vcomments"></div>
     
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#USG310-4-70-%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">USG310_4.70_固件解密分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">0x01 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%8C%85-1"><span class="toc-number">1.2.</span> <span class="toc-text">0x02  固件解包 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-pkcrack-%E6%98%8E%E6%96%87%E6%94%BB%E5%87%BB"><span class="toc-number">1.3.</span> <span class="toc-text">0x03 pkcrack 明文攻击</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%8C%852"><span class="toc-number">1.4.</span> <span class="toc-text">0x04 固件解包2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-%E6%8F%90%E5%8F%96%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.5.</span> <span class="toc-text">0x05 提取文件系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-zld-fsextract-%E8%A7%A3%E5%BC%80%E5%9B%BA%E4%BB%B6"><span class="toc-number">1.6.</span> <span class="toc-text">0x06 zld_fsextract 解开固件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x07-%E6%80%BB%E7%BB%93"><span class="toc-number">1.7.</span> <span class="toc-text">0x07 总结</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&text=USG310_4.70_固件解密分析"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&title=USG310_4.70_固件解密分析"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&is_video=false&description=USG310_4.70_固件解密分析"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=USG310_4.70_固件解密分析&body=Check out this article: https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&title=USG310_4.70_固件解密分析"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&title=USG310_4.70_固件解密分析"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&title=USG310_4.70_固件解密分析"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&title=USG310_4.70_固件解密分析"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&name=USG310_4.70_固件解密分析&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/&t=USG310_4.70_固件解密分析"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
 </div>
-    <div class="footer" id="footer">
-    <p><h4>Copyright © 2023 | Author: HigerHu | </a></h4>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
     
-        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-        <span id="busuanzi_container_site_pv">Page Views: <span id="busuanzi_value_site_pv"></span></span>
-        <span class="post-meta-divider">|</span>
-        <span id="busuanzi_container_site_uv">Unique Visitors: <span id="busuanzi_value_site_uv"></span></span>
     
-    <label class="el-switch el-switch-blue el-switch-sm" style="vertical-align: sub;">
-        <input type="checkbox" name="switch" id="update_style">
-        <span class="el-switch-style"></span>
-    </label>
+    2016-2024
+    Tig3rHu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
 
-    <!--         <script type="text/javascript">
-    var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
-    document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
-    </script> -->
-</p>
-</div>
-
-<input type="hidden" id="web_style" value="black">
-<input type="hidden" id="valine_appid" value="">
-<input type="hidden" id="valine_appKey" value="">
-
-<script src="/libs/jquery.min.js"></script>
+    </div>
+    <!-- styles -->
 
 
-<script src="/libs/highlight/highlight.pack.js"></script>
 
-<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
 
-<script src="/js/js.js"></script>
 
-<style type="text/css">
-.v * {
-color: #698fca;
-}
-.v .vlist .vcard .vhead .vsys {
-color: #3a3e4a;
-}
-.v .vlist .vcard .vh .vmeta .vat {
-color: #638fd5;
-}
-.v .vlist .vcard .vhead .vnick {
-color: #6ba1ff;
-}
-.v a {
-color: #8696b1;
-}
-.v .vlist .vcard .vhead .vnick:hover {
-color: #669bfc;
-}
-</style>
-    <script type="text/javascript" color="173,174,173" opacity='1' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
 </body>
 </html>

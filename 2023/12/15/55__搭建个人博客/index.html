@@ -1,186 +1,39 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang="zh">
 <head>
-    <!-- so meta -->
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="安装npm下载nodejs  下载Hexo安装命令：npm install hexo -gps： 下载会失败，更改镜像为淘宝的npm镜像站。安装成功 安装hexo 依赖 把ssh key 的 pub 公钥把ssh key 的 pub 公钥 发送到github中 验证ssh 是否能连接成功 hexo init 初始化hexo init 初始化，可能会报permitted解决方法：https:&#x2F;&#x2F;bl">
-<meta property="og:type" content="article">
-<meta property="og:title" content="github 博客搭建记录">
-<meta property="og:url" content="https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/index.html">
-<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
-<meta property="og:description" content="安装npm下载nodejs  下载Hexo安装命令：npm install hexo -gps： 下载会失败，更改镜像为淘宝的npm镜像站。安装成功 安装hexo 依赖 把ssh key 的 pub 公钥把ssh key 的 pub 公钥 发送到github中 验证ssh 是否能连接成功 hexo init 初始化hexo init 初始化，可能会报permitted解决方法：https:&#x2F;&#x2F;bl">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215142420966.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215142511277.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145400750.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145459306.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145617081.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145905798.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215180007355.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215150534676.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215151951928.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215152110309.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215152319329.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215153413338.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215153513684.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215154313076.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215154324906.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215155927803.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215160852822.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215160940638.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215160908093.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215165339843.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175541083.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215172256746.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175200901.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175304128.png">
-<meta property="og:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175329575.png">
-<meta property="article:published_time" content="2023-12-15T09:58:11.506Z">
-<meta property="article:modified_time" content="2023-12-15T10:00:14.419Z">
-<meta property="article:author" content="Tig3rHu">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://tig3rhu.github.io/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215142420966.png">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="google-site-verification" content="TZE0rZyIqLl10trYu3BWBWa1Vmz6HFwhb2OcNEK4u-s" />
+     <link rel="shortcut icon" href= /img/favicon.ico >
+    <title>
+        Tig3rHu&#39;s Blog
+    </title>
+    <meta name="description" content= Hello World >
+    <meta name="keywords" content= HigerHu,vulnerability,security,cyber >
     
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
     
-      
-        
-          <link rel="shortcut icon" href="/images/favicon.ico">
-        
-      
-      
-        
-          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
-        
-      
-      
-        
-          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-        
-      
-    
-    <!-- title -->
-    <title>github 博客搭建记录</title>
-    <!-- async scripts -->
-    <!-- Google Analytics -->
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-
-    <!-- Umami Analytics -->
-
-
-    <!-- styles -->
     
 <link rel="stylesheet" href="/css/style.css">
 
-    <!-- persian styles -->
-    
-    <!-- rss -->
-    
-    
-	<!-- mathjax -->
-	
 <meta name="generator" content="Hexo 7.0.0"></head>
-
-<body class="max-width mx-auto px3 ltr">
-    
-      <div id="header-post">
-  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
-  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
-  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
-  <span id="menu">
-    <span id="nav">
-      <ul>
-        <!--
-       --><li><a href="/">Home</a></li><!--
-     --><!--
-       --><li><a href="/about/">About</a></li><!--
-     --><!--
-       --><li><a href="/archives/">Writing</a></li><!--
-     --><!--
-       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
-     -->
-      </ul>
-    </span>
-    <br/>
-    <span id="actions">
-      <ul>
-        
-        <li><a class="icon" aria-label="Previous post" href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
-        
-        
-        <li><a class="icon" aria-label="Next post" href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
-        
-        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
-        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
-      </ul>
-      <span id="i-prev" class="info" style="display:none;">Previous post</span>
-      <span id="i-next" class="info" style="display:none;">Next post</span>
-      <span id="i-top" class="info" style="display:none;">Back to top</span>
-      <span id="i-share" class="info" style="display:none;">Share post</span>
-    </span>
-    <br/>
-    <div id="share" style="display: none">
-      <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&text=github 博客搭建记录"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&title=github 博客搭建记录"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&is_video=false&description=github 博客搭建记录"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=github 博客搭建记录&body=Check out this article: https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&title=github 博客搭建记录"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&title=github 博客搭建记录"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&title=github 博客搭建记录"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&title=github 博客搭建记录"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&name=github 博客搭建记录&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&t=github 博客搭建记录"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
-</ul>
-
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-home
+ replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            github 博客搭建记录
+        </p>
+        <hr>
     </div>
-    
-    
-      <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85npm"><span class="toc-number">1.</span> <span class="toc-text">安装npm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDHexo"><span class="toc-number">2.</span> <span class="toc-text">下载Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85hexo-%E4%BE%9D%E8%B5%96"><span class="toc-number">3.</span> <span class="toc-text">安装hexo 依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8Assh-key-%E7%9A%84-pub-%E5%85%AC%E9%92%A5"><span class="toc-number">4.</span> <span class="toc-text">把ssh key 的 pub 公钥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo-init-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">hexo init 初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E5%88%B0GitHub"><span class="toc-number">6.</span> <span class="toc-text">部署到GitHub</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E4%B8%BB%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">更改主题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9titile"><span class="toc-number">7.1.</span> <span class="toc-text">更改titile</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E4%B8%BB%E9%A2%98-1"><span class="toc-number">7.2.</span> <span class="toc-text">更改主题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E5%8D%9A%E5%AE%A2"><span class="toc-number"></span> <span class="toc-text">编写博客</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0md"><span class="toc-number">1.</span> <span class="toc-text">上传md</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87"><span class="toc-number">2.</span> <span class="toc-text">加载图片</span></a></li></ol>
-      </div>
-    
-  </span>
-</div>
-
-    
-    <div class="content index py4 ">
-        
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-  <header>
-    
-    <h1 class="posttitle p-name" itemprop="name headline">
-        github 博客搭建记录
-    </h1>
-
-
-
-    <div class="meta">
-      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span class="p-name" itemprop="name">Tig3rHu</span>
-      </span>
-      
-    <div class="postdate">
-      
-        <time datetime="2023-12-15T09:58:11.506Z" class="dt-published" itemprop="datePublished">2023-12-15</time>
-        
-      
-    </div>
-
-
-      
-
-      
-
-    </div>
-  </header>
-  
-
-  <div class="content e-content" itemprop="articleBody">
-    <h3 id="安装npm"><a href="#安装npm" class="headerlink" title="安装npm"></a>安装npm</h3><p>下载nodejs<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215142420966.png"></p>
+    <div class="post-content">
+        <h3 id="安装npm"><a href="#安装npm" class="headerlink" title="安装npm"></a>安装npm</h3><p>下载nodejs<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215142420966.png"></p>
 <p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215142511277.png"></p>
 <h3 id="下载Hexo"><a href="#下载Hexo" class="headerlink" title="下载Hexo"></a>下载Hexo</h3><p>安装命令：npm install hexo -g<br>ps： 下载会失败，更改镜像为淘宝的npm镜像站。<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145400750.png"><br>安装成功<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145459306.png"></p>
 <h3 id="安装hexo-依赖"><a href="#安装hexo-依赖" class="headerlink" title="安装hexo 依赖"></a>安装hexo 依赖</h3><p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145617081.png"></p>
@@ -219,143 +72,66 @@
 <p>图片目录，图片目录不能有空格。<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175304128.png"><br>更改md图片路径<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175329575.png"></p>
 <p>Cactus<br><a href="https://link.zhihu.com/?target=https://github.com/probberechts/hexo-theme-cactus">https://link.zhihu.com/?target=https%3A//github.com/probberechts/hexo-theme-cactus</a></p>
 
-  </div>
-</article>
-
-
-
-        
-          <div id="footer-post-container">
-  <div id="footer-post">
-
-    <div id="nav-footer" style="display: none">
-      <ul>
-        
-          <li><a href="/">Home</a></li>
-        
-          <li><a href="/about/">About</a></li>
-        
-          <li><a href="/archives/">Writing</a></li>
-        
-          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
-        
-      </ul>
     </div>
 
     
+        <hr class="fhr">
+        <div id="vcomments"></div>
     
-      <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85npm"><span class="toc-number">1.</span> <span class="toc-text">安装npm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDHexo"><span class="toc-number">2.</span> <span class="toc-text">下载Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85hexo-%E4%BE%9D%E8%B5%96"><span class="toc-number">3.</span> <span class="toc-text">安装hexo 依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8Assh-key-%E7%9A%84-pub-%E5%85%AC%E9%92%A5"><span class="toc-number">4.</span> <span class="toc-text">把ssh key 的 pub 公钥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo-init-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">hexo init 初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E5%88%B0GitHub"><span class="toc-number">6.</span> <span class="toc-text">部署到GitHub</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E4%B8%BB%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">更改主题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9titile"><span class="toc-number">7.1.</span> <span class="toc-text">更改titile</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E4%B8%BB%E9%A2%98-1"><span class="toc-number">7.2.</span> <span class="toc-text">更改主题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E5%8D%9A%E5%AE%A2"><span class="toc-number"></span> <span class="toc-text">编写博客</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0md"><span class="toc-number">1.</span> <span class="toc-text">上传md</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E5%9B%BE%E7%89%87"><span class="toc-number">2.</span> <span class="toc-text">加载图片</span></a></li></ol>
-      </div>
+</div>
+    <div class="footer" id="footer">
+    <p><h4>Copyright © 2023 | Author: HigerHu | </a></h4>
     
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_site_pv">Page Views: <span id="busuanzi_value_site_pv"></span></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">Unique Visitors: <span id="busuanzi_value_site_uv"></span></span>
+    
+    <label class="el-switch el-switch-blue el-switch-sm" style="vertical-align: sub;">
+        <input type="checkbox" name="switch" id="update_style">
+        <span class="el-switch-style"></span>
+    </label>
 
-    <div id="share-footer" style="display: none">
-      <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&text=github 博客搭建记录"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&title=github 博客搭建记录"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&is_video=false&description=github 博客搭建记录"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=github 博客搭建记录&body=Check out this article: https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&title=github 博客搭建记录"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&title=github 博客搭建记录"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&title=github 博客搭建记录"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&title=github 博客搭建记录"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&name=github 博客搭建记录&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/&t=github 博客搭建记录"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
-</ul>
-
-    </div>
-
-    <div id="actions-footer">
-        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
-        
-          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
-        
-        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
-        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
-    </div>
-
-  </div>
+    <!--         <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script> -->
+</p>
 </div>
 
-        
-        <footer id="footer">
-  <div class="footer-left">
-    Copyright &copy;
-    
-    
-    2016-2024
-    Tig3rHu
-  </div>
-  <div class="footer-right">
-    <nav>
-      <ul>
-        <!--
-       --><li><a href="/">Home</a></li><!--
-     --><!--
-       --><li><a href="/about/">About</a></li><!--
-     --><!--
-       --><li><a href="/archives/">Writing</a></li><!--
-     --><!--
-       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
-     -->
-      </ul>
-    </nav>
-  </div>
-</footer>
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="">
+<input type="hidden" id="valine_appKey" value="">
 
-    </div>
-    <!-- styles -->
+<script src="/libs/jquery.min.js"></script>
 
 
+<script src="/libs/highlight/highlight.pack.js"></script>
 
-  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
 
+<script src="/js/js.js"></script>
 
-    <!-- jquery -->
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
-
-
-
-
-<!-- clipboard -->
-
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
-  
-  <script type="text/javascript">
-  $(function() {
-    // copy-btn HTML
-    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
-    btn += '<i class="fa-regular fa-clone"></i>';
-    btn += '</span>';
-    // mount it!
-    $(".highlight table").before(btn);
-    var clip = new ClipboardJS('.btn-copy', {
-      text: function(trigger) {
-        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
-      }
-    });
-    clip.on('success', function(e) {
-      e.trigger.setAttribute('aria-label', "Copied!");
-      e.clearSelection();
-    })
-  })
-  </script>
-
-
-<script src="/js/main.js"></script>
-
-<!-- search -->
-
-<!-- Baidu Analytics -->
-
-<!-- Cloudflare Analytics -->
-
-<!-- Disqus Comments -->
-
-<!-- utterances Comments -->
-
+<style type="text/css">
+.v * {
+color: #698fca;
+}
+.v .vlist .vcard .vhead .vsys {
+color: #3a3e4a;
+}
+.v .vlist .vcard .vh .vmeta .vat {
+color: #638fd5;
+}
+.v .vlist .vcard .vhead .vnick {
+color: #6ba1ff;
+}
+.v a {
+color: #8696b1;
+}
+.v .vlist .vcard .vhead .vnick:hover {
+color: #669bfc;
+}
+</style>
+    <script type="text/javascript" color="173,174,173" opacity='1' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
 </body>
 </html>

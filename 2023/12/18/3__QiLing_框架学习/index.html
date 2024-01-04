@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang=en>
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>QiLing 框架学习WriteUp | Tig3rHu&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="QiLing 框架学习QilingQiling 是一个高级二进制仿真框架，是基于Unicorn（独角兽）具有以下特点：  跨平台：Windows、MacOS、Linux、BSD、UEFI、DOS 跨架构：X86、X86_64、Arm、Arm64、MIPS、8086 多种文件格式：PE、MachO、ELF、COM 通过Demigod支持 Linux Kernel Module(.ko)、Window">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="QiLing 框架学习QilingQiling 是一个高级二进制仿真框架，是基于Unicorn（独角兽）具有以下特点：  跨平台：Windows、MacOS、Linux、BSD、UEFI、DOS 跨架构：X86、X86_64、Arm、Arm64、MIPS、8086 多种文件格式：PE、MachO、ELF、COM 通过Demigod支持 Linux Kernel Module(.ko)、Window">
 <meta property="og:type" content="article">
 <meta property="og:title" content="QiLing 框架学习WriteUp">
 <meta property="og:url" content="https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/index.html">
@@ -30,83 +30,144 @@
 <meta property="article:author" content="Tig3rHu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220412185946587.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Tig3rHu's Blog" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>QiLing 框架学习WriteUp</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
 <link rel="stylesheet" href="/css/style.css">
 
-  
+    <!-- persian styles -->
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-  
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
 <meta name="generator" content="Hexo 7.0.0"></head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Tig3rHu&#39;s Blog</a>
-      </h1>
-      
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&text=QiLing 框架学习WriteUp"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&title=QiLing 框架学习WriteUp"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&is_video=false&description=QiLing 框架学习WriteUp"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=QiLing 框架学习WriteUp&body=Check out this article: https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&title=QiLing 框架学习WriteUp"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&title=QiLing 框架学习WriteUp"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&title=QiLing 框架学习WriteUp"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&title=QiLing 框架学习WriteUp"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&name=QiLing 框架学习WriteUp&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&t=QiLing 框架学习WriteUp"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tig3rhu.github.io"></form>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#QiLing-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">QiLing 框架学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Qiling"><span class="toc-number">1.0.1.</span> <span class="toc-text">Qiling</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B"><span class="toc-number">1.0.1.1.</span> <span class="toc-text">安装过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E5%92%8C%E5%87%BD%E6%95%B0"><span class="toc-number">1.0.2.</span> <span class="toc-text">基础语法和函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#challenge"><span class="toc-number">1.0.3.</span> <span class="toc-text">challenge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge1-writeup"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">challenge1 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge2-writeup"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">challenge2 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge3-writeup"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">challenge3 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge4-writeup"><span class="toc-number">1.0.3.4.</span> <span class="toc-text">challenge4 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge5-writeup"><span class="toc-number">1.0.3.5.</span> <span class="toc-text">challenge5 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge6-writeup"><span class="toc-number">1.0.3.6.</span> <span class="toc-text">challenge6 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge7-writeup"><span class="toc-number">1.0.3.7.</span> <span class="toc-text">challenge7 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge8-writeup"><span class="toc-number">1.0.3.8.</span> <span class="toc-text">challenge8 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge9-writeup"><span class="toc-number">1.0.3.9.</span> <span class="toc-text">challenge9 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge10-writeup-hook-FS"><span class="toc-number">1.0.3.10.</span> <span class="toc-text">challenge10 writeup hook FS</span></a></li></ol></li></ol></li></ol></li></ol>
       </div>
-    </div>
-  </div>
-</header>
+    
+  </span>
+</div>
 
-      <div class="outer">
-        <section id="main"><article id="post-3__QiLing_框架学习" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" class="article-date">
-  <time class="dt-published" datetime="2023-12-18T09:12:42.084Z" itemprop="datePublished">2023-12-18</time>
-</a>
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+    <div class="content index py4 ">
         
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      QiLing 框架学习WriteUp
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        QiLing 框架学习WriteUp
     </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Tig3rHu</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-12-18T09:12:42.084Z" class="dt-published" itemprop="datePublished">2023-12-18</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
   
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="QiLing-框架学习"><a href="#QiLing-框架学习" class="headerlink" title="QiLing 框架学习"></a>QiLing 框架学习</h1><h3 id="Qiling"><a href="#Qiling" class="headerlink" title="Qiling"></a>Qiling</h3><p>Qiling 是一个高级二进制仿真框架，是基于Unicorn（独角兽）具有以下特点：</p>
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="QiLing-框架学习"><a href="#QiLing-框架学习" class="headerlink" title="QiLing 框架学习"></a>QiLing 框架学习</h1><h3 id="Qiling"><a href="#Qiling" class="headerlink" title="Qiling"></a>Qiling</h3><p>Qiling 是一个高级二进制仿真框架，是基于Unicorn（独角兽）具有以下特点：</p>
 <ul>
 <li>跨平台：Windows、MacOS、Linux、BSD、UEFI、DOS</li>
 <li>跨架构：X86、X86_64、Arm、Arm64、MIPS、8086</li>
@@ -288,134 +349,143 @@
 <p>参考讲解：</p>
 <p><a target="_blank" rel="noopener" href="https://badmonkey.site/archives/qilinglab-writeup#challenge-11">https://badmonkey.site/archives/qilinglab-writeup#challenge-11</a></p>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" data-id="clqap895q0000lkvb0xlccirt" data-title="QiLing 框架学习WriteUp" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Linux 使用LD_PRELOAD 进行hook
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">mips架构堆栈缓冲区溢出调试与利用</div>
-    </a>
-  
-</nav>
-
-  
 </article>
 
 
-</section>
+
         
-          <aside id="sidebar">
-  
-    
+          <div id="footer-post-container">
+  <div id="footer-post">
 
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
+    <div id="nav-footer" style="display: none">
       <ul>
         
-          <li>
-            <a href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/">apk逆向__婚礼纪逆向</a>
-          </li>
+          <li><a href="/">Home</a></li>
         
-          <li>
-            <a href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/">Android各种机型刷机踩坑记录</a>
-          </li>
+          <li><a href="/about/">About</a></li>
         
-          <li>
-            <a href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/">apk逆向__懒人驾考去会员</a>
-          </li>
+          <li><a href="/archives/">Writing</a></li>
         
-          <li>
-            <a href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/">apk逆向__滴答清单去会员</a>
-          </li>
-        
-          <li>
-            <a href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/">蓝牙sniff&amp;CTF&amp;develop</a>
-          </li>
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
         
       </ul>
     </div>
-  </div>
 
-  
-</aside>
-        
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#QiLing-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">QiLing 框架学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Qiling"><span class="toc-number">1.0.1.</span> <span class="toc-text">Qiling</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B"><span class="toc-number">1.0.1.1.</span> <span class="toc-text">安装过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E5%92%8C%E5%87%BD%E6%95%B0"><span class="toc-number">1.0.2.</span> <span class="toc-text">基础语法和函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#challenge"><span class="toc-number">1.0.3.</span> <span class="toc-text">challenge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge1-writeup"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">challenge1 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge2-writeup"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">challenge2 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge3-writeup"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">challenge3 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge4-writeup"><span class="toc-number">1.0.3.4.</span> <span class="toc-text">challenge4 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge5-writeup"><span class="toc-number">1.0.3.5.</span> <span class="toc-text">challenge5 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge6-writeup"><span class="toc-number">1.0.3.6.</span> <span class="toc-text">challenge6 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge7-writeup"><span class="toc-number">1.0.3.7.</span> <span class="toc-text">challenge7 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge8-writeup"><span class="toc-number">1.0.3.8.</span> <span class="toc-text">challenge8 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge9-writeup"><span class="toc-number">1.0.3.9.</span> <span class="toc-text">challenge9 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge10-writeup-hook-FS"><span class="toc-number">1.0.3.10.</span> <span class="toc-text">challenge10 writeup hook FS</span></a></li></ol></li></ol></li></ol></li></ol>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2024 Tig3rHu<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&text=QiLing 框架学习WriteUp"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&title=QiLing 框架学习WriteUp"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&is_video=false&description=QiLing 框架学习WriteUp"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=QiLing 框架学习WriteUp&body=Check out this article: https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&title=QiLing 框架学习WriteUp"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&title=QiLing 框架学习WriteUp"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&title=QiLing 框架学习WriteUp"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&title=QiLing 框架学习WriteUp"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&name=QiLing 框架学习WriteUp&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/&t=QiLing 框架学习WriteUp"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
     </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    Tig3rHu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
   </div>
 </footer>
 
     </div>
-    <nav id="mobile-nav">
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
   
-    <a href="/" class="mobile-nav-link">Home</a>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
 
 
-<script src="/js/jquery-3.6.4.min.js"></script>
+<script src="/js/main.js"></script>
 
+<!-- search -->
 
+<!-- Baidu Analytics -->
 
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+<!-- Cloudflare Analytics -->
 
+<!-- Disqus Comments -->
 
+<!-- utterances Comments -->
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

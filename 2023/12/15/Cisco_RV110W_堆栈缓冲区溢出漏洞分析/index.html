@@ -1,38 +1,124 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="google-site-verification" content="TZE0rZyIqLl10trYu3BWBWa1Vmz6HFwhb2OcNEK4u-s" />
-     <link rel="shortcut icon" href= /img/favicon.ico >
-    <title>
-        Tig3rHu&#39;s Blog
-    </title>
-    <meta name="description" content= Hello World >
-    <meta name="keywords" content= HigerHu,vulnerability,security,cyber >
-    
-<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
-
-    
-<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-
-    
+  <meta charset="utf-8">
+  
+  
+  <title>Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用 | Tig3rHu&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Cisco_RV110W_堆栈缓冲区溢出漏洞分析0x01 前言 本篇文章是针对Cisco RV110W 设备的一次栈溢出漏洞分析与复现。 漏洞通告：https:&#x2F;&#x2F;www.cisco.com&#x2F;c&#x2F;en&#x2F;us&#x2F;support&#x2F;docs&#x2F;csa&#x2F;cisco-sa-20190227-rmi-cmd-ex.html 0x02 漏洞触发漏洞编号：CVE-2019-1663 漏洞固件版本：Cisco RV11">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">
+<meta property="og:url" content="https://tig3rhu.github.io/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:description" content="Cisco_RV110W_堆栈缓冲区溢出漏洞分析0x01 前言 本篇文章是针对Cisco RV110W 设备的一次栈溢出漏洞分析与复现。 漏洞通告：https:&#x2F;&#x2F;www.cisco.com&#x2F;c&#x2F;en&#x2F;us&#x2F;support&#x2F;docs&#x2F;csa&#x2F;cisco-sa-20190227-rmi-cmd-ex.html 0x02 漏洞触发漏洞编号：CVE-2019-1663 漏洞固件版本：Cisco RV11">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115152433365.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210726141729042.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210726141951659.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115152840681.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115155911402.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210727105812234.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115161243487.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115161529938.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211122202746989.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115161853464.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119143402853.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119144149619.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119151450701.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119152320374.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119161913352.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210729113044396.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119172907415.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119173608437.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119173834064.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210730101633714.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210809144156630.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210730102407081.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211124155554186.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211124162224979.png">
+<meta property="og:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119181424341.png">
+<meta property="article:published_time" content="2023-12-15T15:01:41.410Z">
+<meta property="article:modified_time" content="2023-12-17T14:12:42.411Z">
+<meta property="article:author" content="Tig3rHu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tig3rhu.github.io/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115152433365.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Tig3rHu's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
 <link rel="stylesheet" href="/css/style.css">
 
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
 <meta name="generator" content="Hexo 7.0.0"></head>
-<body id="bodyx">
-    <div class="hd posts">
-    <a href="/index.html"><i class="fa fa-home
- replay-btn" aria-hidden="true"></i></a>
-    <div class="post-title">
-        <p>
-            Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用
-        </p>
-        <hr>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tig3rHu&#39;s Blog</a>
+      </h1>
+      
     </div>
-    <div class="post-content">
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tig3rhu.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Cisco_RV110W_堆栈缓冲区溢出漏洞分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2023-12-15T15:01:41.410Z" itemprop="datePublished">2023-12-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
         <h1 id="Cisco-RV110W-堆栈缓冲区溢出漏洞分析"><a href="#Cisco-RV110W-堆栈缓冲区溢出漏洞分析" class="headerlink" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析"></a>Cisco_RV110W_堆栈缓冲区溢出漏洞分析</h1><h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p> 本篇文章是针对Cisco RV110W 设备的一次栈溢出漏洞分析与复现。</p>
 <p>漏洞通告：<a target="_blank" rel="noopener" href="https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-20190227-rmi-cmd-ex.html">https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-20190227-rmi-cmd-ex.html</a></p>
 <h2 id="0x02-漏洞触发"><a href="#0x02-漏洞触发" class="headerlink" title="0x02 漏洞触发"></a>0x02 漏洞触发</h2><p>漏洞编号：CVE-2019-1663</p>
@@ -115,66 +201,134 @@
 <p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211124162224979.png" alt="image-20211124162224979"></p>
 <h3 id="5-exploit-测试"><a href="#5-exploit-测试" class="headerlink" title="5)  exploit 测试"></a>5)  exploit 测试</h3><p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119181424341.png" alt="image-20211119181424341"></p>
 
+      
     </div>
-
+    <footer class="article-footer">
+      <a data-url="https://tig3rhu.github.io/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" data-id="clq9l1r3q0002ysvbcwhpeica" data-title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
     
-        <hr class="fhr">
-        <div id="vcomments"></div>
+<nav id="article-nav">
+  
+    <a href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Linksys EA6100 固件解密过程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
     
-</div>
-    <div class="footer" id="footer">
-    <p><h4>Copyright © 2023 | Author: HigerHu | </a></h4>
+
+  
     
-        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-        <span id="busuanzi_container_site_pv">Page Views: <span id="busuanzi_value_site_pv"></span></span>
-        <span class="post-meta-divider">|</span>
-        <span id="busuanzi_container_site_uv">Unique Visitors: <span id="busuanzi_value_site_uv"></span></span>
+
+  
     
-    <label class="el-switch el-switch-blue el-switch-sm" style="vertical-align: sub;">
-        <input type="checkbox" name="switch" id="update_style">
-        <span class="el-switch-style"></span>
-    </label>
-
-    <!--         <script type="text/javascript">
-    var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
-    document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
-    </script> -->
-</p>
-</div>
-
-<input type="hidden" id="web_style" value="black">
-<input type="hidden" id="valine_appid" value="">
-<input type="hidden" id="valine_appKey" value="">
-
-<script src="/libs/jquery.min.js"></script>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li></ul>
+    </div>
+  </div>
 
 
-<script src="/libs/highlight/highlight.pack.js"></script>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/">apk逆向__婚礼纪逆向</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/">Android各种机型刷机踩坑记录</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/">apk逆向__懒人驾考去会员</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/">apk逆向__滴答清单去会员</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/">蓝牙sniff&amp;CTF&amp;develop</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
 
-<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 Tig3rHu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
 
-<script src="/js/js.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
 
-<style type="text/css">
-.v * {
-color: #698fca;
-}
-.v .vlist .vcard .vhead .vsys {
-color: #3a3e4a;
-}
-.v .vlist .vcard .vh .vmeta .vat {
-color: #638fd5;
-}
-.v .vlist .vcard .vhead .vnick {
-color: #6ba1ff;
-}
-.v a {
-color: #8696b1;
-}
-.v .vlist .vcard .vhead .vnick:hover {
-color: #669bfc;
-}
-</style>
-    <script type="text/javascript" color="173,174,173" opacity='1' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
 </body>
 </html>

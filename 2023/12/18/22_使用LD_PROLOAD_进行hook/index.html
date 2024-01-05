@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Linux 使用LD_PRELOAD 进行hook | Tig3rHu&#39;s Blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="Linux 使用LD_PRELOAD 进行hook | Tig3rHu&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tig3rHu&#39;s Blog">
+<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
+<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="article:author" content="Tig3rHu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Tig3rHu</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/yelog"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="facebook"
+               href="https://www.facebook.com/faker.tops"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-facebook"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+            <a title="instagram"
+               href="https://www.facebook.com/faker.tops"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-instagram"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="reddit"
+               href="https://www.reddit.com/user/yelog/"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-reddit"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="weibo"
+               href="http://weibo.com/u/2307534817"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-weibo"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="jianshu"
+               href="https://www.jianshu.com/u/ff56736de7cf"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-jianshu"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="zhihu"
+               href="https://www.zhihu.com/people/jaytp/activities"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-zhihu"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="oschina"
+               href="https://my.oschina.net/yelog"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-oschina"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:jaytp@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=872336115&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="kugou"
+               href="https://www.kugou.com/"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-kugou"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="neteasemusic"
+               href="https://music.163.com/#/user/home?id=88151013"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-neteasemusic"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(19)</small>
+            
+        </div>
+    </li>
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">About</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="19">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All "
+           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
+            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
+            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
+            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
+            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
+            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
+            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
+            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
+            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
+            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
+            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
+            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
+            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
+            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
+            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
+            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
+            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello World">Hello World</span>
+            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-22_使用LD_PROLOAD_进行hook" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Linux 使用LD_PRELOAD 进行hook</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2023-12-29 15:25:49'>2023-12-18 17:19</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8LD-PRELOAD-%E8%BF%9B%E8%A1%8Chook"><span class="toc-text">使用LD_PRELOAD 进行hook</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E4%BB%80%E4%B9%88%E6%98%AFLD-PRELOAD"><span class="toc-text">0x01 什么是LD_PRELOAD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E4%BB%80%E4%B9%88%E6%98%AF%E7%A8%8B%E5%BA%8F%E9%93%BE%E6%8E%A5"><span class="toc-text">0x02 什么是程序链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFHOOK"><span class="toc-text">什么是HOOK</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HOOK-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">HOOK 使用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91"><span class="toc-text">程序开发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Windows-Linux-Mac-Hook"><span class="toc-text">Windows&#x2F;Linux&#x2F;Mac Hook</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Android-IOS-Hook"><span class="toc-text">Android&#x2F;IOS Hook</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#title-%E4%BD%BF%E7%94%A8LD-PRELOAD%E8%BF%9B%E8%A1%8Chook"><span class="toc-text">title: 使用LD_PRELOAD进行hook</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%BA%E4%BB%B6%E6%A8%A1%E6%8B%9F"><span class="toc-text">固件模拟</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-LD-PRELOAD-%E8%BF%9B%E8%A1%8CHOOK"><span class="toc-text">0x03 LD_PRELOAD 进行HOOK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-hook-%E6%A1%88%E4%BE%8B1"><span class="toc-text">0x04 hook 案例1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%981%EF%BC%88%E5%B7%B2%E8%A7%A3%E5%86%B3%EF%BC%89"><span class="toc-text">问题1（已解决）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%982"><span class="toc-text">问题2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-hook%E6%A1%88%E4%BE%8B2-%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4"><span class="toc-text">0x05 hook案例2 修改系统命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-hook-%E6%A1%88%E4%BE%8B3-%E5%88%B6%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%97%A8"><span class="toc-text">0x06 hook 案例3 制作系统后门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x07-hook-%E6%A1%88%E4%BE%8B4"><span class="toc-text">0x07 hook 案例4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x08-%E6%80%BB%E7%BB%93"><span class="toc-text">0x08 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x08-hook-%E6%80%BB%E7%BB%93"><span class="toc-text">0x08 hook 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="使用LD-PRELOAD-进行hook"><a href="#使用LD-PRELOAD-进行hook" class="headerlink" title="使用LD_PRELOAD 进行hook"></a>使用LD_PRELOAD 进行hook</h1><p>本文介绍了LD_PRELOAD特性，以及它如何对动态链接的可执行文件进行逆向工程。这种技术允许你劫持函数&#x2F;注入代码来操纵程序流。</p>
+<h2 id="0x01-什么是LD-PRELOAD"><a href="#0x01-什么是LD-PRELOAD" class="headerlink" title="0x01 什么是LD_PRELOAD"></a>0x01 什么是LD_PRELOAD</h2><p>LD_PRELOAD 是Linux系统的一个环境变量，它可以影响程序的运行时的链接，允许定义在程序运行前优先加载的动态链接库。</p>
+<p>这个功能主要是用来有选择性的载入不同动态链接库中的相同函数。通过这个环境变量，我们可以在主程序和其动态链接库的中间加载别的动态链接库，甚至覆盖正常的函数库。</p>
+<p>一方面，我们可以利用此功能来使用自己的或者更好的函数（不需要别人的源码）。</p>
+<p>另一方面，我们也可以向别人的程序注入程序，从而达到特定的目的。</p>
+<p>LD_PRELOAD用于动态库的加载，动态库加载的优先级最高，一般情况下，其加载顺序位</p>
+<blockquote>
+<p>LD_PRELOAD &gt; LD_LIBRARY_PATH &gt;  &#x2F;etc&#x2F;ld.so.cache &gt; &#x2F;lib &gt; &#x2F;usr&#x2F;lib</p>
+</blockquote>
+<p>程序中我们经常要调用一些外部的函数，以open() 和 execve()为例，如果我们自定义这两个函数，把它编译成动态库后，通过LD_PRELOAD加载，当程序中调用open函数时，调用的其实是我们自定义的函数。</p>
+<p>Linux 用的都是glibc ，有一个叫libc.so.6库文件，这几乎是Linux 命令的动态链接库，其中也有标准C的各种函数</p>
+<h2 id="0x02-什么是程序链接"><a href="#0x02-什么是程序链接" class="headerlink" title="0x02 什么是程序链接"></a>0x02 什么是程序链接</h2><p>程序的链接主要有以下三种：</p>
+<ul>
+<li>静态链接：在程序运行之前先将各个目标模块以及所需要的库函数链接成一个完整的可执行程序，之后不再拆开。</li>
+<li>装入时动态链接：源程序编译后所得到的一组目标模块，在装入内存时，边装入边链接</li>
+<li>运行时动态链接：源程序编译后得到的目标模块，在程序执行过程中需要用到时才对它进行链接。</li>
+</ul>
+<p>对于动态链接来说，需要动态链接库，起作用在于当动态库中的函数发生变化来说，对于可执行程序是透明的，可执行程序无需重新编译，方便程序的发布&#x2F;维护&#x2F;更新，但是由于程序是运行时动态加载，这就存在一个问题，假如程序动态加载的函数是恶意的，就有可能导致一些非预期的执行结果或者绕过某些安全设置。</p>
+<h2 id="什么是HOOK"><a href="#什么是HOOK" class="headerlink" title="什么是HOOK"></a>什么是HOOK</h2><p>HOOK(钩子） 通过拦截函数调用，消息或软件组件之间传递的时间来改变或增强操作系统，应用程序或其他软件组件的行为</p>
+<h3 id="HOOK-使用场景"><a href="#HOOK-使用场景" class="headerlink" title="HOOK 使用场景"></a>HOOK 使用场景</h3><h4 id="程序开发"><a href="#程序开发" class="headerlink" title="程序开发"></a>程序开发</h4><p>可以在程序开发的时候hook一些运行时的信息</p>
+<h4 id="Windows-Linux-Mac-Hook"><a href="#Windows-Linux-Mac-Hook" class="headerlink" title="Windows&#x2F;Linux&#x2F;Mac Hook"></a>Windows&#x2F;Linux&#x2F;Mac Hook</h4><h4 id="Android-IOS-Hook"><a href="#Android-IOS-Hook" class="headerlink" title="Android&#x2F;IOS Hook"></a>Android&#x2F;IOS Hook</h4><p>在脱壳的时候都会使用Hook</p>
+<hr>
+<h2 id="title-使用LD-PRELOAD进行hook"><a href="#title-使用LD-PRELOAD进行hook" class="headerlink" title="title: 使用LD_PRELOAD进行hook"></a>title: 使用LD_PRELOAD进行hook</h2><h4 id="固件模拟"><a href="#固件模拟" class="headerlink" title="固件模拟"></a>固件模拟</h4><p>在固件模拟的时候在hook一些硬件需要的配置  </p>
+<h2 id="0x03-LD-PRELOAD-进行HOOK"><a href="#0x03-LD-PRELOAD-进行HOOK" class="headerlink" title="0x03 LD_PRELOAD 进行HOOK"></a>0x03 LD_PRELOAD 进行HOOK</h2><p>由于LD_PRELOAD可以指定在程序运行前优先加载动态链接库，那我们可以重写程序运行过程中所调用的函数并编译成动态链接库文件，然后通过执行LD_PRELOAD让程序优先加载这个恶意的动态链接库，最后当程序再次运行时便会加载动态链接库中的恶意函数。具体操作步骤如下：</p>
+<ol>
+<li>定义与目标函数完全一样的函数，包括名称、变量及类型、返回值及类型等。</li>
+<li>将包含替换函数的源码编译为动态链接库</li>
+<li>通过命令 export LD_PRELOAD&#x3D;”库文件路径”，设置要优先替换动态链接库即可。</li>
+<li>替换结束，要还原函数的调用关系，用命令uset LD_PRELOAD解除，或者 export LD_PRELOAD&#x3D;NULL 卸载库。</li>
+</ol>
+<p>使用LD_PRELOAD 进行hook 有个限制：只能hook 动态链接的库，对静态链接的库是无效的，因为静态链接的代码都写到可执行文件了。</p>
+<blockquote>
+<p>可以使用 man 命令查看函数原型和定义，比如 man  strcmp </p>
+</blockquote>
+<h2 id="0x04-hook-案例1"><a href="#0x04-hook-案例1" class="headerlink" title="0x04 hook 案例1"></a>0x04 hook 案例1</h2><p>passcheck.c ， 这里来hook strcmp 函数，绕过密码的验证。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv) &#123;</span><br><span class="line">    char passwd[] = &quot;password&quot;;</span><br><span class="line">    if (argc &lt; 2) &#123;</span><br><span class="line">        printf(&quot;usage: %s &lt;given-password&gt;\n&quot;, argv[0]);</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    if (!strcmp(passwd, argv[1])) &#123;</span><br><span class="line">        printf(&quot;\033[0;32;32mPassword Correct!\n\033[m&quot;);</span><br><span class="line">        return 1;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        printf(&quot;\033[0;32;31mPassword Wrong!\n\033[m&quot;);</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook.assets/image-20211126221603854.png" alt="image-20211126221603854"></p>
+<p>上面的代码使用到了标准C函数strcmp函数来进行比较，这是一个外部函数。下面来尝试一下重新编写一个strcmp同名的函数，并编译成动态链接库，实现劫持原函数的功能。</p>
+<p>hook_strcmp.c</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">int strcmp(const char *s1, const char *s2) &#123;</span><br><span class="line">    if (getenv(&quot;LD_PRELOAD&quot;) == NULL) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    unsetenv(&quot;LD_PRELOAD&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -shared -fPIC hook_strcmp.c -o hook_strcmp.so</span><br></pre></td></tr></table></figure>
+
+<h3 id="问题1（已解决）"><a href="#问题1（已解决）" class="headerlink" title="问题1（已解决）"></a>问题1（已解决）</h3><p>运行时出现如下错误，看样子是编译的问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/t/learn_LD_PRELOAD&gt; LD_PRELOAD=/hook_strcmp.so ./passcheck paa</span><br><span class="line">ERROR: ld.so: object &#x27;/hook_strcmp.so&#x27; from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.</span><br><span class="line">Password Wrong!</span><br></pre></td></tr></table></figure>
+
+<p>但是使用export LD_PRELOAD&#x3D;”hook_strcmp.so”可以成功hook</p>
+<p><img src="/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook.assets/image-20211126223530371.png" alt="image-20211126223530371"></p>
+<p>解决方案，可能是没有加载到库，路径错误。</p>
+<p><img src="/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook.assets/image-20211126224044388.png" alt="image-20211126224044388"></p>
+<h3 id="问题2"><a href="#问题2" class="headerlink" title="问题2"></a>问题2</h3><p>不理解编译的时候为什么加-share  -fPIC<br>在编译动态链接库时使用 -shared 参数可以告诉编译器生成动态链接库，而使用 -fPIC 参数则是为了生成位置无关的代码。这意味着编译出的目标文件中的函数和数据的地址都相对独立于加载它们的位置，这使得动态链接库可以被加载到任意内存地址上，而不会由于地址冲突而导致问题。因此，在编译动态链接库时，通常需要同时使用 -shared 和 -fPIC 参数。</p>
+<h2 id="0x05-hook案例2-修改系统命令"><a href="#0x05-hook案例2-修改系统命令" class="headerlink" title="0x05 hook案例2 修改系统命令"></a>0x05 hook案例2 修改系统命令</h2><p>查看 ls 系统命令会调用那些库函数：</p>
+<blockquote>
+<p>查看二进制文件会调用那些库文件是使用 readelf</p>
+<p>或者使用 ltrace 来查看调用库函数（待验证）</p>
+</blockquote>
+<p><strong>ltrace 的作用</strong></p>
+<p>ltrace 的功能是能够跟踪进程的库函数调用，首先ltrace打开elf文件，对其进行分析。在elf文件中，出于动态连接的需要，需要在elf文件中保存函数的符号，供连接器使用。</p>
+<p>ltrace 就能够获得该文件中，所有系统调用的符号，以及对应的执行指令。</p>
+<p><strong>ldd 的作用</strong></p>
+<p>用于打印程序或者文件所依赖的共享库列表</p>
+<p><img src="/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook.assets/image-20211130220612840.png" alt="image-20211130220612840"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -Ws /usr/bin/ls</span><br></pre></td></tr></table></figure>
+
+<p><img src="/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook.assets/image-20211126225301655.png" alt="image-20211126225301655"></p>
+<p>编写hook_strncmp.c</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line"></span><br><span class="line">void payload() &#123;</span><br><span class="line">    system(&quot;id&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int strncmp(const char *__s1, const char *__s2, size_t __n) &#123;    // 这里函数的定义可以根据报错信息进行确定</span><br><span class="line">    if (getenv(&quot;LD_PRELOAD&quot;) == NULL) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    unsetenv(&quot;LD_PRELOAD&quot;);</span><br><span class="line">    payload();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译的源代码strncmp函数我故意少了个形参，就会出现如下错误，大概的意思是命名的函数的参数与string.h中定义的函数的参数保持一致</p>
+<p><img src="/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook.assets/image-20211126230354134.png" alt="image-20211126230354134"></p>
+<p>成功劫持了strncpy函数，并且改变了ls命令执行。</p>
+<p><img src="/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook.assets/image-20211126231104066.png" alt="image-20211126231104066"></p>
+<h2 id="0x06-hook-案例3-制作系统后门"><a href="#0x06-hook-案例3-制作系统后门" class="headerlink" title="0x06 hook 案例3 制作系统后门"></a>0x06 hook 案例3 制作系统后门</h2><p>制作一个隐藏的Linux 后门，当管理员执行 上面的 ls 命令时反弹shell。</p>
+<p>只需要改上面的hook_strncmp.c 文件，只需要更改payload()函数中的system 函数。</p>
+<p>然后在 .bashrc 中写入 “ export LD_PRELOAD&#x3D;&#x2F;root&#x2F;hook_strncmp.so”</p>
+<p>在执行的时候就可以反弹shell。</p>
+<h2 id="0x07-hook-案例4"><a href="#0x07-hook-案例4" class="headerlink" title="0x07 hook 案例4"></a>0x07 hook 案例4</h2><p><strong>typedef 的用法</strong></p>
+<p>本次hook 的用法是使用typedef 给函数指针类型定义一个别名。</p>
+<p><strong>dlopen() 的作用</strong></p>
+<p>dlopen 是一个库函数，该函数会打开一个新库，并把它装入内存。该函数主要用来加载库中的符号。</p>
+<p>dlopen 以指定模式打开指定的动态链接库文件，并返回一个句柄给调用的进程，dlsym通过句柄和连接符名称获取函数名或者变量名</p>
+<p><em>dlopen打开模式如下：</em></p>
+<p>​		RTLD_LAZY暂缓决定，等有需要时再解出符号<br>​		RTLD_NOW 立即决定，返回前解除所有未决定的符号。</p>
+<p>dlopen() 在dlfcn.h 中定义，并在dl库中实现。它需要两个参数：一个文件名和一个标志。</p>
+<p>当库被装入后，可以把dlopen() 返回的句柄作为给 dlsym() 的第一个参数，以获得符号在库中的地址，使用这个地址，就可以获得库中特定函数的指针，并调用装载库中的相应函数。</p>
+<p>编译的时候要加入 -ldl (指定 dl  库)</p>
+<p><strong>dlsym() 函数作用</strong></p>
+<p>dlsym() 的函数原型是</p>
+<p>void *dlsym(void *handle, const chat *symbol)</p>
+<p>handle 是由dlopen 打开动态链接库后返回的指针；symbol 就是要获取的函数的名称；函数返回值是 void* , 指向要获取的函数的地址，供调用使用。</p>
+<p>这个案例还是hook 案例1 的 passcheck.c </p>
+<p>因为 hook 的目标是拿到strcmp，所以typedef 了一个STRCMP函数指针。由于hook的目的是要控制函数行为，所以需要从原库libc.so.6 中拿到“正版” strcmp指针，保存成old_strcmp以备调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">#include &lt;dlfcn.h&gt;</span><br><span class="line"></span><br><span class="line">// hook_strncmp_1.c</span><br><span class="line">// 使用typedef 给函数指针类型一个别名，</span><br><span class="line">// tpyedef 没有定义新的类型，给已经有的类型起一个别名，减少输入。</span><br><span class="line">// * 类型，STRCMP 存储函数地址</span><br><span class="line">// 定义 STRCMP 函数指针</span><br><span class="line">typedef int(*STRCMP)(const char*,const char*); </span><br><span class="line"></span><br><span class="line">int strcmp(const char *s1,const char *s2)</span><br><span class="line">&#123;</span><br><span class="line">	static void *handle = NULL;</span><br><span class="line">	// 创建函数指针</span><br><span class="line">	static STRCMP old_strcmp = NULL;</span><br><span class="line"></span><br><span class="line">	if(!handle)</span><br><span class="line">	&#123;</span><br><span class="line">		// 打开动态链接库</span><br><span class="line">		handle = dlopen(&quot;libc.so.6&quot;,RTLD_LAZY);</span><br><span class="line">		// 获取libc.so.6 库中strcmp 函数的地址</span><br><span class="line">		old_strcmp = (STRCMP)dlsym(handle,&quot;strcmp&quot;);	</span><br><span class="line">	&#125;</span><br><span class="line">	printf(&quot;hack function invoked. s1=&lt;%s&gt; s2=&lt;%s&gt;\n&quot;,s1,s2);</span><br><span class="line">	return old_strcmp(s1,s2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译函数源程序时选用-shared 选项即可创建动态链接库，注意应以 .so 后缀命名，最好放到公用库目录（如&#x2F;lib，&#x2F;usr&#x2F;lib 等）下面，并要写好用户接口文件，以便其他用户共享。</p>
+<p>使用动态链接库，源程序中要包含 dlfcn.h 头文件，写程序时注意 dlopen 等函数的正确调用，编译时要采用 -rdynamic 选项与 -ldl 选项，以产生可调用动态链接库的执行代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -fPIC -shared -o hook_strncmp_1.so hook_strncmp_1.c -ldl</span><br></pre></td></tr></table></figure>
+
+<p>我们hook 的函数可以将正确的登录口令打印出来。</p>
+<p><img src="/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook.assets/image-20211201220448721.png" alt="image-20211201220448721"></p>
+<h2 id="0x08-总结"><a href="#0x08-总结" class="headerlink" title="0x08 总结"></a>0x08 总结</h2><p>使用LD_PREOAD 进行hook 可以很好的控制程序的流程，以达到自己想要的结果，另外在物联网设备固件模拟或者某些特殊服务模拟的时候，能起到非常至关重要的效果，比如模拟路由器中的http服务时，会缺少nvram的相关配置的设置，这个时候就可以使用LD_PRELOAD对相关配置进行hook 。</p>
+<h2 id="0x08-hook-总结"><a href="#0x08-hook-总结" class="headerlink" title="0x08 hook 总结"></a>0x08 hook 总结</h2><ol>
+<li>定义与目标函数完全一样的函数，包括名称、变量及类型、返回值及类型等</li>
+<li>将包含替换函数的源码编译为动态链接库</li>
+<li>通过命令 <code>export LD_PRELOAD=&quot;库文件路径&quot;</code>，设置要优先替换动态链接库</li>
+<li>如果找不替换库，可以通过 <code>export LD_LIBRARY_PATH=库文件所在目录路径</code>，设置系统查找库的目录</li>
+<li>替换结束，要还原函数调用关系，用命令<code>unset LD_PRELOAD</code> 解除</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>expoit LD_PRELOAD 的逆向工程讲解，很受用</p>
+<p><a target="_blank" rel="noopener" href="https://www.exploit-db.com/papers/13233">https://www.exploit-db.com/papers/13233</a></p>
+<p>LD_PRELOAD 后门 | Linux 后门系列（这个作者的一系列后门文章都值得看）</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1683272">https://cloud.tencent.com/developer/article/1683272</a></p>
+<p>有趣的 LD_PRELOAD</p>
+<p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/254388#h2-11">https://www.anquanke.com/post/id/254388#h2-11</a></p>
+<p>C 语言定义函数指针（typedef）</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiezhi123456/article/details/80630705">https://blog.csdn.net/xiezhi123456/article/details/80630705</a></p>
+<p>动态链接库dlopen 函数的使用</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/A493203176/article/details/78792274">https://blog.csdn.net/A493203176/article/details/78792274</a></p>
+<p>LD_PRELOAD 程序编译的路程图和试验。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/chen_jianjian/article/details/80627693">https://blog.csdn.net/chen_jianjian/article/details/80627693</a></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 jaytp@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">💰</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

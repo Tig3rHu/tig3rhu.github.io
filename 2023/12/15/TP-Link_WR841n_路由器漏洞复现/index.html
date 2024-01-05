@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TP-Link WR841n 路由器多个缓冲区溢出漏洞复现 | Tig3rHu&#39;s Blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现 | Tig3rHu&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tig3rHu&#39;s Blog">
+<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
+<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="article:author" content="Tig3rHu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Tig3rHu</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/yelog"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="facebook"
+               href="https://www.facebook.com/faker.tops"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-facebook"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+            <a title="instagram"
+               href="https://www.facebook.com/faker.tops"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-instagram"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="reddit"
+               href="https://www.reddit.com/user/yelog/"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-reddit"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="weibo"
+               href="http://weibo.com/u/2307534817"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-weibo"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="jianshu"
+               href="https://www.jianshu.com/u/ff56736de7cf"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-jianshu"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="zhihu"
+               href="https://www.zhihu.com/people/jaytp/activities"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-zhihu"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="oschina"
+               href="https://my.oschina.net/yelog"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-oschina"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:jaytp@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=872336115&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="kugou"
+               href="https://www.kugou.com/"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-kugou"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="neteasemusic"
+               href="https://music.163.com/#/user/home?id=88151013"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-neteasemusic"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(19)</small>
+            
+        </div>
+    </li>
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">About</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="19">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All "
+           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
+            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
+            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
+            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
+            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
+            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
+            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
+            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
+            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
+            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
+            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
+            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
+            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
+            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
+            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
+            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
+            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello World">Hello World</span>
+            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-TP-Link_WR841n_路由器漏洞复现" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2023-12-15 22:59:26'>2023-12-15 22:52</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#TP-Link-WR841n-%E8%B7%AF%E7%94%B1%E5%99%A8%E5%A4%9A%E4%B8%AA%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="toc-text">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E5%89%8D%E8%A8%80"><span class="toc-text">0x01 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-http%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90"><span class="toc-text">0x02 http流程分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90CVE-2020-8423"><span class="toc-text">0x03 第一个漏洞分析CVE-2020-8423</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E7%AC%AC%E4%BA%8C%E4%B8%AA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-CVE-2022-30024"><span class="toc-text">0x04 第二个漏洞分析  CVE-2022-30024</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-%E7%AC%AC%E4%B8%89%E4%B8%AA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-CVE-2022-24355"><span class="toc-text">0x05 第三个漏洞分析 CVE-2022-24355</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06-%E7%96%91%E4%BC%BC%E6%BC%8F%E6%B4%9E"><span class="toc-text">0x06 疑似漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x07-%E6%80%BB%E7%BB%93"><span class="toc-text">0x07 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x08-%E5%8F%82%E8%80%83"><span class="toc-text">0x08 参考</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="TP-Link-WR841n-路由器多个缓冲区溢出漏洞复现"><a href="#TP-Link-WR841n-路由器多个缓冲区溢出漏洞复现" class="headerlink" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现"></a>TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</h1><h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p>最近看到了关于TP-Link 一个古老的路由器 WR841n 的漏洞披露文章，都是关于缓冲区溢出的漏洞，虽然设备老，但是漏洞的发现过程都挺有学习价值的。在平时对设备的漏洞挖掘过程中，可能会比较倾向于对设备的工作流程进行分析，然后逆向一些关键的函数和代码，在这些代码和函数中，找到可能存在的漏洞函数，拿缓冲区溢出漏洞来说，会分析strcpy、sprintf 、strcat、gets 诸如此类的函数，查看局部变量在拷贝字符串的时候是否对字符串的长度进行限制。但是比较少的对通过指针或者地址的拷贝字符串的方式进行分析，通过指针拷贝字符串也经常的会出现缓冲区溢出漏洞。接下来我将WR841n 设备中存在的三个缓冲区溢出的漏洞进行分析，记录，整理。所以这是一篇学习记录的文章。漏洞的披露链接在参考章节。</p>
+<h2 id="0x02-http流程分析"><a href="#0x02-http流程分析" class="headerlink" title="0x02 http流程分析"></a>0x02 http流程分析</h2><p>固件版本:  <a target="_blank" rel="noopener" href="https://www.tp-link.com/vn/support/download/tl-wr841n/v10/#Firmware">3.16.9 Build 150310</a></p>
+<p>首先通过main 函数调用httpd() 和 httpBasicRpmInit() 函数对设备的http服务进行初始化，这个函数会将设备的一些功能进行初始化，并且路由器的相关http 功能处理的函数在这个函数中进行配置，初始化。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220904161544218.png" alt="image-20220904161544218"></p>
+<p>在httpd() 函数初始化的时候，会创建httpServerCreate()函数，来用以创建http Server，</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220904162043597.png" alt="image-20220904162043597"></p>
+<p>在经过 httpServerCreate() –&gt;sub_4F5CD0 –&gt; httpDispatcher() 之后。会经过httpDispatcher()函数，这个函数会处理为各个不同的url 调用httpGenListFuncGet()函数进行函数注册绑定，以保证传入的request 请求数据包中的url 有对应的注册函数进行处理传入的对应数据包。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220904162237720.png" alt="image-20220904162237720"></p>
+<p>最终httpRpmConfAdd  函数会获取 request_url 对应的函数指针，然后调用函数。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220904163152435.png" alt="image-20220904163152435"></p>
+<p>具体的使用方式如httpPingIframeInit()函数。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220904162924650.png" alt="image-20220904162924650"></p>
+<h2 id="0x03-第一个漏洞分析CVE-2020-8423"><a href="#0x03-第一个漏洞分析CVE-2020-8423" class="headerlink" title="0x03 第一个漏洞分析CVE-2020-8423"></a>0x03 第一个漏洞分析CVE-2020-8423</h2><p>接下来分析WR841n 中的三个漏洞</p>
+<p>首先来看一下CVE-2020-8423，vulnerability function stringModify()，这个函数是于转义一些字符的。当我们输入字符中有 “&#x2F;“ ，”&gt;”，”\\“，”&lt;” ，’ &quot; ‘ 时，会在当前字符前面添加一个”\“ ，这一块的处理代码在line23~ line 44 。如果当前的字符是 “&#x2F;“ , 那么字line 30 会*a1 指针指向的值是 “\“，然后在line 33 ，a1 的指针就会加1 指向下一个内存地址。接着到达line 42，这一行会给a1 现在的地址指向的值复制为 当前的字符 “&#x2F;“，因为现在的a1 指针的地址是之前已经加1 了，所以内存中的字符应该是 “/“。</p>
+<p>接下来在line 53 还会获取当前字符下一个字符，然后判断这个字符是否是 “\n” 并且还要是 “\r” ，否则就会在内存中添加 “&lt;br&gt;”，然后指针往后移4个地址。感觉这一段很有问题，因为一个字符没办法同时等于两种不同的字符，所以最终肯定会走到这里。QAQ</p>
+<p>因此只需要传入的字符是”&#x2F;\n” 那么就会变成 “/&lt;br&gt;”，比原先多了四个字节。然后a1的大小设置是512个字节，因此当经过这个函数之后，如果我们传入512个这种字符串，就会比原先多2048个字节，从而造成buffer overflow 。</p>
+<p>stringModify()</p>
+<p>该函数在遇到字符\、&#x2F;、&lt;、&gt;”时添加字符\，或者如果下一个字符不是\n和\r，则添加&lt;br&gt;，当缓冲区满时进程将停止。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902223305823.png" alt="image-20220902223305823"></p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902231606005.png" alt="image-20220902231606005"></p>
+<p>现在我们要考虑是的stringModify() 那里会被调用并可以传入字符串，查看交叉引用可以看到writepageParamSet()函数在调用。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902232740116.png" alt="image-20220902232740116"></p>
+<p>然后继续查看writepageParamSet() 函数的交叉引用，可以看到在sub_45FA94() line 308 中传入v53 变量中的字符串。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220830155645198.png" alt="image-20220830155645198"></p>
+<p>在这个函数的line 240 会获取ssid 的值。然后将值复制给v53。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902233425566.png" alt="image-20220902233425566"></p>
+<h2 id="0x04-第二个漏洞分析-CVE-2022-30024"><a href="#0x04-第二个漏洞分析-CVE-2022-30024" class="headerlink" title="0x04 第二个漏洞分析  CVE-2022-30024"></a>0x04 第二个漏洞分析  CVE-2022-30024</h2><p>这个产生的原因 isAddrDispose()在处理ping_addr 的时候对ping value 长度的限制设置并没有起到效果，这种问题在缓冲区溢出中是很常见的，我们可以看到在 line28 行会对 ping value 的调用strlen 进行计算长度。这个长度的大小在于我们输入value 的大小而确定的，比如我输入一千多个字符，那么这个len_ping_addr 长度就是一千。</p>
+<p>这就造成了在line 35 中并没有起到对输入字符长度起到任何的作用。在line 32~line 40 中是将ping value 的字符逐个传递给v23局部变量，而v23 定义的数据大小仅仅为52个字节 。因此会造成又一个buffer overflow </p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220830171410260.png" alt="image-20220830171410260"></p>
+<p>这个函数会在sub_44A530() 中进行处理。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902220743030.png" alt="image-20220902220743030"></p>
+<p>当请求的url中是“ &#x2F;userRpm&#x2F;PingIframeRpm.htm ” 时，httpGetEnv() 会获取ping_addr 的value 。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902220913276.png" alt="image-20220902220913276"></p>
+<p>然后回调用 isAddrDispose() 函数来处理 ping_addr 的value，也就是我们前面分析过程了。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902221016715.png" alt="image-20220902221016715"></p>
+<h2 id="0x05-第三个漏洞分析-CVE-2022-24355"><a href="#0x05-第三个漏洞分析-CVE-2022-24355" class="headerlink" title="0x05 第三个漏洞分析 CVE-2022-24355"></a>0x05 第三个漏洞分析 CVE-2022-24355</h2><p>前面我们知道了httpRpmConfAdd 函数会根据请求数据包的url 中的路径来确定调用相应的注册函数，在httpd初始化的时候，会把httpRpmFS() 函数和 url 的字符串”&#x2F;loginFs&#x2F;“,”&#x2F;fs&#x2F;“ 进行绑定并注册函数。接下来分析httpRmpFs函数是如何处理请求URL 中带有”&#x2F;loginFs&#x2F;“ 的数据包。 </p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220901231622196.png" alt="image-20220901231622196"></p>
+<p>首先会函数的形参a1 是获取到的请求数据包，然后回获取到数据包的header 信息以及数据包的中的url，然后和&#x2F;tmp&#x2F;或者&#x2F;web&#x2F;文件路径进行拼接，判断是否是这两个文件夹中的文件，在判断的过程中，还做了过滤“..” ，以免请求的文件url 存在路径穿越的漏洞。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902214447028.png" alt="image-20220902214447028"></p>
+<p>接下来程序会走到sub_4EE210函数中。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220901231346583.png" alt="image-20220901231346583"></p>
+<p>我们来到函数sub_4EE2210() 中，这个本来是为了提取文件后缀的。但是由于首先会判断v2 的值是为空。我们知道v2 的值是 &#x2F;tmp&#x2F;loginfs&#x2F;passwd ，接下来在line 21 获取文件路径的指针，然后一直往指针在往低地址移动，匹配是否有 “.” 。找到了之后就会把 “.” 字符的下一个字符地址赋给v4。其实由于file_path 中是passwd ，因此没有 “ . “ 字符，因此会继续移动指针，会导致指针移动到 header 中 referer 中的 url中的 “.”。因此会获取referer 中“.” 的下一个指针地址给v4。并且在line28 的循环中将后面的每个字符进行转成大写字母，然后写入到file_extension 从而造成了 buffer overflow。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902000054726.png" alt="image-20220902000054726"></p>
+<h2 id="0x06-疑似漏洞"><a href="#0x06-疑似漏洞" class="headerlink" title="0x06 疑似漏洞"></a>0x06 疑似漏洞</h2><p>在分析前面的漏洞的时候，看到获取ssid 的值，这一段代码中，strncpy 函数会造成缓冲区溢出的漏洞，因为在v22 将ssid 的值复制给v53 的过程中，复制的字符串的长度是由v21 进行设置的，而v21 字符的数量恰好是我们可以输入的。因此复制给v53的字符串我们可以自己控制，当输入的字符串长度超过了局部变量v53 分配的内存大小的收，就会造成缓冲区溢出的漏洞，和前面CVE-2022-30024 中ping_addr 是一样的。由于手头上没有这一款设备，因此如果有设备的师傅，希望能帮忙验证一下。</p>
+<p><img src="/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E5%90%88%E9%9B%86.assets/image-20220902234353910.png" alt="image-20220902234353910"></p>
+<h2 id="0x07-总结"><a href="#0x07-总结" class="headerlink" title="0x07 总结"></a>0x07 总结</h2><p>这三个漏洞的成因都是通过在指针拷贝和处理字符串的时候，并没有考虑内存的问题，比如CVE-2020-8423 漏洞在转义字符的之后，并没有对转义后的字符串进行长度的限制。在CVE-2022-3024漏洞中，ping_addr的长度限制没有固定，反而是由传入的参数进行计算。</p>
+<h2 id="0x08-参考"><a href="#0x08-参考" class="headerlink" title="0x08 参考"></a>0x08 参考</h2><p><a target="_blank" rel="noopener" href="https://blog.viettelcybersecurity.com/1day-to-0day-on-tl-link-tl-wr841n/">https://blog.viettelcybersecurity.com/1day-to-0day-on-tl-link-tl-wr841n/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.viettelcybersecurity.com/tp-link-tl-wr940n-httpd-httprpmfs-stack-based-buffer-overflow-remote-code-execution-vulnerability/">https://blog.viettelcybersecurity.com/tp-link-tl-wr940n-httpd-httprpmfs-stack-based-buffer-overflow-remote-code-execution-vulnerability/</a></p>
+<p>C program 通过指针复制字符串</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1687616">https://cloud.tencent.com/developer/article/1687616</a></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 jaytp@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">💰</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

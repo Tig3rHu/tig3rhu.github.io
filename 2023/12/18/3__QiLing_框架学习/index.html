@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>QiLing 框架学习WriteUp | Tig3rHu&#39;s Blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="QiLing 框架学习WriteUp | Tig3rHu&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tig3rHu&#39;s Blog">
+<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
+<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="article:author" content="Tig3rHu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Tig3rHu</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/yelog"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="facebook"
+               href="https://www.facebook.com/faker.tops"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-facebook"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+            <a title="instagram"
+               href="https://www.facebook.com/faker.tops"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-instagram"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="reddit"
+               href="https://www.reddit.com/user/yelog/"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-reddit"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="weibo"
+               href="http://weibo.com/u/2307534817"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-weibo"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="jianshu"
+               href="https://www.jianshu.com/u/ff56736de7cf"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-jianshu"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="zhihu"
+               href="https://www.zhihu.com/people/jaytp/activities"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-zhihu"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="oschina"
+               href="https://my.oschina.net/yelog"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-oschina"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:jaytp@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=872336115&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="kugou"
+               href="https://www.kugou.com/"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-kugou"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="neteasemusic"
+               href="https://music.163.com/#/user/home?id=88151013"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-neteasemusic"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(19)</small>
+            
+        </div>
+    </li>
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">About</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="19">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All "
+           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
+            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
+            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
+            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
+            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
+            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
+            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
+            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
+            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
+            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
+            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
+            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
+            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
+            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
+            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
+            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
+            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello World">Hello World</span>
+            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-3__QiLing_框架学习" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">QiLing 框架学习WriteUp</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2023-12-19 15:32:58'>2023-12-18 17:12</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#QiLing-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0"><span class="toc-text">QiLing 框架学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Qiling"><span class="toc-text">Qiling</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B"><span class="toc-text">安装过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E5%92%8C%E5%87%BD%E6%95%B0"><span class="toc-text">基础语法和函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#challenge"><span class="toc-text">challenge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge1-writeup"><span class="toc-text">challenge1 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge2-writeup"><span class="toc-text">challenge2 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge3-writeup"><span class="toc-text">challenge3 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge4-writeup"><span class="toc-text">challenge4 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge5-writeup"><span class="toc-text">challenge5 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge6-writeup"><span class="toc-text">challenge6 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge7-writeup"><span class="toc-text">challenge7 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge8-writeup"><span class="toc-text">challenge8 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge9-writeup"><span class="toc-text">challenge9 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge10-writeup-hook-FS"><span class="toc-text">challenge10 writeup hook FS</span></a></li></ol></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="QiLing-框架学习"><a href="#QiLing-框架学习" class="headerlink" title="QiLing 框架学习"></a>QiLing 框架学习</h1><h3 id="Qiling"><a href="#Qiling" class="headerlink" title="Qiling"></a>Qiling</h3><p>Qiling 是一个高级二进制仿真框架，是基于Unicorn（独角兽）具有以下特点：</p>
+<ul>
+<li>跨平台：Windows、MacOS、Linux、BSD、UEFI、DOS</li>
+<li>跨架构：X86、X86_64、Arm、Arm64、MIPS、8086</li>
+<li>多种文件格式：PE、MachO、ELF、COM</li>
+<li><a target="_blank" rel="noopener" href="https://groundx.io/demigod/">通过Demigod</a>支持 Linux Kernel Module(.ko)、Windows Driver(.sys) 和 MacOS Kernel(.kext)</li>
+<li>在隔离环境中模拟和沙箱机器代码</li>
+<li>支持跨架构和平台调试功能</li>
+<li>提供高级 API 来设置和配置沙箱</li>
+<li>细粒度检测：允许不同级别的钩子（指令&#x2F;基本块&#x2F;内存访问&#x2F;异常&#x2F;系统调用&#x2F;IO&#x2F;等）</li>
+<li>允许动态热补丁运行代码，包括加载的库</li>
+<li>真正的 Python 框架，可以轻松地在上面构建自定义的安全分析工具</li>
+</ul>
+<h4 id="安装过程"><a href="#安装过程" class="headerlink" title="安装过程"></a>安装过程</h4><p>新建一个ubuntu 18.04 的虚拟机。伊万说这个东西会改变其他的环境配置</p>
+<p><strong>自动安装</strong> ，这种安装方式失败</p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220412185946587.png" alt="image-20220412185946587"></p>
+<p><strong>手动安装</strong> ， </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">安装方式  Ubuntu 20.04</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br><span class="line">sudo apt install python3-pip git cmake</span><br><span class="line">git clone -b dev https://github.com/qilingframework/qiling.git</span><br><span class="line">cd qiling &amp;&amp; git submodule update --init --recursive</span><br><span class="line">sudo pip3 install . </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3 id="基础语法和函数"><a href="#基础语法和函数" class="headerlink" title="基础语法和函数"></a>基础语法和函数</h3><p>开发文档</p>
+<p>ql.verbose &#x3D; 0 </p>
+<p>查看输出，不带寄存器、汇编指令的输出。</p>
+<p>内存映射</p>
+<p>在写入内存之前进行内存映射</p>
+<blockquote>
+<p>ql.mem.map(addr,size,info &#x3D; [my_first_map])</p>
+<p>addr 要注意内存偏移量和映射地址</p>
+<p>size :  应该映射的内存大小，如果使用linux 系统，至少需要考虑4096的倍数进行对齐。</p>
+</blockquote>
+<p>ql.loader.elf_entry  获取程序入口的地址</p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426181633377.png" alt="image-20220426181633377"></p>
+<p>ql.loader.load_address  获取加载基地址  </p>
+<p>ql.men.get_lib_base(“httpd”)  和 ql.loader.load_address 获取的值是一样的。</p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182018533.png" alt="image-20220426182018533"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426183049546.png" alt="image-20220426183049546"></p>
+<p>ql.os.set_api(‘sleep’,fake_sleep)  hook 某个函数</p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182136100.png" alt="image-20220426182136100"></p>
+<p>ql.arch.regs.r0 &#x3D;1 设置寄存器r0 的值</p>
+<p>ql.arch.regs.read(‘r0’) 获取寄存器r0 中的值</p>
+<p>ql.mem.show_mapinfo() 显示映射信息</p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182517111.png" alt="image-20220426182517111"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182719013.png" alt="image-20220426182719013"></p>
+<h3 id="challenge"><a href="#challenge" class="headerlink" title="challenge"></a>challenge</h3><p><a target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-268989.htm">https://bbs.pediy.com/thread-268989.htm</a></p>
+<p>显示找不到registry 文件夹</p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220413170526016.png" alt="image-20220413170526016">解决方案： 需要查看 “ Important note on Windows DLLs and registry “ 这一章节window 依赖</p>
+<p>在运行的时候会报错</p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220413170458755.png" alt="image-20220413170458755"></p>
+<p>解决方案： python3.8以上</p>
+<h4 id="challenge1-writeup"><a href="#challenge1-writeup" class="headerlink" title="challenge1 writeup"></a>challenge1 writeup</h4><p>程序尝试读取0x1337 处未映射的内存，因此，为了通过这个检查，我们只需要映射这虚拟内存区域并写入期望值。</p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414153151724.png" alt="image-20220414153151724"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#-*- coding:utf-8 -*-</span><br><span class="line">#!/usr/bin/env python3</span><br><span class="line"># </span><br><span class="line"># Cross Platform and Multi Architecture Advanced Binary Emulation Framework</span><br><span class="line">#</span><br><span class="line"></span><br><span class="line">import sys</span><br><span class="line">sys.path.append(&quot;..&quot;)</span><br><span class="line"></span><br><span class="line">from qiling import Qiling</span><br><span class="line">from qiling.const import QL_VERBOSE</span><br><span class="line"></span><br><span class="line"># </span><br><span class="line">def challenge1(ql:Qiling):</span><br><span class="line">	print(&quot;1111111&quot;+str(ql.mem.is_mapped(0x1000,0x1000)))</span><br><span class="line">	ql.mem.map(0x1000,0x1000,info=&#x27;[challenge1]&#x27;)</span><br><span class="line">	ql.mem.write(0x1337,ql.pack16(1337)) # pack16(value) == struct.pack(&#x27;H&#x27;,value)</span><br><span class="line">	</span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    #ql = Qiling([&quot;rootfs/x8664_linux/qilinglab-x86_64&quot;], &quot;rootfs/x8664_linux&quot;, verbose=QL_VERBOSE.DEFAULT)</span><br><span class="line">    ql = Qiling([&quot;rootfs/x8664_linux/qilinglab-x86_64&quot;], &quot;rootfs/x8664_linux&quot;)</span><br><span class="line">    challenge1(ql)</span><br><span class="line">    ql.verbose = 1 # 设置输出信息的详细级别</span><br><span class="line">    ql.mem.show_mapinfo() # 显示完整的内存映射来查看我们刚刚映射的区域</span><br><span class="line">    ql.run()</span><br></pre></td></tr></table></figure>
+
+<p>为啥要ql.mem.map(0x1000,0x1000) ,因为我们要修改的内存地址是0x1337。</p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414140014259.png" alt="image-20220414140014259"></p>
+<p>主要收获</p>
+<blockquote>
+<p>ql.mem.write(0x1337,ql.pack16(1337)) 修改内存地址上的值。</p>
+</blockquote>
+<h4 id="challenge2-writeup"><a href="#challenge2-writeup" class="headerlink" title="challenge2 writeup"></a>challenge2 writeup</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">nsigned __int64 __fastcall challenge2(_BYTE *a1)</span><br><span class="line">&#123;</span><br><span class="line">  unsigned int v2; // [rsp+10h] [rbp-1D0h]</span><br><span class="line">  int v3; // [rsp+14h] [rbp-1CCh]</span><br><span class="line">  int v4; // [rsp+18h] [rbp-1C8h]</span><br><span class="line">  int v5; // [rsp+1Ch] [rbp-1C4h]</span><br><span class="line">  struct utsname name; // [rsp+20h] [rbp-1C0h] BYREF</span><br><span class="line">  char s[10]; // [rsp+1A6h] [rbp-3Ah] BYREF</span><br><span class="line">  char v8[24]; // [rsp+1B0h] [rbp-30h] BYREF</span><br><span class="line">  unsigned __int64 v9; // [rsp+1C8h] [rbp-18h]</span><br><span class="line"></span><br><span class="line">  v9 = __readfsqword(0x28u);</span><br><span class="line">  if ( uname(&amp;name) )</span><br><span class="line">  &#123;</span><br><span class="line">    perror(&quot;uname&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  else</span><br><span class="line">  &#123;</span><br><span class="line">    strcpy(s, &quot;QilingOS&quot;);</span><br><span class="line">    strcpy(v8, &quot;ChallengeStart&quot;);</span><br><span class="line">    v2 = 0;</span><br><span class="line">    v3 = 0;</span><br><span class="line">    while ( v4 &lt; strlen(s) )</span><br><span class="line">    &#123;</span><br><span class="line">      if ( name.sysname[v4] == s[v4] )</span><br><span class="line">        ++v2;</span><br><span class="line">      ++v4;</span><br><span class="line">    &#125;</span><br><span class="line">    while ( v5 &lt; strlen(v8) )</span><br><span class="line">    &#123;</span><br><span class="line">      if ( name.version[v5] == v8[v5] )</span><br><span class="line">        ++v3;</span><br><span class="line">      ++v5;</span><br><span class="line">    &#125;</span><br><span class="line">    if ( v2 == strlen(s) &amp;&amp; v3 == strlen(v8) &amp;&amp; v2 &gt; 5 )</span><br><span class="line">      *a1 = 1;</span><br><span class="line">  &#125;</span><br><span class="line">  return __readfsqword(0x28u) ^ v9;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到utsname 结构体</p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414160121966.png" alt="image-20220414160121966"></p>
+<p>根据前面反汇编出来的代码可以看到，函数调用了系统调用uname函数来获取有关底层操作系统的信息，uname 函数会获取ustname 结构体的指针，为了通过检查，ustname 结构体中的sysname 参数必须是 ”QilingOS“，而version 参数必须是” ChallengeStart”。</p>
+<p>我们可以在uname 函数返回之前，使用Qiling API 进行hook 系统调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def hook_uname_on_exit(ql: Qiling, *args):</span><br><span class="line">	&#x27;&#x27;&#x27;</span><br><span class="line">	.text:0000000000000BD8                 lea     rax, [rbp+name]</span><br><span class="line">	.text:0000000000000BDF                 mov     rdi, rax        ; name</span><br><span class="line">	.text:0000000000000BE2                 call    _uname</span><br><span class="line">	.text:0000000000000BE7                 test    eax, eax</span><br><span class="line">	&#x27;&#x27;&#x27;</span><br><span class="line">	rdi = ql.arch.regs.rdi # 控制寄存器</span><br><span class="line">	ql.mem.write(rdi, b&#x27;QilingOS\x00&#x27;)</span><br><span class="line">	ql.mem.write(rdi + 65 * 3, b&#x27;ChallengeStart\x00&#x27;)</span><br><span class="line"> 	</span><br><span class="line">def challenge2(ql:Qiling):</span><br><span class="line">	ql.os.set_syscall(&#x27;uname&#x27;, hook_uname_on_exit, QL_INTERCEPT.EXIT)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>os_set_syscall()</p>
+<p><a target="_blank" rel="noopener" href="https://docs.qiling.io/en/latest/hijack/">https://docs.qiling.io/en/latest/hijack/</a></p>
+</blockquote>
+<h4 id="challenge3-writeup"><a href="#challenge3-writeup" class="headerlink" title="challenge3 writeup"></a>challenge3 writeup</h4><p>根据函数，我们可以看到两个问题，</p>
+<p>一个是从&#x2F;dev&#x2F;urandom 得到随机数，然后和gerandom 获取的随机数要一样。</p>
+<p>从&#x2F;dev&#x2F;urandom 获取的第一个随机数要和其他的不一样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">unsigned __int64 __fastcall challenge3(_BYTE *a1)</span><br><span class="line">&#123;</span><br><span class="line">  int v2; // [rsp+10h] [rbp-60h]</span><br><span class="line">  int i; // [rsp+14h] [rbp-5Ch]</span><br><span class="line">  int fd; // [rsp+18h] [rbp-58h]</span><br><span class="line">  char v5; // [rsp+1Fh] [rbp-51h] BYREF</span><br><span class="line">  char buf[32]; // [rsp+20h] [rbp-50h] BYREF</span><br><span class="line">  char v7[40]; // [rsp+40h] [rbp-30h] BYREF</span><br><span class="line">  unsigned __int64 v8; // [rsp+68h] [rbp-8h]</span><br><span class="line"></span><br><span class="line">  v8 = __readfsqword(0x28u);</span><br><span class="line">  fd = open(&quot;/dev/urandom&quot;, 0);</span><br><span class="line">  read(fd, buf, 0x20uLL);</span><br><span class="line">  read(fd, &amp;v5, 1uLL);</span><br><span class="line">  close(fd);</span><br><span class="line">  getrandom(v7, 32LL, 1LL);</span><br><span class="line">  v2 = 0;</span><br><span class="line">  for ( i = 0; i &lt;= 31; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    if ( buf[i] == v7[i] &amp;&amp; buf[i] != v5 )</span><br><span class="line">      ++v2;</span><br><span class="line">  &#125;</span><br><span class="line">  if ( v2 == 32 )</span><br><span class="line">    *a1 = 1;</span><br><span class="line">  return __readfsqword(0x28u) ^ v8;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>hook</p>
+<p>hook 的思路：使用set_syscall 来劫持系统调用的函数getrandom,让getrandom 函数全部返回00字节。这个和challenge2 劫持不一样，而是整个的覆盖这个函数。</p>
+<p>然后使用add_fs_mapper 函数与 QlFsMappedObject 一起自定义文件系统&#x2F;dev&#x2F;urandom，让urandom 再请求多个字节时返回00字节，再请求一个字节时返回不同的字节。</p>
+<blockquote>
+<p>。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">from qiling.os.mapper import QlFsMappedObject</span><br><span class="line">class Fake_urandom(QlFsMappedObject):</span><br><span class="line">	# Fake read fs operation</span><br><span class="line">	def read(self, size):</span><br><span class="line">		if size == 1:</span><br><span class="line">			return b&quot;\x41&quot;</span><br><span class="line">		return b&quot;\x00&quot;*size</span><br><span class="line">	# Fake close fs operation</span><br><span class="line">	def close(self):</span><br><span class="line">		return 0</span><br><span class="line"></span><br><span class="line">def getrandom_hook(ql:Qiling, buf, buflen, flags, *args):</span><br><span class="line">	ql.mem.write(buf,b&quot;\x00&quot;*buflen)</span><br><span class="line">	ql.os.set_syscall_return(0)	</span><br><span class="line"></span><br><span class="line">def challenge3(ql:Qiling):</span><br><span class="line">	ql.os.set_syscall(&quot;getrandom&quot;, getrandom_hook)</span><br><span class="line">	ql.add_fs_mapper(&quot;/dev/urandom&quot;,Fake_urandom())</span><br></pre></td></tr></table></figure>
+
+<p>主要收获：</p>
+<blockquote>
+<p>ql.add_fs_mapper()  fs 映射器，可以讲读&#x2F;写操作重定向到用户自定义的对象</p>
+</blockquote>
+<h4 id="challenge4-writeup"><a href="#challenge4-writeup" class="headerlink" title="challenge4 writeup"></a>challenge4 writeup</h4><p>使用IDA 无法显示反汇编的代码，但是通过汇编不难看出这是一个循环。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">:0000000000000E1D ; Attributes: bp-based frame</span><br><span class="line">.text:0000000000000E1D</span><br><span class="line">.text:0000000000000E1D                 public challenge4</span><br><span class="line">.text:0000000000000E1D challenge4      proc near               ; CODE XREF: start+18F↓p</span><br><span class="line">.text:0000000000000E1D</span><br><span class="line">.text:0000000000000E1D var_18          = qword ptr -18h</span><br><span class="line">.text:0000000000000E1D var_8           = dword ptr -8</span><br><span class="line">.text:0000000000000E1D var_4           = dword ptr -4</span><br><span class="line">.text:0000000000000E1D</span><br><span class="line">.text:0000000000000E1D ; __unwind &#123;</span><br><span class="line">.text:0000000000000E1D                 push    rbp</span><br><span class="line">.text:0000000000000E1E                 mov     rbp, rsp</span><br><span class="line">.text:0000000000000E21                 mov     [rbp+var_18], rdi</span><br><span class="line">.text:0000000000000E25                 mov     [rbp+var_8], 0</span><br><span class="line">.text:0000000000000E2C                 mov     [rbp+var_4], 0</span><br><span class="line">.text:0000000000000E33                 jmp     short loc_E40</span><br><span class="line">.text:0000000000000E35 ; ---------------------------------------------------------------------------</span><br><span class="line">.text:0000000000000E35</span><br><span class="line">.text:0000000000000E35 loc_E35:                                ; CODE XREF: challenge4+29↓j</span><br><span class="line">.text:0000000000000E35                 mov     rax, [rbp+var_18]</span><br><span class="line">.text:0000000000000E39                 mov     byte ptr [rax], 1</span><br><span class="line">.text:0000000000000E3C                 add     [rbp+var_4], 1</span><br><span class="line">.text:0000000000000E40</span><br><span class="line">.text:0000000000000E40 loc_E40:                                ; CODE XREF: challenge4+16↑j</span><br><span class="line">.text:0000000000000E40                 mov     eax, [rbp+var_8]</span><br><span class="line">.text:0000000000000E43                 cmp     [rbp+var_4], eax   # hook eax 寄存器内的值为 1</span><br><span class="line">.text:0000000000000E46                 jl      short loc_E35</span><br><span class="line">.text:0000000000000E48                 nop</span><br><span class="line">.text:0000000000000E49                 pop     rbp</span><br><span class="line">.text:0000000000000E4A                 retn</span><br><span class="line">.text:0000000000000E4A ; &#125; // starts at E1D</span><br><span class="line">.text:0000000000000E4A challenge4      endp</span><br><span class="line"></span><br><span class="line">void challenge4(char *check) &#123;</span><br><span class="line">    int i;</span><br><span class="line">    i = 0;</span><br><span class="line">    while (i &lt; 0) &#123;</span><br><span class="line">        *check = 1;</span><br><span class="line">        i = i + 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只需要hook eax寄存器里的值为1 ，这样var4 就会小于1.从而改变程序的运行流程。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def enter_forbidden_loop_hook(ql:Qiling):</span><br><span class="line">	ql.arch.regs.eax =1</span><br><span class="line"></span><br><span class="line">def challenge4(ql:Qiling):</span><br><span class="line">	print(ql.path)</span><br><span class="line">	# get_lib_base need the real filename which is qilinglab-x86_64</span><br><span class="line">	# 获取真实的文件的路径</span><br><span class="line">	base_addr = ql.mem.get_lib_base(os.path.split(ql.path)[-1])</span><br><span class="line">	print(base_addr)</span><br><span class="line">	# Address we need to patch</span><br><span class="line">	test_forbidden_loop_enter =base_addr+ 0xE43</span><br><span class="line">	# Place hook</span><br><span class="line">	ql.hook_address(enter_forbidden_loop_hook, test_forbidden_loop_enter)</span><br></pre></td></tr></table></figure>
+
+<p>主要收获： 修改某个指令中的寄存器的值。</p>
+<blockquote>
+<p>hook_address(callback，address)  hook 特定的地址</p>
+<p>get_lib_base(filename) 获取文件的基址</p>
+</blockquote>
+<h4 id="challenge5-writeup"><a href="#challenge5-writeup" class="headerlink" title="challenge5 writeup"></a>challenge5 writeup</h4><p>这个函数要求，所有从rand函数出来的值都要相等。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">unsigned __int64 __fastcall challenge5(_BYTE *a1)</span><br><span class="line">&#123;</span><br><span class="line">  unsigned int v1; // eax</span><br><span class="line">  int i; // [rsp+18h] [rbp-48h]</span><br><span class="line">  int j; // [rsp+1Ch] [rbp-44h]</span><br><span class="line">  int v5[14]; // [rsp+20h] [rbp-40h]</span><br><span class="line">  unsigned __int64 v6; // [rsp+58h] [rbp-8h]</span><br><span class="line"></span><br><span class="line">  v6 = __readfsqword(0x28u);</span><br><span class="line">  v1 = time(0LL);</span><br><span class="line">  srand(v1);</span><br><span class="line">  for ( i = 0; i &lt;= 4; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    v5[i] = 0;</span><br><span class="line">    v5[i + 8] = rand();</span><br><span class="line">  &#125;</span><br><span class="line">  for ( j = 0; j &lt;= 4; ++j )</span><br><span class="line">  &#123;</span><br><span class="line">    if ( v5[j] != v5[j + 8] )</span><br><span class="line">    &#123;</span><br><span class="line">      *a1 = 0;</span><br><span class="line">      return __readfsqword(0x28u) ^ v6;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  *a1 = 1;</span><br><span class="line">  return __readfsqword(0x28u) ^ v6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只要每次让rand() 每次返回0 就可以。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def hook_rand(ql:Qiling):</span><br><span class="line">	ql.arch.regs.rax = 0</span><br><span class="line"></span><br><span class="line">def challenge5(ql:Qiling):</span><br><span class="line">	ql.os.set_api(&#x27;rand&#x27;,hook_rand)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>主要收获：</p>
+<blockquote>
+<p>rax 寄存器主要作为函数返回值使用。因此直接hook rand 函数返回值传入的寄存器rax 即可。</p>
+<p>os.set_api()  主要用于windows API 函数的hook</p>
+</blockquote>
+<h4 id="challenge6-writeup"><a href="#challenge6-writeup" class="headerlink" title="challenge6 writeup"></a>challenge6 writeup</h4><p>死循环</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">void challenge6(void)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  do &#123;</span><br><span class="line">  &#125; while( true );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.text:0000000000000F12                 movzx   eax, [rbp+var_5]</span><br><span class="line">.text:0000000000000F16                 test    al, al  # 修改rax 寄存器的值</span><br><span class="line">.text:0000000000000F18                 jnz     short loc_F0B</span><br><span class="line">.text:0000000000000F1A                 mov     rax, [rbp+var_18]</span><br><span class="line">.text:0000000000000F1E                 mov     byte ptr [rax], 1</span><br></pre></td></tr></table></figure>
+
+<p>只要修改死循环的部门</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def hook_while_true(ql:Qiling):</span><br><span class="line">	</span><br><span class="line">	ql.arch.regs.rax = 0</span><br><span class="line"></span><br><span class="line">def challenge6(ql:Qiling):</span><br><span class="line">	base = ql.mem.get_lib_base(&quot;qilinglab-x86_64&quot;)</span><br><span class="line">	ql.hook_address(hook_while_true,base + 0xF16)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="challenge7-writeup"><a href="#challenge7-writeup" class="headerlink" title="challenge7 writeup"></a>challenge7 writeup</h4><p>这是一个sleep 的函数，challenge7 函数会返回sleep 函数，一直sleep。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000000F24 challenge7      proc near               ; CODE XREF: start+1FB↓p</span><br><span class="line">.text:0000000000000F24</span><br><span class="line">.text:0000000000000F24 var_8           = qword ptr -8</span><br><span class="line">.text:0000000000000F24</span><br><span class="line">.text:0000000000000F24 ; __unwind &#123;</span><br><span class="line">.text:0000000000000F24                 push    rbp</span><br><span class="line">.text:0000000000000F25                 mov     rbp, rsp</span><br><span class="line">.text:0000000000000F28                 sub     rsp, 10h</span><br><span class="line">.text:0000000000000F2C                 mov     [rbp+var_8], rdi</span><br><span class="line">.text:0000000000000F30                 mov     rax, [rbp+var_8]</span><br><span class="line">.text:0000000000000F34                 mov     byte ptr [rax], 1</span><br><span class="line">.text:0000000000000F37                 mov     edi, 0FFFFFFFFh ; seconds</span><br><span class="line">.text:0000000000000F3C                 call    _sleep # hook 这个地址</span><br><span class="line">.text:0000000000000F41                 nop</span><br><span class="line">.text:0000000000000F42                 leave</span><br><span class="line">.text:0000000000000F43                 retn</span><br><span class="line">.text:0000000000000F43 ; &#125; // starts at F24</span><br><span class="line">.text:0000000000000F43 challenge7      endp</span><br><span class="line"></span><br><span class="line">unsigned int __fastcall challenge7(_BYTE *a1)</span><br><span class="line">&#123;</span><br><span class="line">  *a1 = 1;</span><br><span class="line">  return sleep(0xFFFFFFFF);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>hook 的办法，可以修改sleep 的参数。</p>
+<p>网上有三种办法： 1.直接使用qiling 的api 来hook sleep 函数，直接返回。</p>
+<ol start="2">
+<li>直接hook 这个参数</li>
+<li>直接hook sleep 的系统调用函数nanosleep （这个用的应该不多）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def modify_arg(ql:Qiling):</span><br><span class="line">	ql.arch.regs.edi=0	</span><br><span class="line">def hook_sleep(ql:Qiling):</span><br><span class="line">	return </span><br><span class="line">def challenge7(ql:Qiling):</span><br><span class="line">	base_addr = ql.mem.get_lib_base(os.path.split(ql.path)[-1])</span><br><span class="line">	# method1 直接hook sleep 传入的参数 的寄存器edi</span><br><span class="line">	#ql.os.set_api(&#x27;sleep&#x27;,modify_arg,QL_INTERCEPT.ENTER)</span><br><span class="line">	ql.hook_address(modify_arg,base_addr+0xF3C)</span><br><span class="line">	# method2 直接hook sleep 函数，让它返回0</span><br><span class="line">	#ql.os.set_api(&#x27;sleep&#x27;,hook_sleep)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="challenge8-writeup"><a href="#challenge8-writeup" class="headerlink" title="challenge8 writeup"></a>challenge8 writeup</h4><h4 id="challenge9-writeup"><a href="#challenge9-writeup" class="headerlink" title="challenge9 writeup"></a>challenge9 writeup</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">unsigned __int64 __fastcall challenge9(bool *a1)</span><br><span class="line">&#123;</span><br><span class="line">  char *i; // [rsp+18h] [rbp-58h]</span><br><span class="line">  char dest[32]; // [rsp+20h] [rbp-50h] BYREF</span><br><span class="line">  char src[40]; // [rsp+40h] [rbp-30h] BYREF</span><br><span class="line">  unsigned __int64 v5; // [rsp+68h] [rbp-8h]</span><br><span class="line"></span><br><span class="line">  v5 = __readfsqword(0x28u);</span><br><span class="line">  strcpy(src, &quot;aBcdeFghiJKlMnopqRstuVWxYz&quot;);</span><br><span class="line">  strcpy(dest, src);</span><br><span class="line">  for ( i = dest; *i; ++i )</span><br><span class="line">    *i = tolower(*i);</span><br><span class="line">  *a1 = strcmp(src, dest) == 0;</span><br><span class="line">  return __readfsqword(0x28u) ^ v5;</span><br></pre></td></tr></table></figure>
+
+<p>只需要最终的src和dest 一致就够了，但是tolower 会改变dest的大小写。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def hook_tolower(ql:Qiling):</span><br><span class="line">	return</span><br><span class="line"></span><br><span class="line">def hook_strcmp(ql:Qiling):</span><br><span class="line">	ql.arch.regs.rax=0</span><br><span class="line">	#return 0</span><br><span class="line"></span><br><span class="line">def challenge9(ql:Qiling):</span><br><span class="line">	ql.os.set_api(&#x27;strcmp&#x27;,hook_strcmp)</span><br><span class="line">	#ql.os.set_api(&#x27;tolower&#x27;,hook_tolower)</span><br></pre></td></tr></table></figure>
+
+<p>因此只需要hook 其中的strcmp（） 和tolower 函数。</p>
+<h4 id="challenge10-writeup-hook-FS"><a href="#challenge10-writeup-hook-FS" class="headerlink" title="challenge10 writeup hook FS"></a>challenge10 writeup hook FS</h4><p>hook 文件系统</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">unsigned __int64 __fastcall challenge10(_BYTE *a1)</span><br><span class="line">&#123;</span><br><span class="line">  int i; // [rsp+10h] [rbp-60h]</span><br><span class="line">  int fd; // [rsp+14h] [rbp-5Ch]</span><br><span class="line">  ssize_t v4; // [rsp+18h] [rbp-58h]</span><br><span class="line">  char buf[72]; // [rsp+20h] [rbp-50h] BYREF</span><br><span class="line">  unsigned __int64 v6; // [rsp+68h] [rbp-8h]</span><br><span class="line"></span><br><span class="line">  v6 = __readfsqword(0x28u);</span><br><span class="line">  fd = open(&quot;/proc/self/cmdline&quot;, 0);</span><br><span class="line">  if ( fd != -1 )</span><br><span class="line">  &#123;</span><br><span class="line">    v4 = read(fd, buf, 0x3FuLL);</span><br><span class="line">    if ( v4 &gt; 0 )</span><br><span class="line">    &#123;</span><br><span class="line">      close(fd);</span><br><span class="line">      for ( i = 0; v4 &gt; i; ++i )</span><br><span class="line">      &#123;</span><br><span class="line">        if ( !buf[i] )</span><br><span class="line">          buf[i] = 32;</span><br><span class="line">      &#125;</span><br><span class="line">      buf[v4] = 0;</span><br><span class="line">      if ( !strcmp(buf, &quot;qilinglab&quot;) )</span><br><span class="line">        *a1 = 1;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return __readfsqword(0x28u) ^ v6;</span><br></pre></td></tr></table></figure>
+
+<p>这里的hook思路是hook 文件系统&#x2F;proc&#x2F;self&#x2F;cmdline ,使读取的值是qilinglab</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class hook_cmdline(QlFsMappedObject):</span><br><span class="line">	def read(self,size):</span><br><span class="line">		return b&quot;qilinglab&quot;</span><br><span class="line">	def close(self):</span><br><span class="line">		return 0</span><br><span class="line">	</span><br><span class="line">def challenge10(ql:Qiling):</span><br><span class="line">	ql.add_fs_mapper(&quot;/proc/self/cmdline&quot;,hook_cmdline())</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+
+<p>还有另一种方法</p>
+<p>可以直接替换指定文件成我们的文件，先创建我们需要的文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -n &quot;qilinglab&quot;&gt; fake_cmdline</span><br></pre></td></tr></table></figure>
+
+<p>然后代码就可以这样写了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def challenge10(ql：Qiling):</span><br><span class="line">	ql.add_fs_mapper(&quot;/proc/self/cmdline&quot;, &quot;./fake_cmdline&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>还一种方法，代码也不用写了，直接往qiling的rootfs里面写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ./qiling/examples/rootfs/x8664_linux/proc/self</span><br><span class="line">echo -n &quot;qilinglab&quot; &gt; ./qiling/examples/rootfs/x8664_linux/proc/self/cmdline</span><br></pre></td></tr></table></figure>
+
+
+
+<p>challenge11 writeup hook 指令</p>
+<p>使用的是hook_code()对单挑指令进行hook，不同于hook库函数和系统调用，这里使用hook_code对单条指令进行hook，hook指令的时候可以限制hook的范围，加速hook的效率，具体的方法是通过map的读写权限和map的文件名限制hook的范围</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def hook_cpuid(ql,address,size):</span><br><span class="line">    opcode = ql.mem.read(address,size)</span><br><span class="line">    if opcode == b&quot;\x0F\xA2&quot;:</span><br><span class="line">        # bypass check and jump to next instruction</span><br><span class="line">        ql.reg.ebx = 0x696C6951</span><br><span class="line">        ql.reg.ecx = 0x614C676E</span><br><span class="line">        ql.reg.edx = 0x20202062</span><br><span class="line">        ql.reg.rip += 2</span><br><span class="line"># search code segment hook every cpuid</span><br><span class="line">begin, end = 0, 0</span><br><span class="line">for info in ql.mem.map_info:</span><br><span class="line">    if ql.path in info[3] and info[2] == 5:</span><br><span class="line">        begin,end = info[:2]</span><br><span class="line">ql.hook_code(hook_cpuid,begin=begin,end=end)</span><br></pre></td></tr></table></figure>
+
+<p>完整代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line">#-*- coding:utf-8 -*-</span><br><span class="line">#!/usr/bin/env python3</span><br><span class="line"># </span><br><span class="line"># Cross Platform and Multi Architecture Advanced Binary Emulation Framework</span><br><span class="line">#</span><br><span class="line"></span><br><span class="line">import sys</span><br><span class="line">sys.path.append(&quot;..&quot;)</span><br><span class="line"></span><br><span class="line">from qiling import *</span><br><span class="line">#from qiling.const import QL_VERBOSE</span><br><span class="line">from qiling.const import *</span><br><span class="line">from qiling.os.mapper import QlFsMappedObject</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line"># </span><br><span class="line">def challenge1(ql:Qiling):</span><br><span class="line">	print(&quot;1111111&quot;+str(ql.mem.is_mapped(0x1000,0x1000)))</span><br><span class="line">	ql.mem.map(0x1000,0x1000,info=&#x27;[challenge1]&#x27;)</span><br><span class="line">	ql.mem.write(0x1337,ql.pack16(1337)) # pack16(value) == struct.pack(&#x27;H&#x27;,value)</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">def hook_uname_on_exit(ql: Qiling, *args):</span><br><span class="line">	&#x27;&#x27;&#x27;</span><br><span class="line">	.text:0000000000000BD8                 lea     rax, [rbp+name]</span><br><span class="line">	.text:0000000000000BDF                 mov     rdi, rax        ; name</span><br><span class="line">	.text:0000000000000BE2                 call    _uname</span><br><span class="line">	.text:0000000000000BE7                 test    eax, eax</span><br><span class="line">	&#x27;&#x27;&#x27;</span><br><span class="line">	rdi = ql.arch.regs.rdi</span><br><span class="line">	ql.mem.write(rdi, b&#x27;QilingOS\x00&#x27;)</span><br><span class="line">	ql.mem.write(rdi + 65 * 3, b&#x27;ChallengeStart\x00&#x27;)</span><br><span class="line"> 	</span><br><span class="line">def challenge2(ql:Qiling):</span><br><span class="line">	ql.os.set_syscall(&#x27;uname&#x27;, hook_uname_on_exit, QL_INTERCEPT.EXIT)</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">class Fake_urandom(QlFsMappedObject):</span><br><span class="line">	# Fake read fs operation</span><br><span class="line">	def read(self, size):</span><br><span class="line">		if size == 1:</span><br><span class="line">			return b&quot;\x41&quot;</span><br><span class="line">		return b&quot;\x00&quot;*size</span><br><span class="line">	# Fake close fs operation</span><br><span class="line">	def close(self):</span><br><span class="line">		return 0</span><br><span class="line"></span><br><span class="line">def getrandom_hook(ql:Qiling, buf, buflen, flags, *args):</span><br><span class="line">	ql.mem.write(buf,b&quot;\x00&quot;*buflen)</span><br><span class="line">	ql.os.set_syscall_return(0)	</span><br><span class="line"></span><br><span class="line">def challenge3(ql:Qiling):</span><br><span class="line">	ql.os.set_syscall(&quot;getrandom&quot;, getrandom_hook)</span><br><span class="line">	ql.add_fs_mapper(&quot;/dev/urandom&quot;,Fake_urandom())</span><br><span class="line"></span><br><span class="line">def enter_forbidden_loop_hook(ql:Qiling):</span><br><span class="line">	ql.arch.regs.eax =1</span><br><span class="line"></span><br><span class="line">def challenge4(ql:Qiling):</span><br><span class="line">	print(&quot;[++++]&quot;+os.path.split(ql.path)[-1])</span><br><span class="line">	# get_lib_base need the real filename which is qilinglab-x86_64</span><br><span class="line">	base_addr = ql.mem.get_lib_base(os.path.split(ql.path)[-1])</span><br><span class="line">	print(base_addr)</span><br><span class="line">	# Address we need to patch</span><br><span class="line">	test_forbidden_loop_enter =base_addr+ 0xE43</span><br><span class="line">	# Place hook</span><br><span class="line">	ql.hook_address(enter_forbidden_loop_hook, test_forbidden_loop_enter)</span><br><span class="line"></span><br><span class="line">def hook_rand(ql:Qiling):</span><br><span class="line">	ql.arch.regs.rax = 0</span><br><span class="line"></span><br><span class="line">def challenge5(ql:Qiling):</span><br><span class="line">	ql.os.set_api(&#x27;rand&#x27;,hook_rand)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def hook_while_true(ql:Qiling):</span><br><span class="line">	</span><br><span class="line">	ql.arch.regs.rax = 0</span><br><span class="line"></span><br><span class="line">def challenge6(ql:Qiling):</span><br><span class="line">	base = ql.mem.get_lib_base(&quot;qilinglab-x86_64&quot;)</span><br><span class="line">	ql.hook_address(hook_while_true,base + 0xF16)</span><br><span class="line"></span><br><span class="line">def modify_arg(ql:Qiling):</span><br><span class="line">	base_addr = ql.mem.get_lib_base(os.path.split(ql.path)[-1])</span><br><span class="line">	ql.arch.regs.edi=0</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">def hook_sleep(ql:Qiling):</span><br><span class="line">	return </span><br><span class="line"></span><br><span class="line">def challenge7(ql:Qiling):</span><br><span class="line">	# 这个是获取文件的名字</span><br><span class="line">	base_addr = ql.mem.get_lib_base(os.path.split(ql.path)[-1])</span><br><span class="line">	# method1</span><br><span class="line">	#ql.os.set_api(&#x27;sleep&#x27;,modify_arg,QL_INTERCEPT.ENTER)</span><br><span class="line">	ql.hook_address(modify_arg,base_addr+0xF3C)</span><br><span class="line">	# method2</span><br><span class="line">	#ql.os.set_api(&#x27;sleep&#x27;,hook_sleep)</span><br><span class="line">	</span><br><span class="line">def hook_tolower(ql:Qiling):</span><br><span class="line">	return</span><br><span class="line"></span><br><span class="line">def hook_strcmp(ql:Qiling):</span><br><span class="line">	ql.arch.regs.rax=0</span><br><span class="line">	#return 0</span><br><span class="line"></span><br><span class="line">def challenge9(ql:Qiling):</span><br><span class="line">	ql.os.set_api(&#x27;strcmp&#x27;,hook_strcmp)</span><br><span class="line">	#ql.os.set_api(&#x27;tolower&#x27;,hook_tolower)</span><br><span class="line"></span><br><span class="line">class hook_cmdline(QlFsMappedObject):</span><br><span class="line">	def read(self,size):</span><br><span class="line">		return b&quot;qilinglab&quot;</span><br><span class="line">	def close(self):</span><br><span class="line">		return 0</span><br><span class="line">	</span><br><span class="line">def challenge10(ql:Qiling):</span><br><span class="line">	ql.add_fs_mapper(&quot;/proc/self/cmdline&quot;,hook_cmdline())</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    #ql = Qiling([&quot;rootfs/x8664_linux/qilinglab-x86_64&quot;], &quot;rootfs/x8664_linux&quot;, verbose=QL_VERBOSE.DEFAULT)</span><br><span class="line">    path=[&quot;rootfs/x8664_linux/qilinglab-x86_64&quot;]</span><br><span class="line">    rootfs = &quot;rootfs/x8664_linux&quot;</span><br><span class="line">    ql = Qiling(path, rootfs)</span><br><span class="line">    challenge1(ql)</span><br><span class="line">    challenge2(ql)</span><br><span class="line">    challenge3(ql)</span><br><span class="line">    challenge4(ql)</span><br><span class="line">    challenge5(ql)</span><br><span class="line">    challenge6(ql)</span><br><span class="line">    challenge7(ql)</span><br><span class="line">    challenge9(ql)</span><br><span class="line">    challenge10(ql)</span><br><span class="line">    ql.verbose = 0</span><br><span class="line">    ql.mem.show_mapinfo()</span><br><span class="line">    ql.run()</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>参考讲解：</p>
+<p><a target="_blank" rel="noopener" href="https://badmonkey.site/archives/qilinglab-writeup#challenge-11">https://badmonkey.site/archives/qilinglab-writeup#challenge-11</a></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 jaytp@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">💰</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

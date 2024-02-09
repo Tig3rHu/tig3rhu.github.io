@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>在Docker内编译AOSP全过程 | Tig3rHu&#39;s Blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="在Docker内编译AOSP全过程 | Tig3rHu&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="前言本文记录了编译AOSP源码，刷入到pixel 6P 手机内的过程，从搭建环境，到编译源码，然后刷入到手机内，其中遇到了很多的问题，对AOSP 源码编译感兴趣或者想学习自己编译ASOP请往下看，google 官方的文档是很好的资料，一定要把文档看完整。 环境搭建配置环境由于我用的是服务器编译的：docker + Ubuntu 18.04 + 64 核 + 2T (外置硬盘)  手机： pixel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Docker内编译AOSP全过程">
+<meta property="og:url" content="https://tig3rhu.github.io/2024/02/08/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:description" content="前言本文记录了编译AOSP源码，刷入到pixel 6P 手机内的过程，从搭建环境，到编译源码，然后刷入到手机内，其中遇到了很多的问题，对AOSP 源码编译感兴趣或者想学习自己编译ASOP请往下看，google 官方的文档是很好的资料，一定要把文档看完整。 环境搭建配置环境由于我用的是服务器编译的：docker + Ubuntu 18.04 + 64 核 + 2T (外置硬盘)  手机： pixel">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231219140507109.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20240204105819686.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20240204110758147.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20240204105551600.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231221181130383.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231220151508175.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231227153844490.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231227154557057.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231227154721878.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20240208134708798.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231221145521799.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231229144002364.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231229144156629.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231229151457255.png">
+<meta property="og:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231227164307134.jpeg">
+<meta property="article:published_time" content="2024-02-08T10:38:54.236Z">
+<meta property="article:modified_time" content="2024-02-09T08:43:35.870Z">
+<meta property="article:author" content="Tig3rHu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tig3rhu.github.io/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231219140507109.png">
+
+
+<link rel="icon" href="/img/heard.png">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-dark.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/heard.png"/>
+</a>
+<div class="author">
+    <span>Tig3rHu</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/Tig3rHu"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(24)</small>
+            
+        </div>
+    </li>
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        <a 
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="24">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All "
+           href="/2024/02/08/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="在Docker内编译AOSP全过程">在Docker内编译AOSP全过程</span>
+            <span class="post-date" title="2024-02-08 18:38:54">2024/02/08</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/14/Motorola_Mesh%20%E6%BC%8F%E6%B4%9E%E5%85%AC%E5%91%8A/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Motorola_Mesh漏洞公告">Motorola_Mesh漏洞公告</span>
+            <span class="post-date" title="2024-01-14 22:44:55">2024/01/14</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/14/110_jadx_%E5%86%85%E5%AD%98%E4%B8%8D%E5%A4%9F_%E4%BD%BF%E7%94%A8%E9%97%AA%E9%80%80/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="环境搭建_jadx_内存不足&amp;使用闪退">环境搭建_jadx_内存不足&amp;使用闪退</span>
+            <span class="post-date" title="2024-01-14 22:20:30">2024/01/14</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/14/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__他趣APP脱壳&amp;运行环境检测分析">apk逆向__他趣APP脱壳&amp;运行环境检测分析</span>
+            <span class="post-date" title="2024-01-14 22:15:58">2024/01/14</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/07/68__%E9%80%86%E5%90%91__%E6%87%92%E4%BA%BA%E5%90%AC%E4%B9%A6%E5%8E%BB%E4%BC%9A%E5%91%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__懒人听书逆向">apk逆向__懒人听书逆向</span>
+            <span class="post-date" title="2024-01-07 22:15:49">2024/01/07</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
+            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
+            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
+            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
+            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
+            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
+            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
+            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
+            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
+            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
+            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
+            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
+            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
+            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
+            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
+            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
+            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello World">Hello World</span>
+            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-12__在Docker内编译AOSP全过程" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">在Docker内编译AOSP全过程</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2024-02-09 16:43:35'>2024-02-08 18:38</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="toc-text">配置环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85"><span class="toc-text">docker环境安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ubuntu-18-04-%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85"><span class="toc-text">ubuntu 18.04 依赖安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8"><span class="toc-text">启动容器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E6%BA%90%E7%A0%81"><span class="toc-text">下载源码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9A%E5%88%86%E6%94%AF"><span class="toc-text">确定分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%BA%90%E7%A0%81"><span class="toc-text">同步源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOSP-%E6%BA%90%E7%A0%81%E7%9B%AE%E5%BD%95"><span class="toc-text">AOSP 源码目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8"><span class="toc-text">设备驱动</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%AF%91AOSP"><span class="toc-text">编译AOSP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="toc-text">设置环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%9E%84%E5%BB%BA%E7%9B%AE%E6%A0%87"><span class="toc-text">选择构建目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E7%BC%96%E8%AF%91"><span class="toc-text">开始编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E7%8B%AC%E7%BC%96%E8%AF%91"><span class="toc-text">单独编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%8D%95%E4%B8%AAapk"><span class="toc-text">编译单个apk</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%B7%E6%9C%BA"><span class="toc-text">刷机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E4%BB%8B%E7%BB%8D"><span class="toc-text">分区介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fastboot"><span class="toc-text">fastboot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%88%B7%E5%88%86%E5%8C%BA"><span class="toc-text">手动刷分区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flashall%E8%87%AA%E5%8A%A8%E5%88%B7%E5%85%A5"><span class="toc-text">flashall自动刷入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%B7%E6%9C%BA%E6%88%90%E7%A0%96"><span class="toc-text">刷机成砖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文记录了编译AOSP源码，刷入到pixel 6P 手机内的过程，从搭建环境，到编译源码，然后刷入到手机内，其中遇到了很多的问题，对AOSP 源码编译感兴趣或者想学习自己编译ASOP请往下看，google 官方的文档是很好的资料，一定要把文档看完整。</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><h3 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h3><p>由于我用的是服务器编译的：docker + Ubuntu 18.04 + 64 核 + 2T (外置硬盘) </p>
+<p>手机： pixel 6Pro</p>
+<h3 id="docker环境安装"><a href="#docker环境安装" class="headerlink" title="docker环境安装"></a>docker环境安装</h3><p>由于AOSP源码编译，官方推荐Linux 的Ubuntu 来编译。因此这里直接拉取ubuntu 18.04 的镜像。由于我是在服务器内进行编译，所以使用docker做环境隔离可以避免很多问题。</p>
+<p>首先要说明，由于AOSP源码需要的硬盘容量很大，我在同步源码的时候，300G 都不太够，所以后面加了一个外置的硬盘，并且挂载到了 &#x2F;mnt&#x2F;data 内，然后使用docker 再将 &#x2F;mnt&#x2F;data 挂载到容器内，因此如果自己的硬盘容量够的话，就不需要再挂载到容器内了，直接同步代码就行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">挂载外部存储并创建镜像</span><br><span class="line">docker run -v /mnt/data/tiger_aosp:/root/aosp --name tiger_ubuntu18.04 -it ubuntu:18.04</span><br></pre></td></tr></table></figure>
+
+<p>这里要注意的是，由于我之前没考虑硬盘的问题，docker 并不能将主机的目录挂载到已经创建的镜像内，不允许在运行时更改容器的存储配置。必须要在创建之前定义所有的存储配置。这导致我先前安装好的环境，不得不重新安装一遍。</p>
+<h3 id="ubuntu-18-04-依赖安装"><a href="#ubuntu-18-04-依赖安装" class="headerlink" title="ubuntu 18.04 依赖安装"></a>ubuntu 18.04 依赖安装</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">apt-get update</span><br><span class="line"></span><br><span class="line">sudo apt-get install git-core gnupg flex bison build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 libncurses5-dev lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig python</span><br><span class="line"></span><br><span class="line">apt upgrade</span><br><span class="line">apt install vim</span><br><span class="line">apt install iputils-ping 下载ping</span><br><span class="line"></span><br><span class="line">apt install busybox -y 下载busybox</span><br><span class="line"></span><br><span class="line">apt-get install openjdk-8-jdk  下载java 运行环境</span><br><span class="line"></span><br><span class="line">apt-get install repo</span><br><span class="line">repo version 查看版本</span><br><span class="line"></span><br><span class="line">apt-get install git</span><br><span class="line"></span><br><span class="line">apt intall zip 避免编译报错</span><br><span class="line"></span><br><span class="line">ln -s /usr/bin/python3 /usr/bin/python # repo 需要python3版本,最好python3.6，因为python3.8有点错误。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231219140507109.png"></p>
+<h3 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h3><p>docker start containerID<br>docker exec -it containerID &#x2F;bin&#x2F;bash</p>
+<p>为了每次方便启动，我把这两条命令写到了sh文件。</p>
+<h2 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h2><p>在下载源码之前先配置config</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.email &quot;you@example.com&quot;</span><br><span class="line">git config --global user.name &quot;Your Name&quot;</span><br><span class="line">git config -l</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="确定分支"><a href="#确定分支" class="headerlink" title="确定分支"></a>确定分支</h3><p>接下来就要来选择要编译的源码分支，这里我选择的是 android-13.0.0_r43，因为份源码支持的设备比较多。<br>记住如果是按照官网中的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repo init -u https://android.googlesource.com/platform/manifest</span><br></pre></td></tr></table></figure>
+<p>来同步源码，那么同步的将是最新的源码。因此需要执行分支。</p>
+<p>在AOSP官方文档中，可以看到对应的分支、版本、和支持设备的关联列表。<br><a target="_blank" rel="noopener" href="https://source.android.com/docs/setup/about/build-numbers?hl=zh-cn#source-code-tags-and-builds">https://source.android.com/docs/setup/about/build-numbers?hl=zh-cn#source-code-tags-and-builds</a><br><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20240204105819686.png"></p>
+<p>首先使用repo 来指定需要同步的分支，下载对应的manifest.xml文件，-b 参数用于执行分支名称。</p>
+<blockquote>
+<p>repo init -u <a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/manifest">https://android.googlesource.com/platform/manifest</a> -b android-13.0.0_r43</p>
+</blockquote>
+<p><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20240204110758147.png"></p>
+<p>查看  manifests.xml ，确定是否是需要的版本，因为我在之前把43写成了44分支，导致编译完后，刷到手机里，手机成砖了，所以分支一定要对应。<br><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20240204105551600.png"><br>当然，如果想要查看当前所有的分支</p>
+<blockquote>
+<p>cd .repo&#x2F;manifest<br>git branch -a<br><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231221181130383.png"></p>
+</blockquote>
+<h3 id="同步源码"><a href="#同步源码" class="headerlink" title="同步源码"></a>同步源码</h3><p>由于我的服务器是可以直接同步android源码的，所以如果是在国内的网络环境中，就需要设置代理，或者直接使用清华的源。这里就不做介绍了。</p>
+<p>同步源码</p>
+<blockquote>
+<p>repo sync<br>看到successfully 就表示同步完成了。<br><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231220151508175.png"></p>
+</blockquote>
+<h3 id="AOSP-源码目录"><a href="#AOSP-源码目录" class="headerlink" title="AOSP 源码目录"></a>AOSP 源码目录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">root@4cd0e87f2387:~/aosp/1_test# ls -al</span><br><span class="line">total 120</span><br><span class="line">drwxr-xr-x  27 root root  4096 Dec 20 07:12 .</span><br><span class="line">drwxr-xr-x   3 root root  4096 Dec 20 06:15 ..</span><br><span class="line">drwxr-xr-x   7 root root  4096 Dec 20 07:08 .repo</span><br><span class="line">lrwxrwxrwx   1 root root    19 Dec 20 07:08 Android.bp -&gt; build/soong/root.bp</span><br><span class="line">lrwxrwxrwx   1 root root    23 Dec 20 07:08 BUILD -&gt; build/bazel/bazel.BUILD</span><br><span class="line">lrwxrwxrwx   1 root root    27 Dec 20 07:08 WORKSPACE -&gt; build/bazel/bazel.WORKSPACE</span><br><span class="line">drwxr-xr-x  37 root root  4096 Dec 20 07:08 art  // android Runtime源码，包括Dalvik虚拟机和环境组件</span><br><span class="line">drwxr-xr-x  14 root root  4096 Dec 20 07:08 bionic // android的C标准库(libc)实现</span><br><span class="line">drwxr-xr-x   4 root root  4096 Dec 20 07:08 bootable // 包含可引导组件的源码，如recovery</span><br><span class="line">lrwxrwxrwx   1 root root    26 Dec 20 07:08 bootstrap.bash -&gt; build/soong/bootstrap.bash</span><br><span class="line">drwxr-xr-x  10 root root  4096 Dec 20 07:08 build // 包含构建系统的脚本和工具</span><br><span class="line">drwxr-xr-x  14 root root  4096 Dec 20 07:08 cts  // 兼容性测试套件的源码</span><br><span class="line">drwxr-xr-x   7 root root  4096 Dec 20 07:08 dalvik // 旧版的android java 虚拟机dalvik的源码</span><br><span class="line">drwxr-xr-x   5 root root  4096 Dec 20 07:08 developers //</span><br><span class="line">drwxr-xr-x  20 root root  4096 Dec 20 07:08 development // 包含一些开发和调试工具</span><br><span class="line">drwxr-xr-x   9 root root  4096 Dec 20 07:08 device // 包含特定设备的配置和驱动代码</span><br><span class="line">drwxr-xr-x 409 root root 16384 Dec 20 07:09 external //包含Android使用的外部开源库</span><br><span class="line">drwxr-xr-x  16 root root  4096 Dec 20 07:10 frameworks // Android框架层的源码，这是Android系统的核心部分，包括服务管理、窗口管理、包管理等。</span><br><span class="line">drwxr-xr-x  16 root root  4096 Dec 20 07:09 hardware // 硬件抽象层HAL的源码和一些硬件相关的代码</span><br><span class="line">drwxr-xr-x   5 root root  4096 Dec 20 07:10 kernel // android Linux 内核的源码或预编译的二进制文件</span><br><span class="line">drwxr-xr-x  20 root root  4096 Dec 20 07:10 libcore // java 核心库的Android实现</span><br><span class="line">drwxr-xr-x   9 root root  4096 Dec 20 07:10 libnativehelper // android动态库，JNI库基础</span><br><span class="line">drwxr-xr-x   9 root root  4096 Dec 20 07:10 packages // 包含一些android默认的应用程序，例如电话、设置等。</span><br><span class="line">drwxr-xr-x   5 root root  4096 Dec 20 07:10 pdk </span><br><span class="line">drwxr-xr-x  11 root root  4096 Dec 20 07:10 platform_testing</span><br><span class="line">drwxr-xr-x  32 root root  4096 Dec 20 07:13 prebuilts  // 预编译的二进制文件，编译工具链</span><br><span class="line">drwxr-xr-x  20 root root  4096 Dec 20 07:12 sdk        // Android SDK 的源码和相关工具</span><br><span class="line">drwxr-xr-x  50 root root  4096 Dec 20 07:10 system     // android 系统的一些底层代码和守护进程</span><br><span class="line">drwxr-xr-x  13 root root  4096 Dec 20 07:10 test</span><br><span class="line">drwxr-xr-x   4 root root  4096 Dec 20 07:10 toolchain</span><br><span class="line">drwxr-xr-x  29 root root  4096 Dec 20 07:10 tools   // 开发和构建工具</span><br></pre></td></tr></table></figure>
+
+<p>linux内核文件使用的是prebuilts&#x2F;qemu-kernel&#x2F;arm&#x2F;kernel-qemu</p>
+<p>这里特意指出Linux内核文件使用的是AOSP的probuilts目录下已有的，即表示linux内核文件并不是上面编译出来的。</p>
+<h3 id="设备驱动"><a href="#设备驱动" class="headerlink" title="设备驱动"></a>设备驱动</h3><p>对应AOSP来说，光有AOSP 并不能很好的运行，还需要一些硬件相关的功能，因此还需要对应的设备驱动，</p>
+<p><a target="_blank" rel="noopener" href="https://developers.google.cn/android/drivers?hl=zh-cn">https://developers.google.cn/android/drivers?hl=zh-cn</a><br>找到对应的驱动文件，<br><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231227153844490.png"></p>
+<p>把下载的压缩包解压后，将 extract-google_device-raven.sh 文件拷贝到下载的aosp源码目录中，<br><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231227154557057.png"></p>
+<p>然后赋予权限，执行文件，按“d”翻页，输入 “I ACCEPT”。<br><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231227154721878.png"><br>解压完成后，会有一个vendor 文件夹，最后记得赋予vendor 权限<br>chmod -R 777 vendor&#x2F;</p>
+<p>如果不加入vendor 设备驱动，那么最后在编译完成后，缺少vendor 和 radio.img 镜像，也没有bootloader镜像。<br>那么把extart-google_device-raven.sh 放到aosp中同步一下，然后重新编译，就有了。</p>
+<h1 id="编译AOSP"><a href="#编译AOSP" class="headerlink" title="编译AOSP"></a>编译AOSP</h1><h2 id="设置环境"><a href="#设置环境" class="headerlink" title="设置环境"></a>设置环境</h2><p>source build&#x2F;envsetup.sh</p>
+<h2 id="选择构建目标"><a href="#选择构建目标" class="headerlink" title="选择构建目标"></a>选择构建目标</h2><p>AOSP编译使用lunch l来选择要构建的目标，在官网中的解释如下：<br>使用 <code>lunch</code> 选择要构建的目标。<code>lunch product_name-build_variant</code> 会选择 product_name 作为需要构建的产品，并选择 build_variant 作为需要构建的变体，然后将这些选择存储在环境中，以便供后续对 <code>m</code> 和其他类似命令的调用读取。</p>
+<p>在ASOP代码目录下直接执行 lunch 可以查看目标的menu。<br>如果执行lunch命令，报出“Warning: Cannot display lunch menu.” ，则需要root权限执行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">root@4cd0e87f2387:~/aosp/4_test# lunch</span><br><span class="line"></span><br><span class="line">You&#x27;re building on Linux</span><br><span class="line"></span><br><span class="line">Lunch menu .. Here are the common combinations:</span><br><span class="line">     1. aosp_arm-eng</span><br><span class="line">     2. aosp_arm64-eng</span><br><span class="line">     3. aosp_barbet-userdebug</span><br><span class="line">     4. aosp_bluejay-userdebug</span><br><span class="line">     5. aosp_bluejay_car-userdebug</span><br><span class="line">     6. aosp_bramble-userdebug</span><br><span class="line">     7. aosp_bramble_car-userdebug</span><br><span class="line">     8. aosp_car_arm-userdebug</span><br><span class="line">     9. aosp_car_arm64-userdebug</span><br><span class="line">     10. aosp_car_x86-userdebug</span><br><span class="line">     11. aosp_car_x86_64-userdebug</span><br><span class="line">     12. aosp_cf_arm64_auto-userdebug</span><br><span class="line">     13. aosp_cf_arm64_phone-userdebug</span><br><span class="line">     14. aosp_cf_x86_64_foldable-userdebug</span><br><span class="line">     15. aosp_cf_x86_64_pc-userdebug</span><br><span class="line">     16. aosp_cf_x86_64_phone-userdebug</span><br><span class="line">     17. aosp_cf_x86_64_tv-userdebug</span><br><span class="line">     18. aosp_cf_x86_auto-userdebug</span><br><span class="line">     19. aosp_cf_x86_phone-userdebug</span><br><span class="line">     20. aosp_cf_x86_tv-userdebug</span><br><span class="line">     21. aosp_cheetah-userdebug</span><br><span class="line">     22. aosp_cloudripper-userdebug</span><br><span class="line">     23. aosp_coral-userdebug</span><br><span class="line">     24. aosp_coral_car-userdebug</span><br><span class="line">     25. aosp_flame-userdebug</span><br><span class="line">     26. aosp_flame_car-userdebug</span><br><span class="line">     27. aosp_oriole-userdebug</span><br><span class="line">     28. aosp_oriole_car-userdebug</span><br><span class="line">     29. aosp_panther-userdebug</span><br><span class="line">     30. aosp_raven-userdebug</span><br><span class="line">     31. aosp_raven_car-userdebug</span><br><span class="line">     32. aosp_ravenclaw-userdebug</span><br><span class="line">     33. aosp_redfin-userdebug</span><br><span class="line">     34. aosp_redfin_car-userdebug</span><br><span class="line">     35. aosp_redfin_vf-userdebug</span><br><span class="line">     36. aosp_slider-userdebug</span><br><span class="line">     37. aosp_sunfish-userdebug</span><br><span class="line">     38. aosp_sunfish_car-userdebug</span><br><span class="line">     39. aosp_trout_arm64-userdebug</span><br><span class="line">     40. aosp_trout_x86-userdebug</span><br><span class="line">     41. aosp_whitefin-userdebug</span><br><span class="line">     42. aosp_x86-eng</span><br><span class="line">     43. aosp_x86_64-eng</span><br><span class="line">     44. arm_krait-eng</span><br><span class="line">     45. arm_v7_v8-eng</span><br><span class="line">     46. armv8-eng</span><br><span class="line">     47. armv8_cortex_a55-eng</span><br><span class="line">     48. armv8_kryo385-eng</span><br><span class="line">     49. beagle_x15-userdebug</span><br><span class="line">     50. beagle_x15_auto-userdebug</span><br><span class="line">     51. car_ui_portrait-userdebug</span><br><span class="line">     52. car_x86_64-userdebug</span><br><span class="line">     53. db845c-userdebug</span><br><span class="line">     54. gsi_car_arm64-userdebug</span><br><span class="line">     55. gsi_car_x86_64-userdebug</span><br><span class="line">     56. hikey-userdebug</span><br><span class="line">     57. hikey64_only-userdebug</span><br><span class="line">     58. hikey960-userdebug</span><br><span class="line">     59. hikey960_tv-userdebug</span><br><span class="line">     60. hikey_tv-userdebug</span><br><span class="line">     61. poplar-eng</span><br><span class="line">     62. poplar-user</span><br><span class="line">     63. poplar-userdebug</span><br><span class="line">     64. qemu_trusty_arm64-userdebug</span><br><span class="line">     65. rb5-userdebug</span><br><span class="line">     66. sdk_car_arm-userdebug</span><br><span class="line">     67. sdk_car_arm64-userdebug</span><br><span class="line">     68. sdk_car_portrait_x86_64-userdebug</span><br><span class="line">     69. sdk_car_x86-userdebug</span><br><span class="line">     70. sdk_car_x86_64-userdebug</span><br><span class="line">     71. sdk_pc_x86_64-userdebug</span><br><span class="line">     72. silvermont-eng</span><br><span class="line">     73. uml-userdebug</span><br><span class="line">     74. yukawa-userdebug</span><br><span class="line">     75. yukawa_sei510-userdebug</span><br><span class="line"></span><br><span class="line">Which would you like? [aosp_arm-eng]</span><br><span class="line">Pick from common choices above (e.g. 13) or specify your own (e.g. aosp_barbet-eng):</span><br></pre></td></tr></table></figure>
+
+<p>根据自己要构建的目标来选择对应的编号，其中的 user，userdebug，eng 之间的区别分别用于不同的使用场景。</p>
+<ul>
+<li>user：用来正式发布到市场的版本，权限受限，如没有 root 权限，不能 dedug，adb 默认处于停用状态。<ul>
+<li>安装带有user 标记的模块</li>
+<li>除了带有标记的模块之外，还会根据产品定义文件安装相应的模块</li>
+<li>ro.secure&#x3D;1</li>
+<li>ro.debuggable &#x3D; 0</li>
+<li>adb 停用</li>
+</ul>
+</li>
+<li>userdebug：在 user 版本的基础上开放了 root 权限和 debug 权限，adb 默认处于启用状态。一般用于调试真机。<ul>
+<li>安装带有debug 标记地模块</li>
+<li>ro.debuggable &#x3D; 1</li>
+<li>adb 默认开启</li>
+</ul>
+</li>
+<li>eng：开发工程师的版本，拥有最大的权限 (root 等)，具有额外调试工具的开发配置。一般用于模拟器</li>
+</ul>
+<p>由于pixel 6Pro 的代号是 raven， 所以我选择了aosp_raven-userdebug， 这里的代号其实是google 自己定义的，如何知道当前机型的代号，很容易可以获取，可以adb shell 查看。google android 文档也可以找到。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Pick from common choices above (e.g. 13) or specify your own (e.g. aosp_barbet-eng): 30</span><br><span class="line">09:15:05 Build sandboxing disabled due to nsjail error.</span><br><span class="line">09:15:06 Build sandboxing disabled due to nsjail error.</span><br><span class="line"></span><br><span class="line">Hint: next time you can simply run &#x27;lunch aosp_raven-userdebug&#x27;</span><br><span class="line"></span><br><span class="line">============================================</span><br><span class="line">PLATFORM_VERSION_CODENAME=REL</span><br><span class="line">PLATFORM_VERSION=13</span><br><span class="line">TARGET_PRODUCT=aosp_raven</span><br><span class="line">TARGET_BUILD_VARIANT=userdebug</span><br><span class="line">TARGET_BUILD_TYPE=release</span><br><span class="line">TARGET_ARCH=arm64</span><br><span class="line">TARGET_ARCH_VARIANT=armv8-2a</span><br><span class="line">TARGET_CPU_VARIANT=cortex-a55</span><br><span class="line">TARGET_2ND_ARCH=arm</span><br><span class="line">TARGET_2ND_ARCH_VARIANT=armv8-a</span><br><span class="line">TARGET_2ND_CPU_VARIANT=generic</span><br><span class="line">HOST_ARCH=x86_64</span><br><span class="line">HOST_2ND_ARCH=x86</span><br><span class="line">HOST_OS=linux</span><br><span class="line">HOST_OS_EXTRA=Linux-5.4.0-169-generic-x86_64-Ubuntu-18.04.6-LTS</span><br><span class="line">HOST_CROSS_OS=windows</span><br><span class="line">HOST_CROSS_ARCH=x86</span><br><span class="line">HOST_CROSS_2ND_ARCH=x86_64</span><br><span class="line">HOST_BUILD_TYPE=release</span><br><span class="line">BUILD_ID=TQ2A.230505.002</span><br><span class="line">OUT_DIR=out</span><br><span class="line">PRODUCT_SOONG_NAMESPACES=vendor/google_devices/raven/proprietary device/google/gs-common/powerstats hardware/google/gchips/gralloc4 hardware/google/av hardware/google/gchips hardware/google/graphics/common hardware/google/graphics/gs101 hardware/google/interfaces hardware/google/pixel device/google/gs101 device/google/gs101/powerstats vendor/google/whitechapel/tools vendor/broadcom/bluetooth vendor/google/camera vendor/google/interfaces vendor/google_devices/common/proprietary/confirmatioui_hal vendor/google_nos/host/android vendor/google_nos/test/system-test-harness vendor/samsung_slsi/telephony/ vendor/arm/mali/valhall device/google/gs101/conf vendor/samsung_slsi/codec2 device/google/gs101/gnss/47765 vendor/google/trusty/common vendor/google/whitechapel/audio/hal vendor/google/whitechapel/audio/interfaces vendor/google/whitechapel/aoc vendor/goodix/udfps/fp_utils vendor/goodix/udfps/g6_trusty vendor/goodix/udfps/g6_aidl_trusty device/google/raviole/powerstats/raven device/google/raviole vendor/google_devices/raviole/prebuilts</span><br><span class="line">============================================</span><br></pre></td></tr></table></figure>
+
+<h2 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h2><p>正常来说，编译完成要一两个小时，所以建议在晚上睡觉之前编译，由于我的服务器的资源充足，所以编译只需要半个来小时，又因为之前已经编译过一次了，所以再次编译比之前要快很多。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">root@4cd0e87f2387:~/aosp/4_test# make</span><br><span class="line">09:16:40 Build sandboxing disabled due to nsjail error.</span><br><span class="line">build/make/core/soong_config.mk:209: warning: BOARD_PLAT_PUBLIC_SEPOLICY_DIR has been deprecated. Use SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS instead.</span><br><span class="line">build/make/core/soong_config.mk:210: warning: BOARD_PLAT_PRIVATE_SEPOLICY_DIR has been deprecated. Use SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS instead.</span><br><span class="line">============================================</span><br><span class="line">PLATFORM_VERSION_CODENAME=REL</span><br><span class="line">PLATFORM_VERSION=13</span><br><span class="line">TARGET_PRODUCT=aosp_raven</span><br><span class="line">TARGET_BUILD_VARIANT=userdebug</span><br><span class="line">TARGET_BUILD_TYPE=release</span><br><span class="line">TARGET_ARCH=arm64</span><br><span class="line">TARGET_ARCH_VARIANT=armv8-2a</span><br><span class="line">TARGET_CPU_VARIANT=cortex-a55</span><br><span class="line">TARGET_2ND_ARCH=arm</span><br><span class="line">TARGET_2ND_ARCH_VARIANT=armv8-a</span><br><span class="line">TARGET_2ND_CPU_VARIANT=generic</span><br><span class="line">HOST_ARCH=x86_64</span><br><span class="line">HOST_2ND_ARCH=x86</span><br><span class="line">HOST_OS=linux</span><br><span class="line">HOST_OS_EXTRA=Linux-5.4.0-169-generic-x86_64-Ubuntu-18.04.6-LTS</span><br><span class="line">HOST_CROSS_OS=windows</span><br><span class="line">HOST_CROSS_ARCH=x86</span><br><span class="line">HOST_CROSS_2ND_ARCH=x86_64</span><br><span class="line">HOST_BUILD_TYPE=release</span><br><span class="line">BUILD_ID=TQ2A.230505.002</span><br><span class="line">OUT_DIR=out</span><br><span class="line">PRODUCT_SOONG_NAMESPACES=vendor/google_devices/raven/proprietary device/google/gs-common/powerstats hardware/google/gchips/gralloc4 hardware/google/av hardware/google/gchips hardware/google/graphics/common hardware/google/graphics/gs101 hardware/google/interfaces hardware/google/pixel device/google/gs101 device/google/gs101/powerstats vendor/google/whitechapel/tools vendor/broadcom/bluetooth vendor/google/camera vendor/google/interfaces vendor/google_devices/common/proprietary/confirmatioui_hal vendor/google_nos/host/android vendor/google_nos/test/system-test-harness vendor/samsung_slsi/telephony/ vendor/arm/mali/valhall device/google/gs101/conf vendor/samsung_slsi/codec2 device/google/gs101/gnss/47765 vendor/google/trusty/common vendor/google/whitechapel/audio/hal vendor/google/whitechapel/audio/interfaces vendor/google/whitechapel/aoc vendor/goodix/udfps/fp_utils vendor/goodix/udfps/g6_trusty vendor/goodix/udfps/g6_aidl_trusty device/google/raviole/powerstats/raven device/google/raviole vendor/google_devices/raviole/prebuilts</span><br><span class="line">============================================</span><br><span class="line">$(shell uname -rsm) was changed, regenerating...</span><br><span class="line">$(shell uname -rsm) was changed, regenerating...</span><br><span class="line">[ 90% 158/175] including system/sepolicy/Android.mk ...</span><br><span class="line">system/sepolicy/Android.mk:57: warning: BOARD_PLAT_PUBLIC_SEPOLICY_DIR has been deprecated. Use SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS instead.</span><br><span class="line">system/sepolicy/Android.mk:62: warning: BOARD_PLAT_PRIVATE_SEPOLICY_DIR has been deprecated. Use SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS instead.</span><br><span class="line">[ 89% 176/197] //packages/apps/Launcher3:Launcher3QuickStepLib kotlinc [common]</span><br><span class="line">WARN: Attempt to load key &#x27;java.correct.class.type.by.place.resolve.scope&#x27; for not yet loaded registry</span><br><span class="line">packages/apps/Launcher3/quickstep/src/com/android/quickstep/views/TaskMenuViewWithArrow.kt:171:41: warning: &#x27;getColor(Int): Int&#x27; is deprecated. Deprecated in Java</span><br><span class="line">        divider.paint.color = resources.getColor(android.R.color.transparent)</span><br><span class="line">                                        ^</span><br><span class="line">[100% 195/195] Target vbmeta image: out/target/product/raven/vbmeta.img</span><br><span class="line"></span><br><span class="line">#### build completed successfully (02:26 (mm:ss)) ####</span><br></pre></td></tr></table></figure>
+
+<p>编译完后，可以在 &#x2F;out&#x2F;target&#x2F;product&#x2F;raven&#x2F; 目录中看到编译出来的文件和镜像</p>
+<p><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20240208134708798.png"></p>
+<h2 id="单独编译"><a href="#单独编译" class="headerlink" title="单独编译"></a>单独编译</h2><p>单独编译Setting 应用模块<br>在AOSP 根目录执行：</p>
+<blockquote>
+<p>source build&#x2F;envsetup.sh<br>lunch aosp_raven-userdebug<br>cd packages&#x2F;apps&#x2F;Settings<br>mm</p>
+</blockquote>
+<p><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231221145521799.png"></p>
+<h2 id="编译单个apk"><a href="#编译单个apk" class="headerlink" title="编译单个apk"></a>编译单个apk</h2><p>找到对应的源码<br>vim packages&#x2F;apps&#x2F;Launcher3&#x2F;src&#x2F;com&#x2F;android&#x2F;launcher3&#x2F;Launcher.java</p>
+<p>添加一个Log 输出。<br><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231229144002364.png"><br>重新编译</p>
+<blockquote>
+<p>source build&#x2F;envsetup.sh<br>lunch aosp_raven-userdebug<br>make Launcher3</p>
+</blockquote>
+<p><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231229144156629.png"></p>
+<p>安装apk，启动app，然后在日志中可以看到打印的日志信息了。</p>
+<p><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231229151457255.png"></p>
+<h1 id="刷机"><a href="#刷机" class="headerlink" title="刷机"></a>刷机</h1><h2 id="分区介绍"><a href="#分区介绍" class="headerlink" title="分区介绍"></a>分区介绍</h2><p>由于我们刷机要用到fastboot 来进行刷机，这里先介绍一下在android系统中，有哪些分区。</p>
+<blockquote>
+</blockquote>
+<p> system: 系统分区，刷机一般都是刷这个分区<br> userdata: 数据分区<br> cache: 缓存分区<br> recovery: recovery 分区<br> boot： 存放内核和ramdisk的分区<br> radio: 基带所在的分区</p>
+<h2 id="fastboot"><a href="#fastboot" class="headerlink" title="fastboot"></a>fastboot</h2><p>可能之前在解锁root的时候，或者刷入分区的时候，会看到boot_a ，system_b 。其中a 和 b 是android 的特性。</p>
+<p>在android 中，使用的是A&#x2F;B分区的方案，A&#x2F;B 分区方案是一种用于提供系统更新和回滚功能的机制。它通过将设备的存储空间划分为两个完全独立的分区，这种双分区的设计允许在进行系统更新时进行无缝切换。当设备接收到新的系统更新时，它会将更新应用到未使用的分区（例如，如果当前正在使用 <code>boot_a</code> 分区，则将更新应用到 <code>boot_b</code> 分区），而不会中断设备的正常运行。一旦更新完成，设备可以在下次启动时切换到新的分区，并且之前使用的分区成为备份。</p>
+<p>可以通过查看current-slot 属性查看当前设备使用那个分区，pixel 6P 使用的是 B 分区</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">E:\file\pixel6p\aosp编译&gt;fastboot getvar all</span><br><span class="line">...</span><br><span class="line">(bootloader) current-slot:b // 当前使用的是 b 分区</span><br><span class="line">(bootloader) ddr-manu:Micron</span><br><span class="line">(bootloader) ddr-size:12GB</span><br><span class="line">(bootloader) ddr-type:LPDDR5</span><br><span class="line">(bootloader) enter-reason:reboot bootloader</span><br><span class="line">(bootloader) erase-block-size:0x1000</span><br><span class="line">(bootloader) fdevinit-count:0</span><br><span class="line">(bootloader) fdevinit-set-time:0</span><br><span class="line">(bootloader) fdevinit-total-time:0</span><br><span class="line">(bootloader) fg-soc:92.13 %</span><br><span class="line">(bootloader) has-slot:persist:no   // has-slot 表示是否支持A/B分区</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="手动刷分区"><a href="#手动刷分区" class="headerlink" title="手动刷分区"></a>手动刷分区</h2><p>如果你仅仅只想刷一个单独的分区，只需要先进入fastboot 模式</p>
+<blockquote>
+<p>adb reboot fastboot</p>
+</blockquote>
+<p>然后进入编译出来的out 目录内，或者将其中的对应分区的镜像复制出来，然后 fastboot flash 命令来对分区刷入对应的镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">E:\file\pixel6p\aosp_complie\raven&gt;adb reboot fastboot</span><br><span class="line"></span><br><span class="line">E:\file\pixel6p\aosp_complie\raven&gt;fastboot flash system system.img</span><br><span class="line">Invalid sparse file format at header magic</span><br><span class="line">Resizing &#x27;system_b&#x27;                                OKAY [  0.009s]</span><br><span class="line">Sending sparse &#x27;system_b&#x27; 1/4 (262112 KB)          OKAY [  8.797s]</span><br><span class="line">Writing &#x27;system_b&#x27;                                 OKAY [  0.335s]</span><br><span class="line">Sending sparse &#x27;system_b&#x27; 2/4 (262116 KB)          OKAY [  8.851s]</span><br><span class="line">Writing &#x27;system_b&#x27;                                 OKAY [  0.293s]</span><br><span class="line">Sending sparse &#x27;system_b&#x27; 3/4 (262140 KB)          OKAY [  8.863s]</span><br><span class="line">Writing &#x27;system_b&#x27;                                 OKAY [  0.287s]</span><br><span class="line">Sending sparse &#x27;system_b&#x27; 4/4 (76168 KB)           OKAY [  2.521s]</span><br><span class="line">Writing &#x27;system_b&#x27;                                 OKAY [  0.126s]</span><br><span class="line">Finished. Total time: 30.782s</span><br><span class="line"></span><br><span class="line">E:\file\pixel6p\aosp_complie\raven&gt;fastboot flash vendor vendor.img</span><br><span class="line">Invalid sparse file format at header magic</span><br><span class="line">Resizing &#x27;vendor_b&#x27;                                OKAY [  0.011s]</span><br><span class="line">Sending sparse &#x27;vendor_b&#x27; 1/3 (262120 KB)          OKAY [  8.663s]</span><br><span class="line">Writing &#x27;vendor_b&#x27;                                 OKAY [  0.355s]</span><br><span class="line">Sending sparse &#x27;vendor_b&#x27; 2/3 (262140 KB)          OKAY [  8.586s]</span><br><span class="line">Writing &#x27;vendor_b&#x27;                                 OKAY [  0.355s]</span><br><span class="line">Sending sparse &#x27;vendor_b&#x27; 3/3 (116832 KB)          OKAY [  3.846s]</span><br><span class="line">Writing &#x27;vendor_b&#x27;                                 OKAY [  0.166s]</span><br><span class="line">Finished. Total time: 22.539s</span><br><span class="line"></span><br><span class="line">E:\file\pixel6p\aosp_complie\raven&gt;fastboot flash radio radio.img</span><br><span class="line">Sending &#x27;radio&#x27; (94660 KB)                         OKAY [  3.288s]</span><br><span class="line">Writing &#x27;radio&#x27;                                    FAILED (remote: &#x27;No such file or directory&#x27;)</span><br><span class="line">fastboot: error: Command failed</span><br><span class="line"></span><br><span class="line">E:\file\pixel6p\aosp_complie\raven&gt;fastboot flash bootloader bootloader.img</span><br><span class="line">Sending &#x27;bootloader&#x27; (13870 KB)                    OKAY [  0.480s]</span><br><span class="line">Writing &#x27;bootloader&#x27;                               FAILED (remote: &#x27;No such file or directory&#x27;)</span><br><span class="line">fastboot: error: Command failed</span><br><span class="line"></span><br><span class="line">E:\file\pixel6p\aosp_complie\raven&gt;fastboot flash system super_empty.img</span><br><span class="line">Resizing &#x27;system_b&#x27;                                OKAY [  0.016s]</span><br><span class="line">Sending &#x27;system_b&#x27; (4 KB)                          OKAY [  0.000s]</span><br><span class="line">Writing &#x27;system_b&#x27;                                 OKAY [  0.048s]</span><br><span class="line">Finished. Total time: 0.078s</span><br></pre></td></tr></table></figure>
+
+<h2 id="flashall自动刷入"><a href="#flashall自动刷入" class="headerlink" title="flashall自动刷入"></a>flashall自动刷入</h2><p>上面是手动分别往单个的分区刷入镜像，当然可以手动的刷入镜像，也可以自动刷，比如官方的升级包zip 文件，可以直接执行flash-all.bat 文件。</p>
+<p>分析了一下 flash-all.bat 文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PATH=%PATH%;&quot;%SYSTEMROOT%\System32&quot;</span><br><span class="line">fastboot flash bootloader bootloader-raven-slider-1.2-9152140.img</span><br><span class="line">fastboot reboot-bootloader</span><br><span class="line">ping -n 5 127.0.0.1 &gt;nul</span><br><span class="line">fastboot flash radio radio-raven-g5123b-107485-221101-b-9242015.img</span><br><span class="line">fastboot reboot-bootloader</span><br><span class="line">ping -n 5 127.0.0.1 &gt;nul</span><br><span class="line">fastboot -w update image-raven-tq1a.230205.002.zip</span><br><span class="line"></span><br><span class="line">echo Press any key to exit...</span><br><span class="line">pause &gt;nul</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+<p>用到了flash -w update 命令。</p>
+<p>这里可以直接使用fastboot flashall -w 来刷入编译好的镜像，前提是设置好out目录的路径。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">E:\file\pixel6p\aosp_complie\aosp_test4&gt;adb reboot bootloader</span><br><span class="line"></span><br><span class="line">E:\file\pixel6p\aosp_complie\aosp_test4&gt;fastboot flashall -w</span><br><span class="line">--------------------------------------------</span><br><span class="line">Bootloader Version...: slider-1.2-9152140</span><br><span class="line">Baseband Version.....: g5123b-107485-221101-B-9242015</span><br><span class="line">Serial Number........: 1B231FDEE005T0</span><br><span class="line">--------------------------------------------</span><br><span class="line">Checking &#x27;product&#x27;                                 OKAY [  0.000s]</span><br><span class="line">Setting current slot to &#x27;a&#x27;                        OKAY [  0.088s]</span><br><span class="line">Sending &#x27;boot_a&#x27; (65536 KB)                        OKAY [  2.143s]</span><br><span class="line">Writing &#x27;boot_a&#x27;                                   OKAY [  0.080s]</span><br><span class="line">Sending &#x27;dtbo_a&#x27; (16384 KB)                        OKAY [  0.530s]</span><br><span class="line">Writing &#x27;dtbo_a&#x27;                                   OKAY [  0.021s]</span><br><span class="line">Sending &#x27;pvmfw_a&#x27; (1024 KB)                        OKAY [  0.034s]</span><br><span class="line">Writing &#x27;pvmfw_a&#x27;                                  OKAY [  0.004s]</span><br><span class="line">Sending &#x27;vbmeta_a&#x27; (8 KB)                          OKAY [  0.001s]</span><br><span class="line">Writing &#x27;vbmeta_a&#x27;                                 OKAY [  0.003s]</span><br><span class="line">Sending &#x27;vbmeta_system_a&#x27; (4 KB)                   OKAY [  0.001s]</span><br><span class="line">Writing &#x27;vbmeta_system_a&#x27;                          OKAY [  0.003s]</span><br><span class="line">Sending &#x27;vendor_boot_a&#x27; (65536 KB)                 OKAY [  2.111s]</span><br><span class="line">Writing &#x27;vendor_boot_a&#x27;                            OKAY [  0.081s]</span><br><span class="line">Rebooting into fastboot                            OKAY [  0.000s]</span><br><span class="line">&lt; waiting for any device &gt;</span><br><span class="line">Sending &#x27;super&#x27; (4 KB)                             OKAY [  0.001s]</span><br><span class="line">Updating super partition                           OKAY [  0.021s]</span><br><span class="line">Resizing &#x27;product_a&#x27;                               OKAY [  0.002s]</span><br><span class="line">Resizing &#x27;system_a&#x27;                                OKAY [  0.003s]</span><br><span class="line">Resizing &#x27;system_ext_a&#x27;                            OKAY [  0.003s]</span><br><span class="line">Resizing &#x27;system_b&#x27;                                OKAY [  0.002s]</span><br><span class="line">Resizing &#x27;vendor_a&#x27;                                OKAY [  0.002s]</span><br><span class="line">Resizing &#x27;vendor_dlkm_a&#x27;                           OKAY [  0.002s]</span><br><span class="line">Resizing &#x27;vendor_b&#x27;                                OKAY [  0.003s]</span><br><span class="line">Invalid sparse file format at header magic</span><br><span class="line">Resizing &#x27;product_a&#x27;                               OKAY [  0.003s]</span><br><span class="line">Sending sparse &#x27;product_a&#x27; 1/2 (262140 KB)         OKAY [  8.634s]</span><br><span class="line">Writing &#x27;product_a&#x27;                                OKAY [  0.355s]</span><br><span class="line">Sending sparse &#x27;product_a&#x27; 2/2 (93456 KB)          OKAY [  3.014s]</span><br><span class="line">Writing &#x27;product_a&#x27;                                OKAY [  0.158s]</span><br><span class="line">Invalid sparse file format at header magic</span><br><span class="line">Resizing &#x27;system_a&#x27;                                OKAY [  0.007s]</span><br><span class="line">Sending sparse &#x27;system_a&#x27; 1/4 (262112 KB)          OKAY [  8.711s]</span><br><span class="line">Writing &#x27;system_a&#x27;                                 OKAY [  0.385s]</span><br><span class="line">Sending sparse &#x27;system_a&#x27; 2/4 (262116 KB)          OKAY [  8.601s]</span><br><span class="line">Writing &#x27;system_a&#x27;                                 OKAY [  0.386s]</span><br><span class="line">Sending sparse &#x27;system_a&#x27; 3/4 (262140 KB)          OKAY [  8.511s]</span><br><span class="line">Writing &#x27;system_a&#x27;                                 OKAY [  0.319s]</span><br><span class="line">Sending sparse &#x27;system_a&#x27; 4/4 (76168 KB)           OKAY [  2.451s]</span><br><span class="line">Writing &#x27;system_a&#x27;                                 OKAY [  0.161s]</span><br><span class="line">Invalid sparse file format at header magic</span><br><span class="line">Resizing &#x27;system_ext_a&#x27;                            OKAY [  0.006s]</span><br><span class="line">Sending sparse &#x27;system_ext_a&#x27; 1/2 (262116 KB)      OKAY [  8.721s]</span><br><span class="line">Writing &#x27;system_ext_a&#x27;                             OKAY [  0.369s]</span><br><span class="line">Sending sparse &#x27;system_ext_a&#x27; 2/2 (51120 KB)       OKAY [  1.638s]</span><br><span class="line">Writing &#x27;system_ext_a&#x27;                             OKAY [  0.120s]</span><br><span class="line">Resizing &#x27;system_b&#x27;                                OKAY [  0.004s]</span><br><span class="line">Sending &#x27;system_b&#x27; (26672 KB)                      OKAY [  0.862s]</span><br><span class="line">Writing &#x27;system_b&#x27;                                 OKAY [  0.079s]</span><br><span class="line">Invalid sparse file format at header magic</span><br><span class="line">Resizing &#x27;vendor_a&#x27;                                OKAY [  0.004s]</span><br><span class="line">Sending sparse &#x27;vendor_a&#x27; 1/3 (262116 KB)          OKAY [  8.519s]</span><br><span class="line">Writing &#x27;vendor_a&#x27;                                 OKAY [  0.409s]</span><br><span class="line">Sending sparse &#x27;vendor_a&#x27; 2/3 (262140 KB)          OKAY [  8.520s]</span><br><span class="line">Writing &#x27;vendor_a&#x27;                                 OKAY [  0.409s]</span><br><span class="line">Sending sparse &#x27;vendor_a&#x27; 3/3 (24880 KB)           OKAY [  0.809s]</span><br><span class="line">Writing &#x27;vendor_a&#x27;                                 OKAY [  0.119s]</span><br><span class="line">Resizing &#x27;vendor_dlkm_a&#x27;                           OKAY [  0.004s]</span><br><span class="line">Sending &#x27;vendor_dlkm_a&#x27; (40872 KB)                 OKAY [  1.308s]</span><br><span class="line">Writing &#x27;vendor_dlkm_a&#x27;                            OKAY [  0.141s]</span><br><span class="line">Erasing &#x27;userdata&#x27;                                 OKAY [  0.161s]</span><br><span class="line">Erase successful, but not automatically formatting.</span><br><span class="line">File system type raw not supported.</span><br><span class="line">Erasing &#x27;metadata&#x27;                                 OKAY [  0.004s]</span><br><span class="line">Erase successful, but not automatically formatting.</span><br><span class="line">File system type raw not supported.</span><br><span class="line">Rebooting                                          OKAY [  0.000s]</span><br><span class="line">Finished. Total time: 99.470s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">adb shell 直接就可以获取root</span><br><span class="line"></span><br><span class="line">raven:/ # uname -a</span><br><span class="line">Linux localhost 5.10.149-android13-4-00003-gebdbc9fbe2e2-ab9664856 #1 SMP PREEMPT Mon Feb 27 10:44:09 UTC 2023 aarch64 Toybox</span><br></pre></td></tr></table></figure>
+
+<p><img src="/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B.assets/image-20231227164307134.jpeg"></p>
+<h1 id="刷机成砖"><a href="#刷机成砖" class="headerlink" title="刷机成砖"></a>刷机成砖</h1><p>其实我前前后后编译刷机，由于对一些步骤和文件的不了解和误操作，导致了很多次的成砖，所谓的成砖又很多种表现方式，比如开机卡在了google log标志，或者一直卡在fastboot 页面，也有可能开机后插上usb数据线，但拔出后手机无限重启等等奇奇怪怪的问题。</p>
+<p>这时候就需要去google 下载对应机型的出厂镜像，直接执行flash-all.bat</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>自己编译AOSP的过程遇到了各种各样的错误，但是这个过程收获了很多。遇到问题要善于利用搜索引擎。</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，交流请邮件至 1161629782@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">💰</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

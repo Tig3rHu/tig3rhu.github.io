@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Android Kernel编译整合KernelSU | Tig3rHu&#39;s Blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="Android Kernel编译整合KernelSU | Tig3rHu&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tig3rHu&#39;s Blog">
+<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
+<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="article:author" content="Tig3rHu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/heard.png">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-dark.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/heard.png"/>
+</a>
+<div class="author">
+    <span>Tig3rHu</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/Tig3rHu"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(25)</small>
+            
+        </div>
+    </li>
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        <a 
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="25">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All "
+           href="/2024/02/29/19__KernelSU%E6%90%9E%E6%9C%BA/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Android Kernel编译整合KernelSU">Android Kernel编译整合KernelSU</span>
+            <span class="post-date" title="2024-02-29 11:27:35">2024/02/29</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/02/08/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="在Docker内编译AOSP全过程">在Docker内编译AOSP全过程</span>
+            <span class="post-date" title="2024-02-08 18:38:54">2024/02/08</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/14/Motorola_Mesh%20%E6%BC%8F%E6%B4%9E%E5%85%AC%E5%91%8A/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Motorola_Mesh漏洞公告">Motorola_Mesh漏洞公告</span>
+            <span class="post-date" title="2024-01-14 22:44:55">2024/01/14</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/14/110_jadx_%E5%86%85%E5%AD%98%E4%B8%8D%E5%A4%9F_%E4%BD%BF%E7%94%A8%E9%97%AA%E9%80%80/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="环境搭建_jadx_内存不足&amp;使用闪退">环境搭建_jadx_内存不足&amp;使用闪退</span>
+            <span class="post-date" title="2024-01-14 22:20:30">2024/01/14</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/14/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__他趣APP脱壳&amp;运行环境检测分析">apk逆向__他趣APP脱壳&amp;运行环境检测分析</span>
+            <span class="post-date" title="2024-01-14 22:15:58">2024/01/14</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/07/68__%E9%80%86%E5%90%91__%E6%87%92%E4%BA%BA%E5%90%AC%E4%B9%A6%E5%8E%BB%E4%BC%9A%E5%91%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__懒人听书逆向">apk逆向__懒人听书逆向</span>
+            <span class="post-date" title="2024-01-07 22:15:49">2024/01/07</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
+            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
+            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
+            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
+            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
+            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
+            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
+            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
+            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
+            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
+            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
+            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
+            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
+            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
+            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
+            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
+            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello World">Hello World</span>
+            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-19__KernelSU搞机" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Android Kernel编译整合KernelSU</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2024-02-29 11:29:41'>2024-02-29 11:27</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87"><span class="toc-text">前期准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFKernelSU"><span class="toc-text">什么是KernelSU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%94%AF%E6%8C%81"><span class="toc-text">判断是否支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9GKI%E7%89%88%E6%9C%AC"><span class="toc-text">选择GKI版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%BE%E5%88%B0manifest-xxx-xml"><span class="toc-text">找到manifest_xxx.xml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96manifest-%E5%90%8C%E6%AD%A5%E4%BB%A3%E7%A0%81"><span class="toc-text">初始化manifest&amp;同步代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-text">目录结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E6%9E%84%E5%BB%BA"><span class="toc-text">开始构建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-text">编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8KernelSU%E6%9E%84%E5%BB%BA%E5%86%85%E6%A0%B8"><span class="toc-text">使用KernelSU构建内核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E7%BB%93%E6%9E%9Cout"><span class="toc-text">编译结果out</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B7%E5%85%A5%E5%88%B0%E6%89%8B%E6%9C%BA%E5%86%85"><span class="toc-text">刷入到手机内</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BKernelSU"><span class="toc-text">查看KernelSU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AFroot"><span class="toc-text">开启root</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#root%E6%A3%80%E6%B5%8B%EF%BC%88%E6%A3%80%E6%B5%8B%E4%B8%8D%E5%87%BA%E6%9D%A5%EF%BC%89"><span class="toc-text">root检测（检测不出来）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%86%85%E6%A0%B8"><span class="toc-text">查看内核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B-ro-debuggable"><span class="toc-text">查看 ro.debuggable</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#KernelSU%E6%A8%A1%E5%9D%97"><span class="toc-text">KernelSU模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%80%9D%E8%80%83"><span class="toc-text">其他思考</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#INFO-1"><span class="toc-text">INFO 1</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><h3 id="什么是KernelSU"><a href="#什么是KernelSU" class="headerlink" title="什么是KernelSU"></a>什么是KernelSU</h3><p>来源:  <a target="_blank" rel="noopener" href="https://kernelsu.org/zh_CN/guide/what-is-kernelsu.html">https://kernelsu.org/zh_CN/guide/what-is-kernelsu.html</a></p>
+<p>KernelSU 的主要特点是它是<strong>基于内核的</strong>。 KernelSU 运行在内核空间， 所以它可以提供我们以前从未有过的内核接口。 例如，我们可以在内核模式下为任何进程添加硬件断点；我们可以在任何进程的物理内存中访问，而无人知晓；我们可以在内核空间拦截任何系统调用; 等等。</p>
+<p>KernelSU 还提供了一个基于 overlayfs 的模块系统，允许您加载自定义插件到系统中。它还提供了一种修改 &#x2F;system 分区中文件的机制。</p>
+<h3 id="判断是否支持"><a href="#判断是否支持" class="headerlink" title="判断是否支持"></a>判断是否支持</h3><p>下载对应的KernelSu<br><a target="_blank" rel="noopener" href="https://github.com/tiann/KernelSU/releases">https://github.com/tiann/KernelSU/releases</a></p>
+<p>安装KernelSu apk<br><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103102521588.png"><br>查看设备是否支持，显示”未安装“，表示当前机器支持 KernelSU<br><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104151452108.png"></p>
+<p>查看设备内核版本，从设备的内核版本来看，设备的KMI ( <a href="7__Android%E6%9D%82%E9%A1%B9.md">7__Android杂项</a>)版本是  5.10-android13-4，相同的KMI的内核版本是兼容的, 在uname -a 查看的信息跟kernelSU里的不一致，不理解为啥会这样。</p>
+<blockquote>
+<p>raven:&#x2F; $ uname -a<br>Linux localhost 5.10.107-android13-4-00020-g02b5dfab573c-ab9358130 #1 SMP PREEMPT Thu Dec 1 18:28:18 UTC 2022 aarch64 Toybox<br><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240115150627360.png"></p>
+</blockquote>
+<p>commitID :  02b5dfab573c</p>
+<h3 id="选择GKI版本"><a href="#选择GKI版本" class="headerlink" title="选择GKI版本"></a>选择GKI版本</h3><p><a target="_blank" rel="noopener" href="https://source.android.com/docs/core/architecture/kernel/gki-android13-5_10-release-builds?hl=zh-cn">https://source.android.com/docs/core/architecture/kernel/gki-android13-5_10-release-builds?hl=zh-cn</a></p>
+<p><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103152118562.png"></p>
+<p>下载boot-5.10-lz4.img，然后用010 查看，可以看到对应的内核版本，跟我们的系统版本是一致的。</p>
+<p><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103151931253.png"></p>
+<h3 id="找到manifest-xxx-xml"><a href="#找到manifest-xxx-xml" class="headerlink" title="找到manifest_xxx.xml"></a>找到manifest_xxx.xml</h3><p>然后点击对应的kernel，可以看到对应GKI 构建的目录。</p>
+<p><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103170927977.png"></p>
+<p>往下找，找到对应的manifest_xxx.xml，并下载。<br><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103152506512.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;manifest&gt;</span><br><span class="line">&lt;remote name=&quot;aosp&quot; fetch=&quot;https://android.googlesource.com/&quot; review=&quot;https://android.googlesource.com/&quot;/&gt;</span><br><span class="line">&lt;default upstream=&quot;master-kernel-build-2022&quot; dest-branch=&quot;master-kernel-build-2022&quot; remote=&quot;aosp&quot; sync-j=&quot;4&quot;/&gt;</span><br><span class="line">&lt;superproject name=&quot;kernel/superproject&quot; remote=&quot;aosp&quot; revision=&quot;common-android13-5.10-2022-10&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;build/kernel&quot; name=&quot;kernel/build&quot; revision=&quot;28bec492db207f403d08d88886f86dd1e2984089&quot;&gt;</span><br><span class="line">&lt;linkfile dest=&quot;tools/bazel&quot; src=&quot;kleaf/bazel.sh&quot;/&gt;</span><br><span class="line">&lt;linkfile dest=&quot;WORKSPACE&quot; src=&quot;kleaf/bazel.WORKSPACE&quot;/&gt;</span><br><span class="line">&lt;linkfile dest=&quot;build/build.sh&quot; src=&quot;build.sh&quot;/&gt;</span><br><span class="line">&lt;linkfile dest=&quot;build/build_abi.sh&quot; src=&quot;build_abi.sh&quot;/&gt;</span><br><span class="line">&lt;linkfile dest=&quot;build/build_test.sh&quot; src=&quot;build_test.sh&quot;/&gt;</span><br><span class="line">&lt;linkfile dest=&quot;build/build_utils.sh&quot; src=&quot;build_utils.sh&quot;/&gt;</span><br><span class="line">&lt;linkfile dest=&quot;build/config.sh&quot; src=&quot;config.sh&quot;/&gt;</span><br><span class="line">&lt;linkfile dest=&quot;build/envsetup.sh&quot; src=&quot;envsetup.sh&quot;/&gt;</span><br><span class="line">&lt;linkfile dest=&quot;build/_setup_env.sh&quot; src=&quot;_setup_env.sh&quot;/&gt;</span><br><span class="line">&lt;linkfile dest=&quot;build/multi-switcher.sh&quot; src=&quot;multi-switcher.sh&quot;/&gt;</span><br><span class="line">&lt;linkfile dest=&quot;build/abi&quot; src=&quot;abi&quot;/&gt;</span><br><span class="line">&lt;linkfile dest=&quot;build/static_analysis&quot; src=&quot;static_analysis&quot;/&gt;</span><br><span class="line">&lt;/project&gt;</span><br><span class="line">&lt;project path=&quot;hikey-modules&quot; name=&quot;kernel/hikey-modules&quot; revision=&quot;8864304543d16b95c9c268e4e156601ef9b499e7&quot; upstream=&quot;android13-5.10&quot; dest-branch=&quot;android13-5.10&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;common&quot; name=&quot;kernel/common&quot; revision=&quot;19424168db55715a7ba3f00505ac9b9f19fd3705&quot; upstream=&quot;android13-5.10-2022-10&quot; dest-branch=&quot;android13-5.10-2022-10&quot;&gt;</span><br><span class="line">&lt;linkfile dest=&quot;.source_date_epoch_dir&quot; src=&quot;.&quot;/&gt;</span><br><span class="line">&lt;/project&gt;</span><br><span class="line">&lt;project path=&quot;kernel/tests&quot; name=&quot;kernel/tests&quot; revision=&quot;42a77670ce44d6e19a6fbb8b93fa0b06f009a3a4&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;kernel/configs&quot; name=&quot;kernel/configs&quot; revision=&quot;b3cc2bc03dab303c54a9ce1f709f8ee315eb311d&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;common-modules/virtual-device&quot; name=&quot;kernel/common-modules/virtual-device&quot; revision=&quot;7d4ffda377b256bdc3a447018b051121772883df&quot; upstream=&quot;android13-5.10&quot; dest-branch=&quot;android13-5.10&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;prebuilts/clang/host/linux-x86&quot; name=&quot;platform/prebuilts/clang/host/linux-x86&quot; clone-depth=&quot;1&quot; revision=&quot;4bb6424cb1615af408ae80871131f4da8c4ddadf&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8&quot; name=&quot;platform/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8&quot; clone-depth=&quot;1&quot; revision=&quot;007101a451907c5369db5002ddf7b14dcefb7864&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;prebuilts/boot-artifacts&quot; name=&quot;platform/prebuilts/boot-artifacts&quot; revision=&quot;45d30d07ad284018481ebb419b5d01b5de72ed02&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;prebuilts/build-tools&quot; name=&quot;platform/prebuilts/build-tools&quot; clone-depth=&quot;1&quot; revision=&quot;f6813860e16b2fa1461a15e7b8a3127dfdee021a&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;prebuilts/kernel-build-tools&quot; name=&quot;kernel/prebuilts/build-tools&quot; clone-depth=&quot;1&quot; revision=&quot;67705de48752ea5c9d7d679c737f6ebbc8ba7348&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;tools/mkbootimg&quot; name=&quot;platform/system/tools/mkbootimg&quot; revision=&quot;2208a03d874255af1e4eaf6cf7c156fe1dc98943&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;prebuilts/bazel/linux-x86_64&quot; name=&quot;platform/prebuilts/bazel/linux-x86_64&quot; clone-depth=&quot;1&quot; revision=&quot;6162318e6458db65f94eed6671e302c3e894b1ac&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;prebuilts/jdk/jdk11&quot; name=&quot;platform/prebuilts/jdk/jdk11&quot; clone-depth=&quot;1&quot; revision=&quot;aee26c8cd89b9abb428f676caba168699cd8662f&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;prebuilts/ndk-r23&quot; name=&quot;toolchain/prebuilts/ndk/r23&quot; clone-depth=&quot;1&quot; revision=&quot;93532f3052c14fbb337ff57d5732128dc7481ee6&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;external/bazel-skylib&quot; name=&quot;platform/external/bazel-skylib&quot; revision=&quot;f1fb8167b4ed64feb494fd1ea6a8a619bbb549de&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;build/bazel_common_rules&quot; name=&quot;platform/build/bazel_common_rules&quot; revision=&quot;ddd2d82d10e21fb4137d2db3c1b848d6f1832acc&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;external/stardoc&quot; name=&quot;platform/external/stardoc&quot; revision=&quot;b6ef2c6b6e39087f7396aaeb13c83464dfce4a19&quot;/&gt;</span><br><span class="line">&lt;project path=&quot;external/python/absl-py&quot; name=&quot;platform/external/python/absl-py&quot; revision=&quot;63f98de5b158481877489ca39158ed691f7551e1&quot;/&gt;</span><br><span class="line">&lt;/manifest&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化manifest-同步代码"><a href="#初始化manifest-同步代码" class="headerlink" title="初始化manifest&amp;同步代码"></a>初始化manifest&amp;同步代码</h3><p>把下载的manifest_xxx.xml 复制到你要目录内，初始化<br>官方文档同步内核代码是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">repo init -u https://android.googlesource.com/kernel/manifest </span><br><span class="line">mv &lt;kernel_manifest.xml&gt; .repo/manifests </span><br><span class="line">repo init -m manifest.xml </span><br><span class="line">repo sync</span><br></pre></td></tr></table></figure>
+<p>但我在同步的时候，显示找不到 manifest_91.xml，文件，于是把路径补全了，就可以同步了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repo init -m /root/aosp/kernel_android13_5_10_107/manifest_91.xml</span><br></pre></td></tr></table></figure>
+<p><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103164714573.png"><br>同步代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repo sync</span><br></pre></td></tr></table></figure>
+<p>同步的时候common 库的代码一直没办法获取。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kernel/common:</span><br><span class="line">fatal: Couldn&#x27;t find remote ref refs/heads/android13-5.10-2022-10</span><br><span class="line">kernel/common: sleeping 4.0 seconds before retrying</span><br><span class="line">fatal: Couldn&#x27;t find remote ref refs/heads/android13-5.10-2022-10</span><br><span class="line">error: Cannot fetch kernel/common from https://android.googlesource.com/kernel/common</span><br></pre></td></tr></table></figure>
+<p>由于在manifest.xml 中看到了android13-5.10, 所以直接用git 把 common的源代码同步到目录中</p>
+<blockquote>
+<p>git clone <a target="_blank" rel="noopener" href="https://android.googlesource.com/kernel/common">https://android.googlesource.com/kernel/common</a> -b android13-5.10</p>
+</blockquote>
+<p><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104150139793.png"></p>
+<h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><p>最终可以看到完整的kernel 目录结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">total 48</span><br><span class="line">drwxr-xr-x 12 root root 4096 Jan  4 07:03 .</span><br><span class="line">drwxr-xr-x  8 root root 4096 Jan  3 09:54 ..</span><br><span class="line">drwxr-xr-x  7 root root 4096 Jan  3 10:28 .repo</span><br><span class="line">lrwxrwxrwx  1 root root    6 Jan  3 10:35 .source_date_epoch_dir -&gt; common</span><br><span class="line">lrwxrwxrwx  1 root root   34 Jan  3 10:28 WORKSPACE -&gt; build/kernel/kleaf/bazel.WORKSPACE</span><br><span class="line">drwxr-xr-x  4 root root 4096 Jan  3 10:28 build</span><br><span class="line">drwxr-xr-x 27 root root 4096 Jan  4 07:10 common</span><br><span class="line">drwxr-xr-x  3 root root 4096 Jan  3 10:28 common-modules</span><br><span class="line">drwxr-xr-x  5 root root 4096 Jan  3 10:28 external</span><br><span class="line">drwxr-xr-x  3 root root 4096 Jan  3 10:28 hikey-modules</span><br><span class="line">drwxr-xr-x  4 root root 4096 Jan  3 10:28 kernel</span><br><span class="line">drwxr-xr-x  6 root root 4096 Jan  4 07:11 out</span><br><span class="line">drwxr-xr-x 10 root root 4096 Jan  3 10:29 prebuilts</span><br><span class="line">drwxr-xr-x  3 root root 4096 Jan  3 10:30 tools</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="开始构建"><a href="#开始构建" class="headerlink" title="开始构建"></a>开始构建</h2><p>Linux Kernel 是 Android 系统运行的基础，而Linux Kernel 的源码 在AOSP 中并不存在，通常存在的是与构建的内核映像，如果想对内核做一些定制化的修改，就需要下载代码并构建，Linux Kernel 像AOSP 有各种各样的分支，并不是随便选择一个分支构建就可以正常运行。编译AOSP对应的Linux Kernel版本才能避免构建过程走很多弯路。每一个AOSP构建目标都预置了<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E9%A2%84%E7%BC%96%E8%AF%91&spm=1001.2101.3001.7020">预编译</a>的内核映像，可以从内核影像中获取相应版本的蛛丝马迹。</p>
+<p>需要说明的是Android的内核项目同样是由repo(android.googlesource.com&#x2F;kernel&#x2F;mani…) 管理的，其中Linux Kernel的源码存在于kernel&#x2F;common(android.googlesource.com&#x2F;kernel&#x2F;comm…) 目录下，其他目录是与构建相关的工具链或者脚本等，在之前旧版本Linux Kernel构建中可以直接下载kernel&#x2F;common的代码使用make直接编译出内核镜像，但是随着Android GKI的推出，这套方法就行不通了。</p>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>由于我的pixel 6Pro 是 arrch64 架构的，所以直接按照官网里的来</p>
+<blockquote>
+<p>LTO&#x3D;thin BUILD_CONFIG&#x3D;common&#x2F;build.config.gki.aarch64 build&#x2F;build.sh</p>
+</blockquote>
+<p>如果自己的不一样，要自己指定对应的GKI内核架构，在common 文件夹内可以找到大部分的内核。<br><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104153617128.png"></p>
+<p>由于我的计算机是64G 的，所以就没有加上 LTO&#x3D;thin。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line">root@4cd0e87f2387:~/aosp/kernel_android13_5_10_107# BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh</span><br><span class="line">========================================================</span><br><span class="line"> Setting up for build</span><br><span class="line">+ cd common</span><br><span class="line">+ make LLVM=1 DEPMOD=depmod DTC=/root/aosp/kernel_android13_5_10_107/build/kernel/build-tools/path/linux-x86/dtc O=/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common mrproper</span><br><span class="line">make[1]: Entering directory &#x27;/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common&#x27;</span><br><span class="line">rm -f ./crypto/fips140.ko.rela.*</span><br><span class="line">make[1]: Leaving directory &#x27;/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common&#x27;</span><br><span class="line">+ set +x</span><br><span class="line">+ cd common</span><br><span class="line">+ make LLVM=1 DEPMOD=depmod DTC=/root/aosp/kernel_android13_5_10_107/build/kernel/build-tools/path/linux-x86/dtc O=/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common gki_defconfig</span><br><span class="line">make[1]: Entering directory &#x27;/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common&#x27;</span><br><span class="line">  GEN     Makefile</span><br><span class="line">  HOSTCC  scripts/basic/fixdep</span><br><span class="line">  HOSTCC  scripts/kconfig/conf.o</span><br><span class="line">  HOSTCC  scripts/kconfig/confdata.o</span><br><span class="line">  HOSTCC  scripts/kconfig/expr.o</span><br><span class="line">  LEX     scripts/kconfig/lexer.lex.c</span><br><span class="line">  YACC    scripts/kconfig/parser.tab.[ch]</span><br><span class="line">  HOSTCC  scripts/kconfig/preprocess.o</span><br><span class="line">  HOSTCC  scripts/kconfig/symbol.o</span><br><span class="line">  HOSTCC  scripts/kconfig/util.o</span><br><span class="line">  HOSTCC  scripts/kconfig/lexer.lex.o</span><br><span class="line">  HOSTCC  scripts/kconfig/parser.tab.o</span><br><span class="line">  HOSTLD  scripts/kconfig/conf</span><br><span class="line">#</span><br><span class="line"># configuration written to .config</span><br><span class="line">#</span><br><span class="line">make[1]: Leaving directory &#x27;/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common&#x27;</span><br><span class="line">+ set +x</span><br><span class="line">========================================================</span><br><span class="line"> Running pre-make command(s):</span><br><span class="line">+ eval check_defconfig</span><br><span class="line">++ check_defconfig</span><br><span class="line">++ cd /root/aosp/kernel_android13_5_10_107/out/android13-5.10/common</span><br><span class="line">++ make LLVM=1 DEPMOD=depmod DTC=/root/aosp/kernel_android13_5_10_107/build/kernel/build-tools/path/linux-x86/dtc O=/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common savedefconfig</span><br><span class="line">  GEN     Makefile</span><br><span class="line">++ &#x27;[&#x27; arm64 = x86_64 -o arm64 = i386 &#x27;]&#x27;</span><br><span class="line">++ RES=0</span><br><span class="line">++ [[ -f common/arch/arm64/configs/gki_defconfig ]]</span><br><span class="line">++ diff -u common/arch/arm64/configs/gki_defconfig /root/aosp/kernel_android13_5_10_107/out/android13-5.10/common/defconfig</span><br><span class="line">++ &#x27;[&#x27; 0 -ne 0 &#x27;]&#x27;</span><br><span class="line">++ return 0</span><br><span class="line">+ set +x</span><br><span class="line">========================================================</span><br><span class="line"> Copying abi definition to /root/aosp/kernel_android13_5_10_107/out/android13-5.10/dist/abi.xml</span><br><span class="line">~/aosp/kernel_android13_5_10_107/common ~/aosp/kernel_android13_5_10_107</span><br><span class="line">~/aosp/kernel_android13_5_10_107</span><br><span class="line">========================================================</span><br><span class="line">Generating ABI symbol list definition in /root/aosp/kernel_android13_5_10_107/out/android13-5.10/dist/abi_symbollist</span><br><span class="line">Generating ABI symbol report /root/aosp/kernel_android13_5_10_107/out/android13-5.10/dist/abi_symbollist.report</span><br><span class="line">~/aosp/kernel_android13_5_10_107/common ~/aosp/kernel_android13_5_10_107</span><br><span class="line">  GEN     Makefile</span><br><span class="line">#</span><br><span class="line"># configuration written to .config</span><br><span class="line">#</span><br><span class="line">~/aosp/kernel_android13_5_10_107</span><br><span class="line">========================================================</span><br><span class="line"> Building kernel</span><br><span class="line">+ cd /root/aosp/kernel_android13_5_10_107/out/android13-5.10/common</span><br><span class="line">+ make O=/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common LLVM=1 DEPMOD=depmod DTC=/root/aosp/kernel_android13_5_10_107/build/kernel/build-tools/path/linux-x86/dtc Image modules Image.lz4 Image.gz</span><br><span class="line">  SYNC    include/config/auto.conf.cmd</span><br><span class="line">  GEN     Makefile</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">die__process_unit: DW_TAG_label (0xa) @ &lt;0x15dcf6&gt; not handled!</span><br><span class="line">die__process_unit: DW_TAG_label (0xa) @ &lt;0x15de2f&gt; not handled!</span><br><span class="line">die__process_unit: DW_TAG_label (0xa) @ &lt;0x15de4c&gt; not handled!</span><br><span class="line">die__process_unit: DW_TAG_label (0xa) @ &lt;0x15df85&gt; not handled!</span><br><span class="line">die__process_unit: DW_TAG_label (0xa) @ &lt;0x15df9f&gt; not handled!</span><br><span class="line">die__process_unit: DW_TAG_label (0xa) @ &lt;0x15dfb9&gt; not handled!</span><br><span class="line">  LD      .tmp_vmlinux.kallsyms1</span><br><span class="line">  KSYMS   .tmp_vmlinux.kallsyms1.S</span><br><span class="line">  AS      .tmp_vmlinux.kallsyms1.S</span><br><span class="line">  LD      .tmp_vmlinux.kallsyms2</span><br><span class="line">  KSYMS   .tmp_vmlinux.kallsyms2.S</span><br><span class="line">  AS      .tmp_vmlinux.kallsyms2.S</span><br><span class="line">  LD      vmlinux</span><br><span class="line">  BTFIDS  vmlinux</span><br><span class="line">  SORTTAB vmlinux</span><br><span class="line">  SYSMAP  System.map</span><br><span class="line">  OBJCOPY arch/arm64/boot/Image</span><br><span class="line">  LZ4     arch/arm64/boot/Image.lz4</span><br><span class="line">  GZIP    arch/arm64/boot/Image.gz</span><br><span class="line">  MODPOST modules-only.symvers</span><br><span class="line">  GEN     Module.symvers</span><br><span class="line">+ set +x</span><br><span class="line">========================================================</span><br><span class="line"> Checking the list of modules:</span><br><span class="line">========================================================</span><br><span class="line"> Comparing the KMI and the symbol lists:</span><br><span class="line">+ gki_modules_list=/root/aosp/kernel_android13_5_10_107/common/android/gki_system_dlkm_modules</span><br><span class="line">++ sed &#x27;s/\.ko$//&#x27; /root/aosp/kernel_android13_5_10_107/common/android/gki_system_dlkm_modules</span><br><span class="line">++ tr &#x27;\n&#x27; &#x27; &#x27;</span><br><span class="line">+ KMI_STRICT_MODE_OBJECTS=&#x27;vmlinux &#x27;</span><br><span class="line">+ /root/aosp/kernel_android13_5_10_107/build/abi/compare_to_symbol_list /root/aosp/kernel_android13_5_10_107/out/android13-5.10/common/Module.symvers /root/aosp/kernel_android13_5_10_107/out/android13-5.10/common/abi_symbollist.raw</span><br><span class="line">+ set +x</span><br><span class="line">========================================================</span><br><span class="line"> Installing kernel modules into staging directory</span><br><span class="line">  DEPMOD  5.10.198-android13-4-00014-g4fb32a1f29a6</span><br><span class="line">========================================================</span><br><span class="line"> Generating gki_certification_tools.tar.gz</span><br><span class="line">========================================================</span><br><span class="line"> Generating test_mappings.zip</span><br><span class="line">========================================================</span><br><span class="line"> Copying files</span><br><span class="line">  arch/arm64/boot/Image</span><br><span class="line">  vmlinux</span><br><span class="line">  System.map</span><br><span class="line">  vmlinux.symvers</span><br><span class="line">  modules.builtin</span><br><span class="line">  modules.builtin.modinfo</span><br><span class="line">  arch/arm64/boot/Image.lz4</span><br><span class="line">  arch/arm64/boot/Image.gz</span><br><span class="line">========================================================</span><br><span class="line"> Installing UAPI kernel headers:</span><br><span class="line">make: Entering directory &#x27;/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common&#x27;</span><br><span class="line">  INSTALL /root/aosp/kernel_android13_5_10_107/out/android13-5.10/kernel_uapi_headers/usr/include</span><br><span class="line">make: Leaving directory &#x27;/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common&#x27;</span><br><span class="line"> Copying kernel UAPI headers to /root/aosp/kernel_android13_5_10_107/out/android13-5.10/dist/kernel-uapi-headers.tar.gz</span><br><span class="line">========================================================</span><br><span class="line"> Copying kernel headers to /root/aosp/kernel_android13_5_10_107/out/android13-5.10/dist/kernel-headers.tar.gz</span><br><span class="line">~/aosp/kernel_android13_5_10_107/common ~/aosp/kernel_android13_5_10_107</span><br><span class="line">~/aosp/kernel_android13_5_10_107</span><br><span class="line">========================================================</span><br><span class="line"> Creating system_dlkm image</span><br><span class="line">========================================================</span><br><span class="line"> Files copied to /root/aosp/kernel_android13_5_10_107/out/android13-5.10/dist</span><br><span class="line">Creating boot-img.tar.gz for gki-info.txt boot.img boot-gz.img boot-lz4.img</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="使用KernelSU构建内核"><a href="#使用KernelSU构建内核" class="headerlink" title="使用KernelSU构建内核"></a>使用KernelSU构建内核</h3><p><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104165411568.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">root@4cd0e87f2387:~/aosp/kernel_android13_5_10_107# curl -LSs &quot;https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh&quot; | bash -</span><br><span class="line">++ pwd</span><br><span class="line">+ GKI_ROOT=/root/aosp/kernel_android13_5_10_107</span><br><span class="line">+ echo &#x27;[+] GKI_ROOT: /root/aosp/kernel_android13_5_10_107&#x27;</span><br><span class="line">[+] GKI_ROOT: /root/aosp/kernel_android13_5_10_107</span><br><span class="line">+ test -d /root/aosp/kernel_android13_5_10_107/common/drivers</span><br><span class="line">+ DRIVER_DIR=/root/aosp/kernel_android13_5_10_107/common/drivers</span><br><span class="line">+ test -d /root/aosp/kernel_android13_5_10_107/KernelSU</span><br><span class="line">+ git clone https://github.com/tiann/KernelSU</span><br><span class="line">Cloning into &#x27;KernelSU&#x27;...</span><br><span class="line">remote: Enumerating objects: 12723, done.</span><br><span class="line">remote: Counting objects: 100% (120/120), done.</span><br><span class="line">remote: Compressing objects: 100% (66/66), done.</span><br><span class="line">remote: Total 12723 (delta 53), reused 98 (delta 39), pack-reused 12603</span><br><span class="line">Receiving objects: 100% (12723/12723), 12.04 MiB | 552.00 KiB/s, done.</span><br><span class="line">Resolving deltas: 100% (7655/7655), done.</span><br><span class="line">+ cd /root/aosp/kernel_android13_5_10_107/KernelSU</span><br><span class="line">+ git stash</span><br><span class="line">No local changes to save</span><br><span class="line">++ git status</span><br><span class="line">++ grep -Po &#x27;v\d+(\.\d+)*&#x27;</span><br><span class="line">++ head -n1</span><br><span class="line">+ &#x27;[&#x27; &#x27;&#x27; &#x27;]&#x27;</span><br><span class="line">+ git pull</span><br><span class="line">Already up to date.</span><br><span class="line">+ &#x27;[&#x27; -z &#x27;&#x27; &#x27;]&#x27;</span><br><span class="line">++ git describe --abbrev=0 --tags</span><br><span class="line">+ git checkout v0.7.2</span><br><span class="line">Note: checking out &#x27;v0.7.2&#x27;.</span><br><span class="line"></span><br><span class="line">You are in &#x27;detached HEAD&#x27; state. You can look around, make experimental</span><br><span class="line">changes and commit them, and you can discard any commits you make in this</span><br><span class="line">state without impacting any branches by performing another checkout.</span><br><span class="line"></span><br><span class="line">If you want to create a new branch to retain commits you create, you may</span><br><span class="line">do so (now or later) by using -b with the checkout command again. Example:</span><br><span class="line"></span><br><span class="line">  git checkout -b &lt;new-branch-name&gt;</span><br><span class="line"></span><br><span class="line">HEAD is now at afefe20 ci: fix clippy</span><br><span class="line">+ cd /root/aosp/kernel_android13_5_10_107</span><br><span class="line">+ echo &#x27;[+] GKI_ROOT: /root/aosp/kernel_android13_5_10_107&#x27;</span><br><span class="line">[+] GKI_ROOT: /root/aosp/kernel_android13_5_10_107</span><br><span class="line">+ echo &#x27;[+] Copy kernel su driver to /root/aosp/kernel_android13_5_10_107/common/drivers&#x27;</span><br><span class="line">[+] Copy kernel su driver to /root/aosp/kernel_android13_5_10_107/common/drivers</span><br><span class="line">+ cd /root/aosp/kernel_android13_5_10_107/common/drivers</span><br><span class="line">+ test -d /root/aosp/kernel_android13_5_10_107/common/drivers</span><br><span class="line">+ ln -sf ../../KernelSU/kernel kernelsu</span><br><span class="line">+ cd /root/aosp/kernel_android13_5_10_107</span><br><span class="line">+ echo &#x27;[+] Add kernel su driver to Makefile&#x27;</span><br><span class="line">[+] Add kernel su driver to Makefile</span><br><span class="line">+ DRIVER_MAKEFILE=/root/aosp/kernel_android13_5_10_107/common/drivers/Makefile</span><br><span class="line">+ DRIVER_KCONFIG=/root/aosp/kernel_android13_5_10_107/common/drivers/Kconfig</span><br><span class="line">+ grep -q kernelsu /root/aosp/kernel_android13_5_10_107/common/drivers/Makefile</span><br><span class="line">+ printf &#x27;obj-$(CONFIG_KSU) += kernelsu/\n&#x27;</span><br><span class="line">+ grep -q kernelsu /root/aosp/kernel_android13_5_10_107/common/drivers/Kconfig</span><br><span class="line">+ sed -i &#x27;/endmenu/i\source &quot;drivers/kernelsu/Kconfig&quot;&#x27; /root/aosp/kernel_android13_5_10_107/common/drivers/Kconfig</span><br><span class="line">+ echo &#x27;[+] Done.&#x27;</span><br><span class="line">[+] Done.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>重新编译一遍</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">  LZ4     arch/arm64/boot/Image.lz4</span><br><span class="line">  GZIP    arch/arm64/boot/Image.gz</span><br><span class="line">  MODPOST modules-only.symvers</span><br><span class="line">  GEN     Module.symvers</span><br><span class="line">+ set +x</span><br><span class="line">========================================================</span><br><span class="line"> Checking the list of modules:</span><br><span class="line">========================================================</span><br><span class="line"> Comparing the KMI and the symbol lists:</span><br><span class="line">+ gki_modules_list=/root/aosp/kernel_android13_5_10_107/common/android/gki_system_dlkm_modules</span><br><span class="line">++ sed &#x27;s/\.ko$//&#x27; /root/aosp/kernel_android13_5_10_107/common/android/gki_system_dlkm_modules</span><br><span class="line">++ tr &#x27;\n&#x27; &#x27; &#x27;</span><br><span class="line">+ KMI_STRICT_MODE_OBJECTS=&#x27;vmlinux &#x27;</span><br><span class="line">+ /root/aosp/kernel_android13_5_10_107/build/abi/compare_to_symbol_list /root/aosp/kernel_android13_5_10_107/out/android13-5.10/common/Module.symvers /root/aosp/kernel_android13_5_10_107/out/android13-5.10/common/abi_symbollist.raw</span><br><span class="line">+ set +x</span><br><span class="line">========================================================</span><br><span class="line"> Installing kernel modules into staging directory</span><br><span class="line">  DEPMOD  5.10.198-android13-4-00014-g4fb32a1f29a6-dirty</span><br><span class="line">========================================================</span><br><span class="line"> Generating gki_certification_tools.tar.gz</span><br><span class="line">========================================================</span><br><span class="line"> Generating test_mappings.zip</span><br><span class="line">========================================================</span><br><span class="line"> Copying files</span><br><span class="line">  arch/arm64/boot/Image</span><br><span class="line">  vmlinux</span><br><span class="line">  System.map</span><br><span class="line">  vmlinux.symvers</span><br><span class="line">  modules.builtin</span><br><span class="line">  modules.builtin.modinfo</span><br><span class="line">  arch/arm64/boot/Image.lz4</span><br><span class="line">  arch/arm64/boot/Image.gz</span><br><span class="line">========================================================</span><br><span class="line"> Installing UAPI kernel headers:</span><br><span class="line">make: Entering directory &#x27;/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common&#x27;</span><br><span class="line">  INSTALL /root/aosp/kernel_android13_5_10_107/out/android13-5.10/kernel_uapi_headers/usr/include</span><br><span class="line">make: Leaving directory &#x27;/root/aosp/kernel_android13_5_10_107/out/android13-5.10/common&#x27;</span><br><span class="line"> Copying kernel UAPI headers to /root/aosp/kernel_android13_5_10_107/out/android13-5.10/dist/kernel-uapi-headers.tar.gz</span><br><span class="line">========================================================</span><br><span class="line"> Copying kernel headers to /root/aosp/kernel_android13_5_10_107/out/android13-5.10/dist/kernel-headers.tar.gz</span><br><span class="line">~/aosp/kernel_android13_5_10_107/common ~/aosp/kernel_android13_5_10_107</span><br><span class="line">~/aosp/kernel_android13_5_10_107</span><br><span class="line">========================================================</span><br><span class="line"> Creating system_dlkm image</span><br><span class="line">========================================================</span><br><span class="line"> Files copied to /root/aosp/kernel_android13_5_10_107/out/android13-5.10/dist</span><br><span class="line">Creating boot-img.tar.gz for gki-info.txt boot.img boot-gz.img boot-lz4.img</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译结果out"><a href="#编译结果out" class="headerlink" title="编译结果out"></a>编译结果out</h3><p>编译后的目录，可以看到多了一个out 目录和KernelSU目录，内核二进制文件、模块和相应的映像位于 out&#x2F;android13-5.10&#x2F;dist 目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">root@4cd0e87f2387:~/aosp/kernel_android13_5_10_107# ls -al</span><br><span class="line">total 56</span><br><span class="line">drwxr-xr-x 13 root root 4096 Jan  4 03:35 .</span><br><span class="line">drwxr-xr-x  8 root root 4096 Jan  3 09:54 ..</span><br><span class="line">drwxr-xr-x  7 root root 4096 Jan  3 09:50 .repo</span><br><span class="line">lrwxrwxrwx  1 root root    6 Jan  3 09:25 .source_date_epoch_dir -&gt; common</span><br><span class="line">drwxr-xr-x 10 root root 4096 Jan  4 03:35 KernelSU</span><br><span class="line">lrwxrwxrwx  1 root root   34 Jan  3 09:18 WORKSPACE -&gt; build/kernel/kleaf/bazel.WORKSPACE</span><br><span class="line">drwxr-xr-x  4 root root 4096 Jan  3 09:18 build</span><br><span class="line">drwxr-xr-x 27 root root 4096 Jan  3 14:47 common</span><br><span class="line">drwxr-xr-x  3 root root 4096 Jan  3 09:18 common-modules</span><br><span class="line">drwxr-xr-x  5 root root 4096 Jan  3 09:18 external</span><br><span class="line">drwxr-xr-x  3 root root 4096 Jan  3 09:18 hikey-modules</span><br><span class="line">drwxr-xr-x  4 root root 4096 Jan  3 09:18 kernel</span><br><span class="line">-rw-r--r--  1 root root 3823 Jan  3 08:44 manifest_91.xml</span><br><span class="line">drwxr-xr-x  5 root root 4096 Jan  4 03:05 out</span><br><span class="line">drwxr-xr-x 10 root root 4096 Jan  3 09:19 prebuilts</span><br><span class="line">drwxr-xr-x  3 root root 4096 Jan  3 09:19 tools</span><br></pre></td></tr></table></figure>
+
+<p>在out目录内，可以看到<br><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104170104525.png"></p>
+<h2 id="刷入到手机内"><a href="#刷入到手机内" class="headerlink" title="刷入到手机内"></a>刷入到手机内</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">E:\file\KernelSU&gt;adb reboot bootloader</span><br><span class="line"></span><br><span class="line">E:\file\KernelSU&gt;fastboot flash boot boot.img</span><br><span class="line">Sending &#x27;boot_a&#x27; (65536 KB)                        OKAY [  2.135s]</span><br><span class="line">Writing &#x27;boot_a&#x27;                                   OKAY [  0.081s]</span><br><span class="line">Finished. Total time: 2.228s</span><br><span class="line"></span><br><span class="line">E:\file\KernelSU&gt;fastboot reboot</span><br><span class="line">Rebooting                                          OKAY [  0.001s]</span><br><span class="line">Finished. Total time: 0.007s</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看KernelSU"><a href="#查看KernelSU" class="headerlink" title="查看KernelSU"></a>查看KernelSU</h3><p><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104170806428.png"></p>
+<h3 id="开启root"><a href="#开启root" class="headerlink" title="开启root"></a>开启root</h3><p><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104170838494.png"></p>
+<h3 id="root检测（检测不出来）"><a href="#root检测（检测不出来）" class="headerlink" title="root检测（检测不出来）"></a>root检测（检测不出来）</h3><p><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240111182343319.png"></p>
+<h3 id="查看内核"><a href="#查看内核" class="headerlink" title="查看内核"></a>查看内核</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">E:\file\KernelSU&gt;adb shell</span><br><span class="line">raven:/ $ uname -a</span><br><span class="line">Linux localhost 5.10.198-android13-4-00014-g4fb32a1f29a6-dirty #1 SMP PREEMPT Wed Dec 27 01:56:34 UTC 2023 aarch64 Toybox</span><br><span class="line">raven:/ $ su</span><br><span class="line">/system/bin/sh: su: inaccessible or not found</span><br><span class="line">127|raven:/ $ su</span><br><span class="line">raven:/ #</span><br></pre></td></tr></table></figure>
+<h3 id="查看-ro-debuggable"><a href="#查看-ro-debuggable" class="headerlink" title="查看 ro.debuggable"></a>查看 ro.debuggable</h3><p><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240111105550320.png"></p>
+<h2 id="KernelSU模块"><a href="#KernelSU模块" class="headerlink" title="KernelSU模块"></a>KernelSU模块</h2><h2 id="其他思考"><a href="#其他思考" class="headerlink" title="其他思考"></a>其他思考</h2><h3 id="INFO-1"><a href="#INFO-1" class="headerlink" title="INFO 1"></a>INFO 1</h3><p>在GKI 源码目录common 内，看到有debug的文件，猜测是不是编译的时候加入这个选项，就可以开启内核调试了。</p>
+<p><img src="/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104160406917.png"><br>GTP 回答</p>
+<blockquote>
+</blockquote>
+<p><code>build.config.gki-debug.aarch64</code>和<code>build.config.gki.aarch64</code>是Android内核构建过程中使用的两个不同的配置文件。它们的区别在于构建选项和调试功能的开启程度。<br><code>build.config.gki.aarch64</code>是用于构建GKI（Generic Kernel Image）的配置文件，它是一个精简的、通用的内核映像。这个配置文件主要用于生产环境中构建内核，通常会关闭一些调试相关的选项，以提高性能和减小内核映像的大小。<br>相比之下，<code>build.config.gki-debug.aarch64</code>是用于构建调试版本的GKI的配置文件。它在构建过程中包含了更多的调试选项，以支持开发和调试工作。这些调试选项可以帮助开发者进行内核的故障排除和性能分析。<br>具体来说，<code>build.config.gki-debug.aarch64</code>可能会打开一些额外的调试选项，如内核符号表的生成、动态跟踪功能的启用、内核调试器（如KGDB）的支持等。这些选项会增加内核映像的大小，并且可能会对性能产生一些影响，但可以提供更丰富的调试信息和功能。<br>因此，选择使用哪个配置文件取决于你的需求。如果你正在进行生产环境的构建，并追求最佳性能和较小的内核映像大小，那么你可以使用<code>build.config.gki.aarch64</code>。如果你需要进行开发、调试或故障排除工作，并且对调试功能和信息更感兴趣，那么你可以选择<code>build.config.gki-debug.aarch64</code>。<br>请注意，在使用这些配置文件之前，你需要确认它们是否适用于你的构建环境和项目需求，并根据实际情况进行相应的配置和调整</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>官方guide<br><a target="_blank" rel="noopener" href="https://kernelsu.org/zh_CN/guide/installation.html">https://kernelsu.org/zh_CN/guide/installation.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://source.android.com/docs/setup/build/building-kernels?hl=zh-cn">https://source.android.com/docs/setup/build/building-kernels?hl=zh-cn</a></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，交流请邮件至 1161629782@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">💰</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

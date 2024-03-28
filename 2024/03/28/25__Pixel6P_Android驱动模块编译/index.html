@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>NetGear__DNG2200v1系列漏洞分析 | Tig3rHu&#39;s Blog</title>
+  <title>Pixel 6Pro Android驱动模块编译 | Tig3rHu&#39;s Blog</title>
   <meta name="keywords" content="">
-  <meta name="description" content="NetGear__DNG2200v1系列漏洞分析 | Tig3rHu&#39;s Blog">
+  <meta name="description" content="Pixel 6Pro Android驱动模块编译 | Tig3rHu&#39;s Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="Android 驱动编译背景Android 内核驱动是Android中负责硬件的连接和操控，确保硬件与操作系统的交互，这些驱动是内核的拓展组件，通过提供统一的驱动操作接口供用户层使用。 Android内核驱动主要分为两种类型：Android专用驱动和Android使用的设备驱动（基于Linux）。其中，Android专用驱动包括如Ashmem（匿名共享内存驱动）、Logger（轻量级的日志驱动）、">
 <meta property="og:type" content="article">
@@ -468,9 +468,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-NetGear_DGN2200v1系列漏洞分析" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-25__Pixel6P_Android驱动模块编译" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">NetGear__DNG2200v1系列漏洞分析</h1>
+        <h1 class="article-title">Pixel 6Pro Android驱动模块编译</h1>
     
     <div class="article-meta">
         
@@ -480,7 +480,7 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2024-01-08 15:03:38'>2023-12-16 20:34</time>
+            Created At : <time class="date" title='Updated At: 2024-03-28 23:30:05'>2024-03-28 23:23</time>
         
     </div>
     <div class="article-meta">
@@ -502,7 +502,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#NetGear-DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-text">NetGear DGN2200v1系列漏洞分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%92%8C%E8%A7%A3%E5%8E%8B%E5%9B%BA%E4%BB%B6"><span class="toc-text">获取和解压固件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A2%E7%B4%A2"><span class="toc-text">探索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DGN-2200V1%E8%B7%AF%E7%94%B1%E5%99%A8%E4%B8%AD%E5%AD%98%E5%9C%A8%E7%9A%84%E6%BC%8F%E6%B4%9E"><span class="toc-text">DGN 2200V1路由器中存在的漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E8%AE%BF%E9%97%AE%E8%B7%AF%E7%94%B1%E5%99%A8%E7%AE%A1%E7%90%86%E7%95%8C%E9%9D%A2"><span class="toc-text">绕过身份验证访问路由器管理界面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%8A%A0%E5%AF%86%E4%BE%A7%E4%BF%A1%E9%81%93%E6%94%BB%E5%87%BB%E6%8E%A8%E6%96%AD%E8%B7%AF%E7%94%B1%E5%99%A8%E5%87%AD%E8%AF%81"><span class="toc-text">通过加密侧信道攻击推断路由器凭证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E7%B4%A2%E5%AD%98%E5%82%A8%E5%9C%A8%E8%AE%BE%E5%A4%87%E4%B8%AD%E7%9A%84%E5%AF%86%E9%92%A5"><span class="toc-text">检索存储在设备中的密钥</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%93%E5%B1%95"><span class="toc-text">拓展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Ex6100v2-%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90"><span class="toc-text">Ex6100v2 固件分析</span></a></li></ol></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-%E9%A9%B1%E5%8A%A8%E7%BC%96%E8%AF%91%E8%83%8C%E6%99%AF"><span class="toc-text">Android 驱动编译背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A9%B1%E5%8A%A8%E6%BA%90%E7%A0%81"><span class="toc-text">驱动源码</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -518,50 +518,54 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="NetGear-DGN2200v1系列漏洞分析"><a href="#NetGear-DGN2200v1系列漏洞分析" class="headerlink" title="NetGear DGN2200v1系列漏洞分析"></a>NetGear DGN2200v1系列漏洞分析</h1><h3 id="获取和解压固件"><a href="#获取和解压固件" class="headerlink" title="获取和解压固件"></a>获取和解压固件</h3><p>固件可从供应商的网站上获得，这使我们更容易获得副本进行检查。它是一个简单的 .zip 文件，包含发行说明 (.html) 和固件映像本身（.chk 文件）。在 .chk 文件上运行binwalk最终提取了文件系统 ( squash-fs )。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image1.png" alt="image-20231216202735932"></p>
-<p>由器固件文件系统本身是一个标准的 Linux 根文件系统，并添加了一些小功能。我们关心和研究有以下几点</p>
+        <h2 id="Android-驱动编译背景"><a href="#Android-驱动编译背景" class="headerlink" title="Android 驱动编译背景"></a>Android 驱动编译背景</h2><p>Android 内核驱动是Android中负责硬件的连接和操控，确保硬件与操作系统的交互，这些驱动是内核的拓展组件，通过提供统一的驱动操作接口供用户层使用。</p>
+<p>Android内核驱动主要分为两种类型：Android专用驱动和Android使用的设备驱动（基于Linux）。其中，Android专用驱动包括如Ashmem（匿名共享内存驱动）、Logger（轻量级的日志驱动）、Binder驱动（基于OpenBinder驱动，为Android平台提供IPC进程间通信的支持）等。而设备驱动则主要基于Linux的设备驱动模型，负责管理各种硬件设备，如USB驱动、物理内存驱动等。</p>
+<p>在Android系统中，一个传统的驱动架构通常包括kernel驱动、HAL（硬件抽象层）驱动、JNI（Java Native Interface）层、service层等。程序运行时的调用关系通常是从apk（应用程序包）开始，通过service层、JNI层、HAL层，最终到达kernel驱动层。</p>
+<p>在开发 Android 驱动程序的过程中，如何对开发好的驱动程序进行编译。 </p>
+<p>对于Linux驱动有两种编译和运行方式：</p>
 <ul>
-<li>&#x2F;www  –  包含html页面和.gif图片</li>
-<li>&#x2F;usr&#x2F;sbin – 包含 NETGEAR 的各种自定义二进制文件，包括 HTTPd、FTPC 等</li>
+<li>将驱动编译进Linux 内核中，当Linux 内核启动的时候就会自动运行驱动程序。</li>
+<li>将驱动编译成模块（Linux 中模块拓展名为.ko）， 在 Linux 内核启动以后使用相应命令加载驱动模块。<ul>
+<li>内核模块是Linux 内核向外部提供的一个插口</li>
+<li>内核模块是具有独立功能的程序，可以被单独编译，但不能单独运行，在运行时被链接到内核作为内核一部分在内核空间运行。</li>
+<li>内核模块便于 驱动和文件系统的二次开发</li>
 </ul>
-<p>由于我们看到异常通信使用 httpd 服务的标准端口，因此我们将重点放在 httpd 上。httpd 本身是一个 32 位大端 MIPS ELF，针对 uClibc (嵌入式设备的标准 libc）编译，似乎整个服务器端逻辑 (CGI) 都被编译到 httpd 中。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image2.png" alt="image-20231216202735932"></p>
-<h3 id="探索"><a href="#探索" class="headerlink" title="探索"></a>探索</h3><p>在探索嵌入式web服务时，首先要考虑以下几个问题</p>
-<ol>
-<li>Web 服务是否显示一些未经身份验证的页面？如果是这样，他们是如何治理的？</li>
-<li>Web 服务如何执行身份验证？</li>
-<li>Web服务是否正确处理请求（即是否存在内存损坏错误）？</li>
-<li>Web 服务是否实施了某些安全措施，例如（反）跨站点请求伪造令牌或内容安全策略？</li>
-</ol>
-<p>为了回答这些问题，我们对 httpd 二进制文件进行了静态分析，并通过运行 QEMU（一个开源模拟器）对固件进行仿真模拟，另外使用了hook（例如 NVRAM getter 和 setter）进行了一些动态分析。</p>
-<h3 id="DGN-2200V1路由器中存在的漏洞"><a href="#DGN-2200V1路由器中存在的漏洞" class="headerlink" title="DGN 2200V1路由器中存在的漏洞"></a>DGN 2200V1路由器中存在的漏洞</h3><h4 id="绕过身份验证访问路由器管理界面"><a href="#绕过身份验证访问路由器管理界面" class="headerlink" title="绕过身份验证访问路由器管理界面"></a>绕过身份验证访问路由器管理界面</h4><p>在检查 httpd 如何规定哪些页面应该在没有身份验证的情况下提供时，我们发现了以下伪代码：</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image3.png" alt="image-20231216202735932"></p>
-<p>这些代码是httpd中的第一个页面处理代码，它会自动允许一些页面，例如form.css或者func.js，正常来说，这些设置并没有问题，但是异常点在于NetGear使用strstr函数来检查是否有“.jpg”“.gif”或者“ess_“字符串，用来匹配整个 url 。<br>因此我们可以使用GET 方式在URL中带有strstr检查的字符串（如 “?.gif” ）来访问设备的任意界面，其中包括身份验证的界面，使用如下</p>
-<p><code>https://ip/WAN_wan.htm?pic.gif</code></p>
-<p>就可以成功绕过身份验证访问路由器管理界面了。</p>
-<h4 id="通过加密侧信道攻击推断路由器凭证"><a href="#通过加密侧信道攻击推断路由器凭证" class="headerlink" title="通过加密侧信道攻击推断路由器凭证"></a>通过加密侧信道攻击推断路由器凭证</h4><p>在这个阶段，我们已经完全控制了路由器管理界面，但是我们继续研究身份验证本身是如何实现的。<br>我们注意到httpd 组件对http界面进行基础认证，需要将username和password 使用base64来进行编译，然后在http header中发送，最后在路由器内存中保存的用户名和密码进行验证，路由器将这些信息存储在NVRAM中。<br>在我们检查身份验证的过程中，我们发现了一种可以让攻击者获取正确凭据的旁道攻击：</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image4.png" alt="image-20231216202735932"></p>
-<p>这里要注意，username 和 password 是使用strcmp来进行比较的，strcmp 在 libc 中的实现是通过逐个字符比较直到观察到 NUL 终止符或直到发生不匹配来工作。</p>
-<p>攻击者可以通过测量失败所需的时间来利用后者。例如，在测量第一个字符的次数时，我们得到如下图：</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image5.png" alt="image-20231216202735932"></p>
-<p>这表示第一个字符是“n”。攻击者可以重复此过程（“na”、“nb”、“nc”等）以获取第二个字符，直到泄露整个用户名和密码。</p>
-<p>我们向 NETGEAR 建议他们可以通过执行基于 XOR 的内存比较来避免此类攻击，例如：</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image6.png" alt="image-20231216202735932"></p>
-<p>使字节不匹配，该功能也会继续。类似的方法可以在加密安全库中看到，例如OpenSSL 的 CRYPTO_memcmp。</p>
-<h4 id="检索存储在设备中的密钥"><a href="#检索存储在设备中的密钥" class="headerlink" title="检索存储在设备中的密钥"></a>检索存储在设备中的密钥</h4><p>当完成身份验证绕过漏洞之后，我们仍然想看看是否可以利用其他现有的漏洞来恢复路由器使用的username和密码，因为我们决定使用路由器的配置备份\恢复功能。<br>我们可以使用身份绕过获取文件：<br><code> hxxp://router_addr:8080/NETGEAR_DGN2200[.]cfg?pic[.]gif.</code><br>这个文件具有高熵，这表明它已被加密，我们无法直接读取内容，并且binwalk也没有任何结果。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image7.png" alt="image-20231216202735932"></p>
-<p>当我们对“备份\恢复“的功能进行逆向后，我们的问题被解决了。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image8.png" alt="image-20231216202735932"></p>
-<h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><h4 id="Ex6100v2-固件分析"><a href="#Ex6100v2-固件分析" class="headerlink" title="Ex6100v2 固件分析"></a>Ex6100v2 固件分析</h4><p>看完这边漏洞分析文章之后，根据以往对Netgear固件分析中，发现这种情况存在许多版本的固件中，于是我翻出了实验室的NetGear Ex6100v2 路由设备，下载到对应版本的固件，然后对固件进行解包分析，<br>根据&#x2F;etc&#x2F;init.d&#x2F;rcS文件中的内容<br>找到uhttpd 的组件（<br>uHTTPd 是一个 OpenWrt&#x2F;LUCI 开发者从头编写的 Web 服务器），可以看到这个固件是使用NX的保护措施。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image9.png" alt="image-20231216202735932"></p>
-<p>在我分析&#x2F;etc&#x2F;boot文件中，看到如下内容，也可以证明这是一个OpenWRT类型的web组件。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image10.png" alt="image-20231216202735932"></p>
-<p>在uhttpd组件的逆向中，看到了如下的伪代码</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image11.png" alt="image-20231216202735932"></p>
-<p>本来以为这也是一个存在身份验证绕过的固件，但是继续查看引用，看到这个函数需要在用户认证之后才会触发</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image12.png" alt="image-20231216202735932"></p>
-<p>于是在经过实际的测试，确实是需要在经过认证才能访问（鸡肋）</p>
+</li>
+</ul>
+<p>所以想要驱动在Android 系统中运行，有两种编译方式：</p>
+<ul>
+<li>驱动编译到内核源码树中，直接编译到内核中。</li>
+<li>驱动编译到内核模块，或者随着内核源码树一起编译成ko 文件。</li>
+</ul>
+<p>这里将介绍如何把字符设备驱动源程序在内核源码中编译成 .ko 文件，然后加载到pixel 6P 中。主要分为两部分</p>
+<ul>
+<li>第一步：将字符设备驱动源代码放到内核 &#x2F;common&#x2F;driver&#x2F;char&#x2F; 目录中</li>
+<li>第二步：编辑Kconfig 和 Makefile 文件，Kconfig 文件 是在编译前执行配置命令 make menuconfi 时用到的；Makefile 在执行编译命令make 用到的。</li>
+</ul>
+<h2 id="驱动源码"><a href="#驱动源码" class="headerlink" title="驱动源码"></a>驱动源码</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">android_hello.c</span><br><span class="line"></span><br><span class="line">#include &lt;linux/module.h&gt;</span><br><span class="line">#include &lt;linux/fs.h&gt;</span><br><span class="line">#include &lt;linux/cdev.h&gt;</span><br><span class="line"></span><br><span class="line">static int major = 300;  # 主设备号</span><br><span class="line">static int minor = 0;</span><br><span class="line">static dev_t devno;</span><br><span class="line">static struct cdev cdev;</span><br><span class="line"></span><br><span class="line">static int hello_open(struct inode *inode, struct file *filep)</span><br><span class="line">&#123;</span><br><span class="line">    printk(&quot;hello open\n&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">static struct file_operations hello_ops=</span><br><span class="line">&#123;</span><br><span class="line">    .open = hello_open,</span><br><span class="line">&#125;;</span><br><span class="line">static int hello_init(void)</span><br><span class="line">&#123;</span><br><span class="line">    int ret;</span><br><span class="line"></span><br><span class="line">    printk(&quot;hello_init\n&quot;);</span><br><span class="line">    printk(&quot;ohhhhhhhhh HelloWorld driver!&quot;);</span><br><span class="line">    devno = MKDEV(major, minor);  # 定义设备号宏</span><br><span class="line">    ret = register_chrdev_region(devno, 1, &quot;HelloWorld&quot;); 注册字符设备</span><br><span class="line">    if(ret &lt; 0)</span><br><span class="line">    &#123;</span><br><span class="line">        printk(&quot;register_chrdev_region faile\n&quot;);</span><br><span class="line">                return ret;</span><br><span class="line">    &#125;</span><br><span class="line">    cdev_init(&amp;cdev, &amp;hello_ops);</span><br><span class="line">    ret = cdev_add(&amp;cdev, devno, 1);</span><br><span class="line">    if(ret &lt; 0)</span><br><span class="line">    &#123;</span><br><span class="line">        printk(&quot;cdev_add faile \n&quot;);</span><br><span class="line">        return ret;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">static void hello_exit(void)</span><br><span class="line">&#123;</span><br><span class="line">    cdev_del(&amp;cdev);</span><br><span class="line">    unregister_chrdev_region(devno, 1);</span><br><span class="line">    printk(&quot;hello_exit\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">MODULE_LICENSE(&quot;GPL&quot;);</span><br><span class="line">module_init(hello_init);</span><br><span class="line">module_exit(hello_exit);</span><br></pre></td></tr></table></figure>
+<p>这里我下载的是common-android13-5.10的通用内核源码，这里在编译驱动之前要将这个common-android13-5.10 先编译出来，然后将boot.img 刷入到pixel6P 中，避免内核版本不一致，导致后面编译出来的驱动加载不起来，另外，单独对 pixel 6P  boot 分区刷编译的内核镜像要注意的是，编译出来的内核镜像版本不能低于pixel 6P 原来的内核版本，否则会成砖，要重新刷入工厂镜像。</p>
+<p>将代码放到对应的 内核源码目录内，<br><img src="/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328225123329.png"><br>然后在 &#x2F;drivers&#x2F;char&#x2F;Kconfig 中添加配置。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Kconfig</span><br><span class="line">config ANDROID_HELLO</span><br><span class="line">        tristate &quot;MY testAndroid_hello&quot;</span><br><span class="line">        default y</span><br><span class="line">        help</span><br><span class="line">          qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq</span><br><span class="line">endmenu</span><br></pre></td></tr></table></figure>
+<p>如果驱动程序单独放在一个文件夹内，那么要在该文件夹内单独编写Kconfig, 然后在上一级目录的Kconfig中加入Kconfig 的路径，便于menuconfig 找得到你的Kconfig。<br>类似于如下所示<br><img src="/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328230419169.png"><br>然后在&#x2F;drivers&#x2F;char&#x2F;Makefile 中添加你要编译的对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Makefile</span><br><span class="line">obj-m     += android_hello.o</span><br><span class="line">或者obj-$(CONFIG_ANDROID_HELLO) += android_hello.o</span><br></pre></td></tr></table></figure>
+<p>然后执行在 &#x2F;common-android13-5.10&#x2F;common 中执行 make menuconfig 命令，</p>
+<p>修改 “MY testAndroid_hello” 为 M ， 因为 M 表示程序会自动到你所指定的dir目录中查找模块源码，将其编译，生成KO 文件，Y 表示直接编译内核。</p>
+<p>在char driver 中可以看到我们定义的内核模块<br><img src="/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328152015762.png"></p>
+<p>然后 &#x2F;common-android13-5.10&#x2F; 下执行</p>
+<blockquote>
+<p>BUILD_CONFIG&#x3D;common&#x2F;build.config.gki.aarch64 build&#x2F;build.sh<br>开始编译</p>
+</blockquote>
+<p>可以看到 交叉编译链 将 android_hello.o 编译为 module。<br><img src="/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328160316362.png"></p>
+<p>编译到这一块会中断，显示如下的 “ERROR: modules list out of data”<br><img src="/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328162521161.png"></p>
+<p>虽然中断了，但不影响ko编译出来<br><img src="/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328163114575.png"></p>
+<p>如果想解决整个ERROR, 在build.sh 文件中可以看到整个判断<br><img src="/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328162559303.png"><br>可以删除“exit 1”，或者只需要</p>
+<blockquote>
+<p>cp &#x2F;root&#x2F;aosp&#x2F;common-android13-5.10&#x2F;out&#x2F;android13-5.10&#x2F;common&#x2F;modules.order common&#x2F;android&#x2F;gki_aarch64_modules<br>再次编译就可以成功通过编译了。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">部分编译log</span><br><span class="line">+ set +x</span><br><span class="line">========================================================</span><br><span class="line"> Checking the list of modules:</span><br><span class="line">========================================================</span><br><span class="line"> Comparing the KMI and the symbol lists:</span><br><span class="line">+ gki_modules_list=/root/aosp/common-android13-5.10/common/android/gki_system_dlkm_modules</span><br><span class="line">++ sed &#x27;s/\.ko$//&#x27; /root/aosp/common-android13-5.10/common/android/gki_system_dlkm_modules</span><br><span class="line">++ tr &#x27;\n&#x27; &#x27; &#x27;</span><br><span class="line">+ KMI_STRICT_MODE_OBJECTS=&#x27;vmlinux &#x27;</span><br><span class="line">+ /root/aosp/common-android13-5.10/build/abi/compare_to_symbol_list /root/aosp/common-android13-5.10/out/android13-5.10/common/Module.symvers /root/aosp/common-android13-5.10/out/android13-5.10/common/abi_symbollist.raw</span><br><span class="line">+ set +x</span><br><span class="line">========================================================</span><br><span class="line"> Installing kernel modules into staging directory</span><br><span class="line">  INSTALL drivers/char/android_hello.ko   # 编译出来的驱动</span><br><span class="line">  DEPMOD  5.10.205-android13-4-00002-g6bc28fdfeec3-dirty</span><br><span class="line">========================================================</span><br><span class="line"> Generating gki_certification_tools.tar.gz</span><br><span class="line">========================================================</span><br><span class="line"> Generating test_mappings.zip</span><br><span class="line">========================================================</span><br></pre></td></tr></table></figure>
+
+<p>adb push 到手机上<br><img src="/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328164048154.png"></p>
+<p>cat &#x2F;proc&#x2F;devices 查看<br><img src="/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328164425527.png"></p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，交流请邮件至 1161629782@qq.com </span>

@@ -6,35 +6,27 @@
   <meta name="keywords" content="">
   <meta name="description" content="USG310_4.70_固件解密分析 | Tig3rHu&#39;s Blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="前期准备什么是KernelSU来源:  https:&#x2F;&#x2F;kernelsu.org&#x2F;zh_CN&#x2F;guide&#x2F;what-is-kernelsu.html KernelSU 的主要特点是它是基于内核的。 KernelSU 运行在内核空间， 所以它可以提供我们以前从未有过的内核接口。 例如，我们可以在内核模式下为任何进程添加硬件断点；我们可以在任何进程的物理内存中访问，而无人知晓；我们可以在内核空间拦截任">
+<meta name="description" content="Android 驱动编译背景Android 内核驱动是Android中负责硬件的连接和操控，确保硬件与操作系统的交互，这些驱动是内核的拓展组件，通过提供统一的驱动操作接口供用户层使用。 Android内核驱动主要分为两种类型：Android专用驱动和Android使用的设备驱动（基于Linux）。其中，Android专用驱动包括如Ashmem（匿名共享内存驱动）、Logger（轻量级的日志驱动）、">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pixel 6Pro Kernel编译整合KernelSU">
-<meta property="og:url" content="https://tig3rhu.github.io/2024/02/29/19__KernelSU%E6%90%9E%E6%9C%BA/index.html">
+<meta property="og:title" content="Pixel 6Pro Android驱动模块编译">
+<meta property="og:url" content="https://tig3rhu.github.io/2024/03/28/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91/index.html">
 <meta property="og:site_name" content="Tig3rHu&#39;s Blog">
-<meta property="og:description" content="前期准备什么是KernelSU来源:  https:&#x2F;&#x2F;kernelsu.org&#x2F;zh_CN&#x2F;guide&#x2F;what-is-kernelsu.html KernelSU 的主要特点是它是基于内核的。 KernelSU 运行在内核空间， 所以它可以提供我们以前从未有过的内核接口。 例如，我们可以在内核模式下为任何进程添加硬件断点；我们可以在任何进程的物理内存中访问，而无人知晓；我们可以在内核空间拦截任">
+<meta property="og:description" content="Android 驱动编译背景Android 内核驱动是Android中负责硬件的连接和操控，确保硬件与操作系统的交互，这些驱动是内核的拓展组件，通过提供统一的驱动操作接口供用户层使用。 Android内核驱动主要分为两种类型：Android专用驱动和Android使用的设备驱动（基于Linux）。其中，Android专用驱动包括如Ashmem（匿名共享内存驱动）、Logger（轻量级的日志驱动）、">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103102521588.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104151452108.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240115150627360.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103152118562.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103151931253.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103170927977.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103152506512.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103164714573.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104150139793.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104153617128.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104165411568.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104170104525.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104170806428.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104170838494.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240111182343319.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240111105550320.png">
-<meta property="og:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240104160406917.png">
-<meta property="article:published_time" content="2024-02-29T03:27:35.438Z">
-<meta property="article:modified_time" content="2024-02-29T14:55:47.593Z">
+<meta property="og:image" content="https://tig3rhu.github.io/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328225123329.png">
+<meta property="og:image" content="https://tig3rhu.github.io/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328230419169.png">
+<meta property="og:image" content="https://tig3rhu.github.io/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328152015762.png">
+<meta property="og:image" content="https://tig3rhu.github.io/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328160316362.png">
+<meta property="og:image" content="https://tig3rhu.github.io/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328162521161.png">
+<meta property="og:image" content="https://tig3rhu.github.io/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328163114575.png">
+<meta property="og:image" content="https://tig3rhu.github.io/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328162559303.png">
+<meta property="og:image" content="https://tig3rhu.github.io/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328164048154.png">
+<meta property="og:image" content="https://tig3rhu.github.io/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328164425527.png">
+<meta property="article:published_time" content="2024-03-28T15:23:22.373Z">
+<meta property="article:modified_time" content="2024-03-28T15:30:05.915Z">
 <meta property="article:author" content="Tig3rHu">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://tig3rhu.github.io/19__KernelSU%E6%90%9E%E6%9C%BA.assets/image-20240103102521588.png">
+<meta name="twitter:image" content="https://tig3rhu.github.io/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91.assets/image-20240328225123329.png">
 
 
 <link rel="icon" href="/img/heard.png">
@@ -151,7 +143,7 @@
     <li>
         <div class="all active" data-rel="All">All
             
-                <small>(25)</small>
+                <small>(26)</small>
             
         </div>
     </li>
@@ -171,7 +163,7 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="25">
+<input type="hidden" id="yelog_site_posts_number" value="26">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -223,6 +215,15 @@
 
     
     <nav id="title-list-nav">
+        
+        
+        <a  class="All "
+           href="/2024/03/28/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Pixel 6Pro Android驱动模块编译">Pixel 6Pro Android驱动模块编译</span>
+            <span class="post-date" title="2024-03-28 23:23:22">2024/03/28</span>
+        </a>
         
         
         <a  class="All "

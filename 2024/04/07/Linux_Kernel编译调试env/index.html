@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Linux_Kernel编译调试env | Tig3rHu&#39;s Blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="Linux_Kernel编译调试env | Tig3rHu&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="HigerHu,vulnerability,security,cyber,iot,Android">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tig3rHu&#39;s Blog">
+<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:description" content="HigerHu,vulnerability,security,cyber,iot,Android">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
+<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="article:author" content="Tig3rHu">
+<meta property="article:tag" content="HigerHu,vulnerability,security,cyber">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/heard.png">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-dark.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/heard.png"/>
+</a>
+<div class="author">
+    <span>Tig3rHu</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/Tig3rHu"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(28)</small>
+            
+        </div>
+    </li>
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        <a 
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="28">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All "
+           href="/2024/04/07/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linux_Kernel编译调试env">Linux_Kernel编译调试env</span>
+            <span class="post-date" title="2024-04-07 23:15:34">2024/04/07</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/04/06/73__dajiang__Android%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="dajiang_Android固件分析&amp;漏洞审计">dajiang_Android固件分析&amp;漏洞审计</span>
+            <span class="post-date" title="2024-04-06 22:48:50">2024/04/06</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/03/28/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Pixel 6Pro Android驱动模块编译">Pixel 6Pro Android驱动模块编译</span>
+            <span class="post-date" title="2024-03-28 23:23:22">2024/03/28</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/02/29/19__KernelSU%E6%90%9E%E6%9C%BA/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Pixel 6Pro Kernel编译整合KernelSU">Pixel 6Pro Kernel编译整合KernelSU</span>
+            <span class="post-date" title="2024-02-29 11:27:35">2024/02/29</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/02/08/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Pixel 6Pro AOSP源码在Docker内编译全过程">Pixel 6Pro AOSP源码在Docker内编译全过程</span>
+            <span class="post-date" title="2024-02-08 18:38:54">2024/02/08</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/14/Motorola_Mesh%20%E6%BC%8F%E6%B4%9E%E5%85%AC%E5%91%8A/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Motorola_Mesh漏洞公告">Motorola_Mesh漏洞公告</span>
+            <span class="post-date" title="2024-01-14 22:44:55">2024/01/14</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/14/110_jadx_%E5%86%85%E5%AD%98%E4%B8%8D%E5%A4%9F_%E4%BD%BF%E7%94%A8%E9%97%AA%E9%80%80/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="环境搭建_jadx_内存不足&amp;使用闪退">环境搭建_jadx_内存不足&amp;使用闪退</span>
+            <span class="post-date" title="2024-01-14 22:20:30">2024/01/14</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/14/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__他趣APP脱壳&amp;运行环境检测分析">apk逆向__他趣APP脱壳&amp;运行环境检测分析</span>
+            <span class="post-date" title="2024-01-14 22:15:58">2024/01/14</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/07/68__%E9%80%86%E5%90%91__%E6%87%92%E4%BA%BA%E5%90%AC%E4%B9%A6%E5%8E%BB%E4%BC%9A%E5%91%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__懒人听书逆向">apk逆向__懒人听书逆向</span>
+            <span class="post-date" title="2024-01-07 22:15:49">2024/01/07</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
+            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
+            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
+            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
+            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
+            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
+            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
+            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
+            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
+            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
+            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
+            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
+            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
+            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
+            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
+            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
+            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
+            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
+        </a>
+        
+        
+        <a  class="All "
+           href="/2023/12/15/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello World">Hello World</span>
+            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-Linux_Kernel编译调试env" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Linux_Kernel编译调试env</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2024-04-07 23:19:39'>2024-04-07 23:15</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%BB%E6%9C%BA%E7%8E%AF%E5%A2%83"><span class="toc-text">运行主机环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%86%85%E6%A0%B8"><span class="toc-text">下载内核</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD-qemu"><span class="toc-text">下载 qemu</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8"><span class="toc-text">编译内核</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85"><span class="toc-text">依赖安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%86%85%E6%A0%B8"><span class="toc-text">安装内核</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%86%85%E6%A0%B8%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85"><span class="toc-text">查看内核是否安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%BC%96%E8%AF%91%E7%9A%84%E5%86%85%E6%A0%B8%E8%83%BD%E5%90%A6%E4%BD%BF%E7%94%A8"><span class="toc-text">测试编译的内核能否使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Initramfs"><span class="toc-text">安装Initramfs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95"><span class="toc-text">调试</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="运行主机环境"><a href="#运行主机环境" class="headerlink" title="运行主机环境"></a>运行主机环境</h2><p><img src="/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env.assets/2024-01-17%2010-38-12%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@uubb-ThinkCentre-M930s-N000:/# uname -a</span><br><span class="line">Linux uubb-ThinkCentre-M930s-N000 5.4.0-150-generic #167~18.04.1-Ubuntu SMP Wed May 24 00:51:42 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux</span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/# nproc</span><br><span class="line">16</span><br></pre></td></tr></table></figure>
+
+<h2 id="下载内核"><a href="#下载内核" class="headerlink" title="下载内核"></a>下载内核</h2><p>内核下载链接： <a target="_blank" rel="noopener" href="https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/">https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.10.tar.gz</span><br><span class="line">将压缩包放到自己指定的目录，解压</span><br><span class="line">tar -zxf linux-5.10.tar.gz</span><br></pre></td></tr></table></figure>
+<h2 id="下载-qemu"><a href="#下载-qemu" class="headerlink" title="下载 qemu"></a>下载 qemu</h2><p>apt install qemu-system</p>
+<h2 id="编译内核"><a href="#编译内核" class="headerlink" title="编译内核"></a>编译内核</h2><p>清除以前的配置，回到默认配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">uubb@uubb-ThinkCentre-M930s-N000 ~/k/linux-5.10&gt; sudo make mrproper</span><br><span class="line">[sudo] uubb 的密码： </span><br><span class="line"></span><br><span class="line">  CLEAN   scripts/basic</span><br><span class="line">  CLEAN   scripts/gdb/linux</span><br><span class="line">  CLEAN   scripts/kconfig</span><br><span class="line">  CLEAN   scripts/mod</span><br><span class="line">  CLEAN   scripts/selinux/genheaders</span><br><span class="line">  CLEAN   scripts/selinux/mdp</span><br><span class="line">  CLEAN   scripts</span><br><span class="line">  CLEAN   include/config include/generated arch/x86/include/generated .config .config.old .version Module.symvers vmlinux-gdb.py</span><br></pre></td></tr></table></figure>
+
+<p>生成.config 文件</p>
+<blockquote>
+<p>env ARCH&#x3D;X86_64 make deconfig<br>或者<br>make deconfig  &#x2F;&#x2F; 根据机器默认生成<br>上面两个都生成不了，最终执行<br>make x86_64_deconfig<br><img src="/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env.assets/2024-01-17%2014-42-17%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></p>
+</blockquote>
+<p>修改配置信息<br>make memuconfig</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Debugging</span><br><span class="line">Kernel hacking ---&gt; Compile-time checks and compiler options ---&gt; Compile the kernel with debug info ---&gt; yes</span><br><span class="line">Kernel hacking ---&gt; Compile-time checks and compiler options ---&gt; Provide GDB scripts for kernel debugging ---&gt; yes</span><br><span class="line">General setup ---&gt; Configure standard kernel features ---&gt; yes</span><br><span class="line">General setup ---&gt; Configure standard kernel features ---&gt; Load all symbols for debugging/ksymoops ---&gt; yes</span><br><span class="line">General setup ---&gt; Configure standard kernel features ---&gt; Include all symbols in kallsyms ---&gt; yes</span><br></pre></td></tr></table></figure>
+<p><img src="/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env.assets/2024-01-17%2011-27-34%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></p>
+<p>其他可选配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># Only if 64 bits is selected</span><br><span class="line">Binary Emulations ---&gt; IA32 a.out support ---&gt; yes</span><br><span class="line">Binary Emulations ---&gt; IA32 ABI for 64-bit mode ---&gt; yes</span><br><span class="line"></span><br><span class="line"># Make sure the following options are enabled:</span><br><span class="line">General setup ---&gt; Initial RAM filesystem and RAM disk (initramfs/initrd) support ---&gt; yes</span><br><span class="line">General setup ---&gt; Configure standard kernel features ---&gt; Multiple users, groups and capabilities support ---&gt; yes</span><br><span class="line">General setup ---&gt; Configure standard kernel features ---&gt; Sysfs syscall support ---&gt; yes</span><br><span class="line">Device Drivers ---&gt; Generic Driver Options ---&gt; Maintain a devtmpfs filesystem to mount at /dev ---&gt; yes</span><br><span class="line">Device Drivers ---&gt; Generic Driver Options ---&gt; Automount devtmpfs at /dev, after the kernel mounted the rootfs ---&gt; yes</span><br><span class="line">Device Drivers ---&gt; Character devices ---&gt; Enable TTY ---&gt; yes</span><br><span class="line">Device Drivers ---&gt; Character devices ---&gt; Serial drivers ---&gt; 8250/16550 and compatible serial support ---&gt; yes</span><br><span class="line">Device Drivers ---&gt; Character devices ---&gt; Serial drivers ---&gt; Console on 8250/16550 and compatible serial port ---&gt; yes</span><br><span class="line">File systems ---&gt; Pseudo filesystems ---&gt; /proc file system support ---&gt; yes</span><br><span class="line">File systems ---&gt; Pseudo filesystems ---&gt; sysfs file system support ---&gt; yes</span><br></pre></td></tr></table></figure>
+
+<p>如果想要在此内核上测试漏洞或内容，需要禁用以下策略：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Allocations at NULL to allow nullptr de-reference</span><br><span class="line">Memory Management options ---&gt; Low address space to protect from user allocation ---&gt; 0</span><br><span class="line"># SMAP disabled</span><br><span class="line">Processor type and features ---&gt; Supervisor Mode Access Prevention ---&gt; no</span><br><span class="line"># KASL, can be disabled by setting nokaslr in the bootloader cmdline</span><br><span class="line">Processor type and features ---&gt; Build a relocatable kernel ---&gt; no</span><br><span class="line"># Canary disabled</span><br><span class="line">General architecture-dependent options ---&gt; Stack Protector buffer overflow detection ---&gt; no</span><br></pre></td></tr></table></figure>
+
+<p>开始编译</p>
+<p>make -j 16</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">uubb@uubb-ThinkCentre-M930s-N000 ~/k/linux-5.10&gt; env ARCH=x86_64 make -j16</span><br><span class="line">  SYSTBL  arch/x86/include/generated/asm/syscalls_32.h</span><br><span class="line">  SYSHDR  arch/x86/include/generated/asm/unistd_32_ia32.h</span><br><span class="line">  SYSHDR  arch/x86/include/generated/asm/unistd_64_x32.h</span><br><span class="line">  SYSTBL  arch/x86/include/generated/asm/syscalls_64.h</span><br><span class="line">  SYSHDR  arch/x86/include/generated/uapi/asm/unistd_32.h</span><br><span class="line">  SYSHDR  arch/x86/include/generated/uapi/asm/unistd_64.h</span><br><span class="line">  SYSHDR  arch/x86/include/generated/uapi/asm/unistd_x32.h</span><br><span class="line">  WRAP    arch/x86/include/generated/uapi/asm/bpf_perf_event.h</span><br><span class="line">  WRAP    arch/x86/include/generated/uapi/asm/errno.h</span><br><span class="line">  WRAP    arch/x86/include/generated/uapi/asm/fcntl.h</span><br><span class="line">  WRAP    arch/x86/include/generated/uapi/asm/ioctl.h</span><br><span class="line">  WRAP    arch/x86/include/generated/uapi/asm/ioctls.h</span><br><span class="line">  WRAP    arch/x86/include/generated/uapi/asm/ipcbuf.h</span><br><span class="line">  WRAP    arch/x86/include/generated/uapi/asm/param.h</span><br><span class="line">  WRAP    arch/x86/include/generated/uapi/asm/poll.h</span><br><span class="line">...</span><br><span class="line">  LD [M]  fs/efivarfs/efivarfs.ko</span><br><span class="line">  CC      arch/x86/boot/video-bios.o</span><br><span class="line">  HOSTCC  arch/x86/boot/tools/build</span><br><span class="line">  HOSTCC  arch/x86/boot/compressed/mkpiggy</span><br><span class="line">  LD [M]  net/netfilter/nf_log_common.ko</span><br><span class="line">  CC      arch/x86/boot/compressed/cpuflags.o</span><br><span class="line">  CC      arch/x86/boot/compressed/early_serial_console.o</span><br><span class="line">  CPUSTR  arch/x86/boot/cpustr.h</span><br><span class="line">  CC      arch/x86/boot/compressed/kaslr.o</span><br><span class="line">  CC      arch/x86/boot/compressed/ident_map_64.o</span><br><span class="line">  CC      arch/x86/boot/compressed/idt_64.o</span><br><span class="line">  LD [M]  net/netfilter/xt_MASQUERADE.ko</span><br><span class="line">  AS      arch/x86/boot/compressed/idt_handlers_64.o</span><br><span class="line">  CC      arch/x86/boot/cpu.o</span><br><span class="line">  AS      arch/x86/boot/compressed/mem_encrypt.o</span><br><span class="line">  LD [M]  net/netfilter/xt_addrtype.ko</span><br><span class="line">  CC      arch/x86/boot/compressed/pgtable_64.o</span><br><span class="line">  CC      arch/x86/boot/compressed/acpi.o</span><br><span class="line">  AS      arch/x86/boot/compressed/efi_thunk_64.o</span><br><span class="line">  LD [M]  net/netfilter/xt_LOG.ko</span><br><span class="line">  LD [M]  net/netfilter/xt_mark.ko</span><br><span class="line">  LD [M]  net/netfilter/xt_nat.ko</span><br><span class="line">  CC      arch/x86/boot/compressed/misc.o</span><br><span class="line">  GZIP    arch/x86/boot/compressed/vmlinux.bin.gz</span><br><span class="line">  MKPIGGY arch/x86/boot/compressed/piggy.S</span><br><span class="line">  AS      arch/x86/boot/compressed/piggy.o</span><br><span class="line">  LD      arch/x86/boot/compressed/vmlinux</span><br><span class="line">  ZOFFSET arch/x86/boot/zoffset.h</span><br><span class="line">  OBJCOPY arch/x86/boot/vmlinux.bin</span><br><span class="line">  AS      arch/x86/boot/header.o</span><br><span class="line">  LD      arch/x86/boot/setup.elf</span><br><span class="line">  OBJCOPY arch/x86/boot/setup.bin</span><br><span class="line">  BUILD   arch/x86/boot/bzImage</span><br><span class="line">Kernel: arch/x86/boot/bzImage is ready  (#1)</span><br></pre></td></tr></table></figure>
+<p>看编译的日志信息，bzImage 显示在x86 文件内，在其实我指定了x86_64。在arch 目录内，会生成一个x86_64文件夹，并且有镜像。<br><img src="/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env.assets/2024-01-17%2014-51-44%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></p>
+<p>编译后的目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">uubb@uubb-ThinkCentre-M930s-N000 ~/k/linux-5.10&gt; ls -al</span><br><span class="line">总用量 1708</span><br><span class="line">drwxrwxr-x  25 uubb uubb       4096 1月  17 11:32 ./</span><br><span class="line">drwxrwxr-x   3 uubb uubb       4096 1月  16 16:31 ../</span><br><span class="line">-rw-rw-r--   1 uubb uubb          0 1月  16 18:04 1_readme_wuyou.txt</span><br><span class="line">drwxrwxr-x  26 uubb uubb       4096 1月  17 11:19 arch/</span><br><span class="line">drwxrwxr-x   3 uubb uubb       4096 1月  17 11:19 block/</span><br><span class="line">-rw-rw-r--   1 uubb uubb        423 1月  16 16:57 build_log.txt</span><br><span class="line">drwxrwxr-x   2 uubb uubb       4096 1月  17 11:19 certs/</span><br><span class="line">-rw-rw-r--   1 uubb uubb      16673 12月 14  2020 .clang-format</span><br><span class="line">-rw-rw-r--   1 uubb uubb         59 12月 14  2020 .cocciconfig</span><br><span class="line">-rw-rw-r--   1 uubb uubb     248775 1月  17 11:32 .config</span><br><span class="line">-rw-rw-r--   1 uubb uubb        496 12月 14  2020 COPYING</span><br><span class="line">-rw-rw-r--   1 uubb uubb     100478 12月 14  2020 CREDITS</span><br><span class="line">drwxrwxr-x   4 uubb uubb      12288 1月  17 11:19 crypto/</span><br><span class="line">drwxr-xr-x  21 root root       4096 1月  16 17:28 debootstrap/</span><br><span class="line">drwxrwxr-x  81 uubb uubb       4096 12月 14  2020 Documentation/</span><br><span class="line">drwxrwxr-x 140 uubb uubb       4096 1月  17 11:19 drivers/</span><br><span class="line">drwxrwxr-x  79 uubb uubb      12288 1月  17 11:19 fs/</span><br><span class="line">-rw-rw-r--   1 uubb uubb         71 12月 14  2020 .get_maintainer.ignore</span><br><span class="line">-rw-rw-r--   1 uubb uubb         62 12月 14  2020 .gitattributes</span><br><span class="line">-rw-rw-r--   1 uubb uubb       1889 12月 14  2020 .gitignore</span><br><span class="line">drwxrwxr-x  31 uubb uubb       4096 1月  17 11:32 include/</span><br><span class="line">drwxrwxr-x   2 uubb uubb       4096 1月  17 11:19 init/</span><br><span class="line">drwxrwxr-x   2 uubb uubb       4096 1月  17 11:19 ipc/</span><br><span class="line">-rw-rw-r--   1 uubb uubb       1327 12月 14  2020 Kbuild</span><br><span class="line">-rw-rw-r--   1 uubb uubb        555 12月 14  2020 Kconfig</span><br><span class="line">drwxrwxr-x  20 uubb uubb      12288 1月  17 11:19 kernel/</span><br><span class="line">drwxrwxr-x  21 uubb uubb      20480 1月  17 11:19 lib/</span><br><span class="line">drwxrwxr-x   6 uubb uubb       4096 12月 14  2020 LICENSES/</span><br><span class="line">-rw-rw-r--   1 uubb uubb      18204 12月 14  2020 .mailmap</span><br><span class="line">-rw-rw-r--   1 uubb uubb     576680 12月 14  2020 MAINTAINERS</span><br><span class="line">-rw-rw-r--   1 uubb uubb      64379 12月 14  2020 Makefile</span><br><span class="line">drwxrwxr-x   3 uubb uubb      12288 1月  17 11:19 mm/</span><br><span class="line">drwxrwxr-x  72 uubb uubb       4096 1月  17 11:19 net/</span><br><span class="line">-rw-rw-r--   1 uubb uubb        727 12月 14  2020 README</span><br><span class="line">drwxrwxr-x  32 uubb uubb       4096 12月 14  2020 samples/</span><br><span class="line">drwxrwxr-x  17 uubb uubb       4096 1月  17 11:19 scripts/</span><br><span class="line">drwxrwxr-x  13 uubb uubb       4096 1月  17 11:19 security/</span><br><span class="line">drwxrwxr-x  26 uubb uubb       4096 1月  17 11:19 sound/</span><br><span class="line">drwxrwxr-x  36 uubb uubb       4096 12月 14  2020 tools/</span><br><span class="line">drwxrwxr-x   3 uubb uubb       4096 1月  17 11:19 usr/</span><br><span class="line">drwxrwxr-x   4 uubb uubb       4096 1月  17 11:19 virt/</span><br><span class="line">-rw-r--r--   1 root root 1853030400 1月  16 18:08 xenial-debootstrap.ext2.qcow2</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="依赖安装"><a href="#依赖安装" class="headerlink" title="依赖安装"></a>依赖安装</h2><p>sudo apt install -y build-essential flex bison <br>    libssl-dev libelf-dev  libncurses-dev dwarves zstd <br>    gcc make openssl libc6-dev</p>
+<p>make modules_install INSTALL_MOD_PATH&#x3D;debootstrap&#x2F;</p>
+<p>make modules_install INSTALL_MOD_PATH&#x3D;debootstrap&#x2F;</p>
+<h2 id="安装内核"><a href="#安装内核" class="headerlink" title="安装内核"></a>安装内核</h2><p>如果要单独编译</p>
+<blockquote>
+<p>sudo make modules 编译模块<br>sudo make bzImage  编译内核映像文件<br>sudo make mudoles_install  安装模块<br>sudo make install  安装内核</p>
+</blockquote>
+<h3 id="查看内核是否安装"><a href="#查看内核是否安装" class="headerlink" title="查看内核是否安装"></a>查看内核是否安装</h3><p>如果在本机中安装了内核，可以在 &#x2F;boot&#x2F;grub&#x2F;grub.cfg 内看到刚刚新编译的内核选项。可以重启机器。<br><img src="/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env.assets/2024-01-17%2011-14-41%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><br>重启，按住F12，进入GRUB, 查看高级选项，可以看到编译的新的内核。<br><img src="/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env.assets/image-20240407230229848.png" alt="image-20240407230229848"><br>可以进入iniramfs 中。</p>
+<h2 id="测试编译的内核能否使用"><a href="#测试编译的内核能否使用" class="headerlink" title="测试编译的内核能否使用"></a>测试编译的内核能否使用</h2><p>如果出现kernel panic 是正常的，因为缺少initramfs 。</p>
+<p><img src="/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env.assets/2024-01-17%2010-48-41%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">uubb@uubb-ThinkCentre-M930s-N000 ~/k/linux-5.10&gt; </span><br><span class="line">sudo qemu-system-x86_64 -kernel arch/x86_64/boot/bzImage -nographic -append &quot;console=ttyS0&quot; -enable-kvm</span><br><span class="line">[sudo] uubb 的密码： </span><br><span class="line">qemu-system-x86_64: warning: host doesn&#x27;t support requested feature: CPUID.80000001H:ECX.svm [bit 2]</span><br><span class="line">[    0.000000] Linux version 5.10.0 (uubb@uubb-ThinkCentre-M930s-N000) (gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0, GNU ld (GNU Binutils for Ubuntu) 2.30) #1 SMP Tue Jan 16 16:59:56 CST 2024</span><br><span class="line">[    0.000000] Command line: console=ttyS0</span><br><span class="line">[    0.000000] x86/fpu: x87 FPU will use FXSAVE</span><br><span class="line">[    0.000000] BIOS-provided physical RAM map:</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009fbff] usable</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x000000000009fc00-0x000000000009ffff] reserved</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x00000000000f0000-0x00000000000fffff] reserved</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x0000000007fdffff] usable</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x0000000007fe0000-0x0000000007ffffff] reserved</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x00000000feffc000-0x00000000feffffff] reserved</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x00000000fffc0000-0x00000000ffffffff] reserved</span><br><span class="line">[    0.000000] NX (Execute Disable) protection: active</span><br><span class="line">[    0.000000] SMBIOS 2.8 present.</span><br><span class="line">[    0.000000] DMI: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014</span><br><span class="line">[    0.000000] tsc: Fast TSC calibration using PIT</span><br><span class="line">[    0.000000] tsc: Detected 2904.313 MHz processor</span><br><span class="line">[    0.000472] last_pfn = 0x7fe0 max_arch_pfn = 0x400000000</span><br><span class="line">...</span><br><span class="line">[    1.264167]  kernel_init_freeable+0x1dc/0x1eb</span><br><span class="line">[    1.264432]  ? rest_init+0xb0/0xb0</span><br><span class="line">[    1.264638]  kernel_init+0x5/0x110</span><br><span class="line">[    1.264849]  ret_from_fork+0x22/0x30</span><br><span class="line">[    1.265246] Kernel Offset: disabled</span><br><span class="line">[    1.265484] ---[ end Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0) ]---</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Initramfs"><a href="#安装Initramfs" class="headerlink" title="安装Initramfs"></a>安装Initramfs</h2><p>make modules_install INSTALL_MOD_PATH&#x3D;debootstrap&#x2F;</p>
+<p>sudo debootstrap <br>    –include linux-image-generic <br>    xenial <br>    debootstrap <br>    <a target="_blank" rel="noopener" href="http://archive.ubuntu.com/ubuntu">http://archive.ubuntu.com/ubuntu</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">debootstrap ： 一个用来建立chroot环境的工具</span><br><span class="line"></span><br><span class="line">uubb@uubb-ThinkCentre-M930s-N000 ~/k/linux-5.10&gt; make modules_install INSTALL_MOD_PATH=debootstrap/</span><br><span class="line">  INSTALL drivers/thermal/intel/x86_pkg_temp_thermal.ko</span><br><span class="line">  INSTALL fs/efivarfs/efivarfs.ko</span><br><span class="line">  INSTALL net/ipv4/netfilter/iptable_nat.ko</span><br><span class="line">  INSTALL net/ipv4/netfilter/nf_log_arp.ko</span><br><span class="line">  INSTALL net/ipv4/netfilter/nf_log_ipv4.ko</span><br><span class="line">  INSTALL net/ipv6/netfilter/nf_log_ipv6.ko</span><br><span class="line">  INSTALL net/netfilter/nf_log_common.ko</span><br><span class="line">  INSTALL net/netfilter/xt_LOG.ko</span><br><span class="line">  INSTALL net/netfilter/xt_MASQUERADE.ko</span><br><span class="line">  INSTALL net/netfilter/xt_addrtype.ko</span><br><span class="line">  INSTALL net/netfilter/xt_mark.ko</span><br><span class="line">  INSTALL net/netfilter/xt_nat.ko</span><br><span class="line">  DEPMOD  5.10.0</span><br></pre></td></tr></table></figure>
+<p>执行完之后，源码目录下会多一个debootstrap目录。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">uubb@uubb-ThinkCentre-M930s-N000 ~/k/linux-5.10&gt; sudo debootstrap \</span><br><span class="line">   --include linux-image-generic \</span><br><span class="line">   xenial \</span><br><span class="line">   debootstrap \</span><br><span class="line">   http://archive.ubuntu.com/ubuntu</span><br><span class="line"></span><br><span class="line">I: Retrieving InRelease </span><br><span class="line">I: Checking Release signature</span><br><span class="line">I: Valid Release signature (key id 790BC7277767219C42C86F933B4FE6ACC0B21F32)</span><br><span class="line">I: Retrieving Packages </span><br><span class="line">I: Validating Packages </span><br><span class="line">I: Resolving dependencies of required packages...</span><br><span class="line">I: Resolving dependencies of base packages...</span><br><span class="line">I: Found additional base dependencies: crda iw libnl-3-200 libnl-genl-3-200 linux-firmware linux-image-4.4.0-21-generic linux-image-extra-4.4.0-21-generic wireless-regdb </span><br><span class="line">I: Checking component main on http://archive.ubuntu.com/ubuntu...</span><br><span class="line">I: Retrieving adduser 3.113+nmu3ubuntu4</span><br><span class="line">I: Validating adduser 3.113+nmu3ubuntu4</span><br><span class="line">I: Retrieving apt 1.2.10ubuntu1</span><br><span class="line">I: Validating apt 1.2.10ubuntu1</span><br><span class="line">I: Retrieving apt-utils 1.2.10ubuntu1</span><br><span class="line">I: Validating apt-utils 1.2.10ubuntu1</span><br><span class="line">I: Retrieving base-files 9.4ubuntu4</span><br><span class="line">I: Validating base-files 9.4ubuntu4</span><br><span class="line">I: Retrieving base-passwd 3.5.39</span><br><span class="line">I: Validating base-passwd 3.5.39</span><br><span class="line">I: Retrieving bash 4.3-14ubuntu1</span><br><span class="line">I: Validating bash 4.3-14ubuntu1</span><br><span class="line">I: Retrieving bsdutils 1:2.27.1-6ubuntu3</span><br><span class="line">I: Validating bsdutils 1:2.27.1-6ubuntu3</span><br><span class="line">I: Retrieving busybox-initramfs 1:1.22.0-15ubuntu1</span><br><span class="line">I: Validating busybox-initramfs 1:1.22.0-15ubuntu1</span><br><span class="line">I: Retrieving bzip2 1.0.6-8</span><br><span class="line">I: Validating bzip2 1.0.6-8</span><br><span class="line">I: Retrieving console-setup 1.108ubuntu15</span><br><span class="line">I: Validating console-setup 1.108ubuntu15</span><br><span class="line">I: Retrieving console-setup-linux 1.108ubuntu15</span><br><span class="line">I: Validating console-setup-linux 1.108ubuntu15</span><br><span class="line">I: Retrieving coreutils 8.25-2ubuntu2</span><br><span class="line">I: Validating coreutils 8.25-2ubuntu2</span><br><span class="line">...</span><br><span class="line">I: Configuring libc-bin...</span><br><span class="line">I: Configuring systemd...</span><br><span class="line">I: Configuring initramfs-tools...</span><br><span class="line">I: Configuring ureadahead...</span><br><span class="line">I: Configuring resolvconf...</span><br><span class="line">I: Base system installed successfully.</span><br></pre></td></tr></table></figure>
+<p>然后chroot 进去，创建用户组，挂载服务。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">uubb@uubb-ThinkCentre-M930s-N000 ~/k/linux-5.10&gt; sudo chroot debootstrap</span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/# ls</span><br><span class="line">bin   dev  home        lib    media  opt   root  sbin  sys  usr  vmlinuz</span><br><span class="line">boot  etc  initrd.img  lib64  mnt    proc  run	 srv   tmp  var</span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/# passwd root</span><br><span class="line">Enter new UNIX password: </span><br><span class="line">Retype new UNIX password: </span><br><span class="line">passwd: password updated successfully</span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/# </span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/# </span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/# </span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/# /usr/sbin/adduser user </span><br><span class="line">perl: warning: Setting locale failed.</span><br><span class="line">perl: warning: Please check that your locale settings:</span><br><span class="line">	LANGUAGE = &quot;zh_CN:zh&quot;,</span><br><span class="line">	LC_ALL = (unset),</span><br><span class="line">	LANG = &quot;zh_CN.UTF-8&quot;</span><br><span class="line">    are supported and installed on your system.</span><br><span class="line">perl: warning: Falling back to the standard locale (&quot;C&quot;).</span><br><span class="line">Adding user `user&#x27; ...</span><br><span class="line">Adding new group `user&#x27; (1000) ...</span><br><span class="line">Adding new user `user&#x27; (1000) with group `user&#x27; ...</span><br><span class="line">Creating home directory `/home/user&#x27; ...</span><br><span class="line">Copying files from `/etc/skel&#x27; ...</span><br><span class="line">Enter new UNIX password: </span><br><span class="line">Retype new UNIX password: </span><br><span class="line">passwd: password updated successfully</span><br><span class="line">Changing the user information for user</span><br><span class="line">Enter the new value, or press ENTER for the default</span><br><span class="line">	Full Name []: </span><br><span class="line">	Room Number []: </span><br><span class="line">	Work Phone []: </span><br><span class="line">	Home Phone []: </span><br><span class="line">	Other []: </span><br><span class="line">Is the information correct? [Y/n] </span><br><span class="line"></span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/etc# cat &lt;&lt; EOF | sudo tee &quot;debootstrap/etc/fstab&quot;</span><br><span class="line">&gt; /dev/sda / ext4 errors=remount-ro,acl 0 1</span><br><span class="line">&gt; EOF</span><br><span class="line">tee: debootstrap/etc/fstab: No such file or directory</span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/etc# cat fstab </span><br><span class="line"># UNCONFIGURED FSTAB FOR BASE SYSTEM</span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/etc# echo &quot;/dev/sda / ext4 errors=remount-ro,acl 0 1&quot; &gt;&gt; fstab </span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/etc# cat fstab </span><br><span class="line"># UNCONFIGURED FSTAB FOR BASE SYSTEM</span><br><span class="line">/dev/sda / ext4 errors=remount-ro,acl 0 1</span><br><span class="line"></span><br><span class="line">root@uubb-ThinkCentre-M930s-N000:/etc# cat &lt;&lt; EOF | sudo tee debootstrap/etc/systemd/system/dhclient.service</span><br><span class="line">&gt; [Unit]</span><br><span class="line">&gt; Description=DHCP Client</span><br><span class="line">&gt; Documentation=man:dhclient(8)</span><br><span class="line">&gt; Wants=network.target</span><br><span class="line">&gt; Before=network.target</span><br><span class="line">&gt; [Service]</span><br><span class="line">&gt; Type=forking</span><br><span class="line">&gt; PIDFile=/var/run/dhclient.pid</span><br><span class="line">&gt; ExecStart=/sbin/dhclient -4 -q</span><br><span class="line">&gt; [Install]</span><br><span class="line">&gt; WantedBy=multi-user.target</span><br><span class="line">&gt; EOF</span><br><span class="line">tee: debootstrap/etc/systemd/system/dhclient.service: No such file or directory</span><br><span class="line">[Unit]</span><br><span class="line">Description=DHCP Client</span><br><span class="line">Documentation=man:dhclient(8)</span><br><span class="line">Wants=network.target</span><br><span class="line">Before=network.target</span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">PIDFile=/var/run/dhclient.pid</span><br><span class="line">ExecStart=/sbin/dhclient -4 -q</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">sudo ln -sf debootstrap/etc/systemd/system/dhclient.service \</span><br><span class="line">    debootstrap/etc/systemd/system/multi-user.target.wants/dhclient.service</span><br></pre></td></tr></table></figure>
+<p>然后将debootstrap 目录创建为qcow2 镜像，这可时候要知道你的主机是否支持虚拟化，因为我在服务器上搭建的时候，不支持<br>uubb@uubb-ThinkCentre-M930s-N000 ~&#x2F;k&#x2F;linux-5.10&gt; kvm-ok<br>INFO: &#x2F;dev&#x2F;kvm exists<br>KVM acceleration can be used</p>
+<p>创建 qcow2 镜像，有的时候找不到这个命令，这是要下载 libguestfs</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo virt-make-fs \</span><br><span class="line">    --format qcow2 \</span><br><span class="line">    --size +1G \</span><br><span class="line">    --type ext2 \</span><br><span class="line">    debootstrap \</span><br><span class="line">    xenial-debootstrap.ext2.qcow2</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">[sudo] uubb 的密码： </span><br><span class="line">sudo: virt-make-fs：找不到命令</span><br></pre></td></tr></table></figure>
+<p><img src="/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env.assets/2024-01-17%2014-19-57%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></p>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>使用qemu 将编译的内核跑起来，并且打开gdb调试的选项。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">uubb@uubb-ThinkCentre-M930s-N000 ~/k/linux-5.10&gt; </span><br><span class="line">sudo qemu-system-x86_64 -kernel arch/x86_64/boot/bzImage \</span><br><span class="line">-drive file=xenial-debootstrap.ext2.qcow2 \</span><br><span class="line">-net nic -net user,hostfwd=tcp::2222-:22,hostfwd=tcp::9999-:9999,hostfwd=tcp::8000-:8000 \</span><br><span class="line">-nographic -append &quot;root=/dev/sda console=ttyS0&quot; -s -S </span><br><span class="line">qemu-system-x86_64: warning: TCG doesn&#x27;t support requested feature: CPUID.01H:ECX.vmx [bit 5]</span><br><span class="line">[    0.000000] Linux version 5.10.0 (uubb@uubb-ThinkCentre-M930s-N000) (gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0, GNU ld (GNU Binutils for Ubuntu) 2.30) #1 SMP Tue Jan 16 16:59:56 CST 2024</span><br><span class="line">[    0.000000] Command line: root=/dev/sda console=ttyS0</span><br><span class="line">[    0.000000] x86/fpu: x87 FPU will use FXSAVE</span><br><span class="line">[    0.000000] BIOS-provided physical RAM map:</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009fbff] usable</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x000000000009fc00-0x000000000009ffff] reserved</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x00000000000f0000-0x00000000000fffff] reserved</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x0000000007fdffff] usable</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x0000000007fe0000-0x0000000007ffffff] reserved</span><br><span class="line">[    0.000000] BIOS-e820: [mem 0x00000000fffc0000-0x00000000ffffffff] reserved</span><br><span class="line">[    0.000000] NX (Execute Disable) protection: active</span><br><span class="line">[    0.000000] SMBIOS 2.8 present.</span><br><span class="line">[    0.000000] DMI: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014</span><br><span class="line">...</span><br><span class="line">[    1.310874] Call Trace:</span><br><span class="line">[    1.311062]  dump_stack+0x57/0x6a</span><br><span class="line">[    1.311273]  panic+0xf6/0x2b7</span><br><span class="line">[    1.311466]  mount_block_root+0x1de/0x20a</span><br><span class="line">[    1.311725]  ? __SCT__tp_func_drv_hw_scan+0x8/0x8</span><br><span class="line">[    1.312009]  ? rdinit_setup+0x26/0x26</span><br><span class="line">[    1.312229]  mount_root+0xec/0x10a</span><br><span class="line">[    1.312436]  prepare_namespace+0x130/0x15f</span><br><span class="line">[    1.312685]  kernel_init_freeable+0x1e4/0x1f4</span><br><span class="line">[    1.312947]  ? rest_init+0xaf/0xaf</span><br><span class="line">[    1.313155]  kernel_init+0x5/0xfa</span><br><span class="line">[    1.313362]  ret_from_fork+0x22/0x30</span><br><span class="line">[    1.313709] Kernel Offset: 0x22400000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)</span><br><span class="line">[    1.314349] ---[ end Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(8,0) ]---</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env.assets/2024-01-17%2010-46-56%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></p>
+<p>然后gdb 选择vmlinux 即可进行调试。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">uubb@uubb-ThinkCentre-M930s-N000 ~/k/linux-5.10&gt; </span><br><span class="line">uubb@uubb-ThinkCentre-M930s-N000 ~/k/linux-5.10&gt; gdb vmlinux</span><br><span class="line">GNU gdb (Ubuntu 8.1.1-0ubuntu1) 8.1.1</span><br><span class="line">Copyright (C) 2018 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.  Type &quot;show copying&quot;</span><br><span class="line">and &quot;show warranty&quot; for details.</span><br><span class="line">This GDB was configured as &quot;x86_64-linux-gnu&quot;.</span><br><span class="line">Type &quot;show configuration&quot; for configuration details.</span><br><span class="line">For bug reporting instructions, please see:</span><br><span class="line">&lt;http://www.gnu.org/software/gdb/bugs/&gt;.</span><br><span class="line">Find the GDB manual and other documentation resources online at:</span><br><span class="line">&lt;http://www.gnu.org/software/gdb/documentation/&gt;.</span><br><span class="line">For help, type &quot;help&quot;.</span><br><span class="line">Type &quot;apropos word&quot; to search for commands related to &quot;word&quot;...</span><br><span class="line">Reading symbols from vmlinux...done.</span><br><span class="line">warning: File &quot;/home/uubb/kernel_Linux/linux-5.10/scripts/gdb/vmlinux-gdb.py&quot; auto-loading has been declined by your `auto-load safe-path&#x27; set to &quot;$debugdir:$datadir/auto-load&quot;.</span><br><span class="line">To enable execution of this file add</span><br><span class="line">	add-auto-load-safe-path /home/uubb/kernel_Linux/linux-5.10/scripts/gdb/vmlinux-gdb.py</span><br><span class="line">line to your configuration file &quot;/home/uubb/.gdbinit&quot;.</span><br><span class="line">To completely disable this security protection add</span><br><span class="line">	set auto-load safe-path /</span><br><span class="line">line to your configuration file &quot;/home/uubb/.gdbinit&quot;.</span><br><span class="line">For more information about this security protection see the</span><br><span class="line">&quot;Auto-loading safe path&quot; section in the GDB manual.  E.g., run from the shell:</span><br><span class="line">---Type &lt;return&gt; to continue, or q &lt;return&gt; to quit---</span><br><span class="line">	info &quot;(gdb)Auto-loading safe path&quot;</span><br><span class="line">(gdb) target remote localhost:1234</span><br><span class="line">Remote debugging using localhost:1234</span><br><span class="line">0x000000000000fff0 in exception_stacks ()</span><br><span class="line">(gdb) </span><br><span class="line">(gdb) </span><br><span class="line">(gdb) b start_kernel</span><br><span class="line">Breakpoint 1 at 0xffffffff82b1dadb: file init/main.c, line 849.</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, start_kernel () at init/main.c:849</span><br><span class="line">849	&#123;</span><br><span class="line">(gdb) </span><br><span class="line">Continuing.</span><br><span class="line">(gdb) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env.assets/2024-01-17%2010-45-17%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，交流请邮件至 1161629782@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">💰</a>
+</p>
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>Help us with donation</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

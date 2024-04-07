@@ -1,4 +1,4 @@
-https://tig3rhu.github.io/2024/04/07/Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env/
+https://tig3rhu.github.io/2024/04/07/20__Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env/
 https://tig3rhu.github.io/2024/04/06/73__dajiang__Android%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/
 https://tig3rhu.github.io/2024/03/28/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91/
 https://tig3rhu.github.io/2024/02/08/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B/

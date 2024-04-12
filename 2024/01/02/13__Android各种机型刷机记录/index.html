@@ -1,533 +1,315 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
 <head>
-  <meta charset="utf-8">
-  <title>Android各种机型刷机踩坑记录 | Tig3rHu&#39;s Blog</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="Android各种机型刷机踩坑记录 | Tig3rHu&#39;s Blog">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="HigerHu,vulnerability,security,cyber,iot,Android">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tig3rHu&#39;s Blog">
-<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Tig3rHu">
+  <meta name="keywords" content="HigerHu,vulnerability,security,cyber">
+  
+    <meta name="description" content="手机刷机前要知道的一些基础知识https:&#x2F;&#x2F;xqrp.com&#x2F;657891.html 线刷：利用数据线将手机与电脑连接，刷入刷机包recovery 等固件的方式。  卡刷： 用电脑在手机fastboot 模式下刷入第三方rec， 也就是大家常说的twrp。刷入完成，用rec 方式进入twrp，进入电脑下载好卡刷包，然后复制移动进去内置存储，选中卡刷包，等待刷入完成即可。 这里有一个小技巧，如果实">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android各种机型刷机踩坑记录">
+<meta property="og:url" content="https://tig3rhu.github.io/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="Tig3rHu&#39;s Blog">
-<meta property="og:description" content="HigerHu,vulnerability,security,cyber,iot,Android">
+<meta property="og:description" content="手机刷机前要知道的一些基础知识https:&#x2F;&#x2F;xqrp.com&#x2F;657891.html 线刷：利用数据线将手机与电脑连接，刷入刷机包recovery 等固件的方式。  卡刷： 用电脑在手机fastboot 模式下刷入第三方rec， 也就是大家常说的twrp。刷入完成，用rec 方式进入twrp，进入电脑下载好卡刷包，然后复制移动进去内置存储，选中卡刷包，等待刷入完成即可。 这里有一个小技巧，如果实">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
-<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20220926153606844.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221104104525701.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221104105227827.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221104105157753.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221017215343829.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221017215524203.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221017215622346.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018103413652.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018104501654.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018105221661.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018105421397.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018105702062.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018110622689.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018111815419.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018111750292.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231228215901605.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231228215925917.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20230313133800713.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20230313133722863.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20230313144026020.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231224212056166.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205103743301.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205141725538.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205155937855.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205164828099.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205164753413.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205164818870.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152210071.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152133161.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152303717.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205145440499.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152409597.jpeg">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205151526574.png">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152605208.jpeg">
+<meta property="og:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231222172407700.png">
+<meta property="article:published_time" content="2024-01-02T15:08:52.987Z">
+<meta property="article:modified_time" content="2024-01-02T15:10:07.406Z">
 <meta property="article:author" content="Tig3rHu">
 <meta property="article:tag" content="HigerHu,vulnerability,security,cyber">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tig3rhu.github.io/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20220926153606844.png">
+  
+  
+  
+  <title>Android各种机型刷机踩坑记录 - Tig3rHu&#39;s Blog</title>
 
-
-<link rel="icon" href="/img/heard.png">
-
-<link href="/css/style.css?v=1.1.0" rel="stylesheet">
-
-<link href="/css/hl_theme/atom-dark.css?v=1.1.0" rel="stylesheet">
-
-<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
-
-<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<script src="/js/titleTip.js?v=1.1.0" ></script>
-
-<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
-<script>
-    hljs.initHighlightingOnLoad();
-</script>
-
-<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
 
-<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-<script src="/js/iconfont.js?v=1.1.0" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tig3rhu.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 7.0.0"></head>
-<div style="display: none">
-  <input class="theme_disqus_on" value="false">
-  <input class="theme_preload_comment" value="">
-  <input class="theme_blog_path" value="">
-  <input id="theme_shortcut" value="true" />
-  <input id="theme_highlight_on" value="true" />
-  <input id="theme_code_copy" value="true" />
-</div>
-
 
 
 <body>
-<aside class="nav">
-    <div class="nav-left">
-        <a href="/"
-   class="avatar_target">
-    <img class="avatar"
-         src="/img/heard.png"/>
-</a>
-<div class="author">
-    <span>Tig3rHu</span>
-</div>
+  
 
-<div class="icon">
+  <header>
     
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-            <a title="rss"
-               href="/atom.xml"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-rss"></use>
-                    </svg>
-                
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
             </a>
+          </li>
+          
         
-    
         
-            <a title="github"
-               href="https://github.com/Tig3rHu"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-github"></use>
-                    </svg>
-                
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
             </a>
+          </li>
         
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-</div>
+      </ul>
+    </div>
+  </div>
+</nav>
 
+  
 
-
-
-
-<ul>
-    <li>
-        <div class="all active" data-rel="All">All
-            
-                <small>(28)</small>
-            
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Android各种机型刷机踩坑记录"></span>
+          
         </div>
-    </li>
+
+        
+          
+  <div class="mt-3">
     
-</ul>
-<div class="left-bottom">
-    <div class="menus">
-        
-            
-            
-            
-    </div>
-    <div>
-        
-        <a 
-                                           class="friends">Friends</a>
-        
-    </div>
-</div>
-<input type="hidden" id="yelog_site_posts_number" value="28">
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-01-02 23:08" pubdate>
+          January 2, 2024 pm
+        </time>
+      </span>
+    
+  </div>
 
-<div style="display: none">
-    <span id="busuanzi_value_site_uv"></span>
-    <span id="busuanzi_value_site_pv"></span>
-</div>
-
-    </div>
-    <div class="nav-right">
-        <div class="friends-area">
-    <div class="friends-title">
-        Links
-        <i class="iconfont icon-left"></i>
-    </div>
-    <div class="friends-content">
-        <ul>
-            
-            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
-            
-        </ul>
-    </div>
-</div>
-        <div class="title-list">
-    <div class="right-top">
-        <div id="default-panel">
-            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
-            <div class="right-title">All</div>
-            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
-        </div>
-        <div id="search-panel">
-            <i class="iconfont icon-left" data-title="返回"></i>
-            <input id="local-search-input" autocomplete="off"/>
-            <label class="border-line" for="input"></label>
-            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
-            <i class="iconfont icon-tag" data-title="标签"></i>
-        </div>
-        <div id="outline-panel" style="display: none">
-            <div class="right-title">大纲</div>
-            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
-        </div>
-    </div>
-
-    <div class="tags-list">
-    <input id="tag-search" />
-    <div class="tag-wrapper">
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
         
-    </div>
-
-</div>
+          2.8k words
+        
+      </span>
+    
 
     
-    <nav id="title-list-nav">
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
         
         
-        <a  class="All "
-           href="/2024/04/07/20__Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linux_Kernel编译调试env">Linux_Kernel编译调试env</span>
-            <span class="post-date" title="2024-04-07 23:15:34">2024/04/07</span>
-        </a>
         
+          24 mins
         
-        <a  class="All "
-           href="/2024/04/06/73__dajiang__Android%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="dajiang_Android固件分析&amp;漏洞审计">dajiang_Android固件分析&amp;漏洞审计</span>
-            <span class="post-date" title="2024-04-06 22:48:50">2024/04/06</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/03/28/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro Android驱动模块编译">Pixel 6Pro Android驱动模块编译</span>
-            <span class="post-date" title="2024-03-28 23:23:22">2024/03/28</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/02/29/19__KernelSU%E6%90%9E%E6%9C%BA/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro Kernel编译整合KernelSU">Pixel 6Pro Kernel编译整合KernelSU</span>
-            <span class="post-date" title="2024-02-29 11:27:35">2024/02/29</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/02/08/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro AOSP源码在Docker内编译全过程">Pixel 6Pro AOSP源码在Docker内编译全过程</span>
-            <span class="post-date" title="2024-02-08 18:38:54">2024/02/08</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/Motorola_Mesh%20%E6%BC%8F%E6%B4%9E%E5%85%AC%E5%91%8A/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Motorola_Mesh漏洞公告">Motorola_Mesh漏洞公告</span>
-            <span class="post-date" title="2024-01-14 22:44:55">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/110_jadx_%E5%86%85%E5%AD%98%E4%B8%8D%E5%A4%9F_%E4%BD%BF%E7%94%A8%E9%97%AA%E9%80%80/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="环境搭建_jadx_内存不足&amp;使用闪退">环境搭建_jadx_内存不足&amp;使用闪退</span>
-            <span class="post-date" title="2024-01-14 22:20:30">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__他趣APP脱壳&amp;运行环境检测分析">apk逆向__他趣APP脱壳&amp;运行环境检测分析</span>
-            <span class="post-date" title="2024-01-14 22:15:58">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/07/68__%E9%80%86%E5%90%91__%E6%87%92%E4%BA%BA%E5%90%AC%E4%B9%A6%E5%8E%BB%E4%BC%9A%E5%91%98/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__懒人听书逆向">apk逆向__懒人听书逆向</span>
-            <span class="post-date" title="2024-01-07 22:15:49">2024/01/07</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
-            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
-            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
-            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
-            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
-            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
-            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
-            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
-            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
-            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
-            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
-            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
-            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
-            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
-            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
-            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
-            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
-            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
-            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/hello-world/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Hello World">Hello World</span>
-            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
-        </a>
-        
-        <div id="no-item-tips">
+      </span>
+    
 
-        </div>
-    </nav>
-    <div id="outline-list">
-    </div>
-</div>
+    
+    
+  </div>
 
-    </div>
-    <div class="hide-list">
-        <div class="semicircle" data-title="切换全屏 快捷键 s">
-            <div class="brackets first"><</div>
-            <div class="brackets">&gt;</div>
-        </div>
-    </div>
-</aside>
-<div id="post">
-    <div class="pjax">
-        <article id="post-13__Android各种机型刷机记录" class="article article-type-post" itemscope itemprop="blogPost">
-    
-        <h1 class="article-title">Android各种机型刷机踩坑记录</h1>
-    
-    <div class="article-meta">
+
         
-        
-        
-        
-    </div>
-    <div class="article-meta">
-        
-            Created At : <time class="date" title='Updated At: 2024-01-02 23:10:07'>2024-01-02 23:08</time>
-        
-    </div>
-    <div class="article-meta">
-        
-        
-        <span id="busuanzi_container_page_pv">
-            Views 👀 :<span id="busuanzi_value_page_pv">
-                <span class="count-comment">
-                    <span class="spinner">
-                      <div class="cube1"></div>
-                      <div class="cube2"></div>
-                    </span>
-                </span>
-            </span>
-        </span>
-        
-        
-    </div>
-    
-    <div class="toc-ref">
-    
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#oppo-Find-X-%E8%A7%A3%E9%94%81ROOT"><span class="toc-text">oppo Find X 解锁ROOT</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E6%9C%BA%E8%A7%A3%E9%94%81BL-%E7%94%B3%E8%AF%B7"><span class="toc-text">手机解锁BL 申请</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA%E9%99%8D%E7%BA%A7"><span class="toc-text">手机刷机降级</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%B7root-%E6%AD%A5%E9%AA%A4"><span class="toc-text">刷root 步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B3%E8%AF%89%E6%BF%80%E6%B4%BB"><span class="toc-text">申诉激活</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#moto-%E6%89%8B%E6%9C%BAROOT"><span class="toc-text">moto 手机ROOT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#root"><span class="toc-text">root</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Xpose-%E6%A1%86%E6%9E%B6"><span class="toc-text">安装Xpose 框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-drozer"><span class="toc-text">安装 drozer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-Inspeckage"><span class="toc-text">安装 Inspeckage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Frida"><span class="toc-text">安装Frida</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5Frida"><span class="toc-text">连接Frida</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%B7%E7%94%B5%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="toc-text">雷电模拟器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pixel-6p-root"><span class="toc-text">Pixel 6p root</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-13-%E5%A4%B1%E8%B4%A5"><span class="toc-text">Android 13 失败</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5-%E8%BF%9B%E5%85%A5bootloader"><span class="toc-text">第一步 进入bootloader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5-%E8%A7%A3%E9%94%81bootloader"><span class="toc-text">第二步  解锁bootloader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5-%E4%B8%8B%E8%BD%BD%E5%AF%B9%E5%BA%94%E7%9A%84%E7%B3%BB%E7%BB%9F%E9%95%9C%E5%83%8F"><span class="toc-text">第三步 下载对应的系统镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5"><span class="toc-text">第四步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#android-14"><span class="toc-text">android 14</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E6%9D%A1%E4%BB%B6"><span class="toc-text">前置条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6"><span class="toc-text">下载镜像文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85LSPosed"><span class="toc-text">安装LSPosed</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BDlsposed"><span class="toc-text">加载lsposed</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85apk"><span class="toc-text">安装apk</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pixel-6-%E5%8D%87%E7%BA%A7Android14"><span class="toc-text">pixel 6 升级Android14</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDOTA%E9%95%9C%E5%83%8F"><span class="toc-text">下载OTA镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E5%85%A5%E5%88%B0recover-%E6%A8%A1%E5%BC%8F"><span class="toc-text">进入到recover 模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9adb%E5%8D%87%E7%BA%A7"><span class="toc-text">选择adb升级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sideload-zip"><span class="toc-text">sideload zip</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pixel-6P-%E9%80%9A%E8%BF%87%E5%87%BA%E5%8E%82%E9%95%9C%E5%83%8F%E5%88%B7%E6%9C%BA"><span class="toc-text">pixel 6P 通过出厂镜像刷机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83-1"><span class="toc-text">参考</span></a></li></ol>
-    
-<style>
-    .left-col .switch-btn,
-    .left-col .switch-area {
-        display: none;
-    }
-    .toc-level-3 i,
-    .toc-level-3 ol {
-        display: none !important;
-    }
-</style>
-</div>
-    
-    <div class="article-entry" itemprop="articleBody">
+      </div>
+
       
-        <p>手机刷机前要知道的一些基础知识<br><a target="_blank" rel="noopener" href="https://xqrp.com/657891.html">https://xqrp.com/657891.html</a></p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Android各种机型刷机踩坑记录</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>手机刷机前要知道的一些基础知识<br><a target="_blank" rel="noopener" href="https://xqrp.com/657891.html">https://xqrp.com/657891.html</a></p>
 <p>线刷：利用数据线将手机与电脑连接，刷入刷机包recovery 等固件的方式。</p>
 <p> 卡刷： 用电脑在手机fastboot 模式下刷入第三方rec， 也就是大家常说的twrp。刷入完成，用rec 方式进入twrp，进入电脑下载好卡刷包，然后复制移动进去内置存储，选中卡刷包，等待刷入完成即可。</p>
 <p>这里有一个小技巧，如果实在自己官方系统不开机，你可以尝试一下刷第三方的rom 将就用。</p>
@@ -546,7 +328,7 @@
 </ul>
 <h2 id="手机解锁BL-申请"><a href="#手机解锁BL-申请" class="headerlink" title="手机解锁BL 申请"></a>手机解锁BL 申请</h2><p>手机下载OPPO 社区</p>
 <p><a target="_blank" rel="noopener" href="https://www.oppo.cn/thread-397164526-1">https://www.oppo.cn/thread-397164526-1</a></p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20220926153606844.png"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20220926153606844.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="手机刷机降级"><a href="#手机刷机降级" class="headerlink" title="手机刷机降级"></a>手机刷机降级</h2><p>刷机图文详解教程： </p>
 <p>下载卡刷包OTA固件ROM，通过官方的刷机教程，显示安装版本低于当前使用版本</p>
 <p>现在的版本是最早的版本。</p>
@@ -556,11 +338,11 @@
 <p>手机通过深度测试。</p>
 <p><strong>首先进入fastboot 模式</strong></p>
 <p>我们可以看到Device STATE: locked, 此时说明手机的bootloader 处于锁定的状态。</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221104104525701.png" alt="image-20221104104525701"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221104104525701.png" srcset="/img/loading.gif" lazyload alt="image-20221104104525701"></p>
 <p>输入以下的命令，对 bootloader 进行解锁。</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221104105227827.png" alt="image-20221104105227827"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221104105227827.png" srcset="/img/loading.gif" lazyload alt="image-20221104105227827"></p>
 <p>手机的页面会从上面的页面弹到下面的页面，这个页面是询问是否能解锁，确认解锁就使用音量键选择 UNLOCK THE BOOTLOADER </p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221104105157753.png" alt="image-20221104105157753"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221104105157753.png" srcset="/img/loading.gif" lazyload alt="image-20221104105157753"></p>
 <h3 id="申诉激活"><a href="#申诉激活" class="headerlink" title="申诉激活"></a>申诉激活</h3><p>【欢太科技】尊敬的用户，您好！当前需要您提交帐号申诉解决问题，为了提高申诉通过率，请点击：<a target="_blank" rel="noopener" href="https://opdwz.cn/6Nz2E3h">https://opdwz.cn/6Nz2E3h</a> 查看申诉填写的图文操作指引。看完指导后再点击：<a target="_blank" rel="noopener" href="https://safe.heytap.com/">https://safe.heytap.com</a>  开始填写申诉。<br>温馨提醒： 1.申诉结果会在1-2个工作日内尽快发送给您； 2.申诉进度可点击：<a target="_blank" rel="noopener" href="https://opdwz.cn/ZF7zUvu">https://opdwz.cn/ZF7zUvu</a> 查询。3.帐号脱绑请点击申诉首页的“忘记帐号”进行申诉。 如有疑问，请点击<a target="_blank" rel="noopener" href="https://opdwz.cn/jARRBzl">https://opdwz.cn/jARRBzl</a> 寻求在线客服帮助，祝您生活愉快！</p>
 <p>参考moto 手机里的视频 ，最后一步 是打开查找功能</p>
 <p>这里遇到了两个问题<br>问题1： 由于设备时二手手机，所以买了刷机的时候，有激活锁，因为是二手手机，所以并不知道原始的激活码。</p>
@@ -577,36 +359,36 @@
 <p>然后把oem解锁打开，这样才能解锁bl。</p>
 <p>关机，同时按住音量键和电源键。进入到fastboot模式</p>
 <p>电脑获取unlock_data </p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221017215343829.png" alt="image-20221017215343829"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221017215343829.png" srcset="/img/loading.gif" lazyload alt="image-20221017215343829"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3A25715324260537#5A59323246435A52504B005854323135332D0000#CE1B023F6A41419996033FB2FA351C0AC857A93AF987B17F09E9307F74AF1404#FF648548000000000000000000000000</span><br></pre></td></tr></table></figure>
 
 <p>然后把unlock data 提交到moto</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221017215524203.png" alt="image-20221017215524203"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221017215524203.png" srcset="/img/loading.gif" lazyload alt="image-20221017215524203"></p>
 <p>moto 会让你请求unlock key的值，</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221017215622346.png" alt="image-20221017215622346"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221017215622346.png" srcset="/img/loading.gif" lazyload alt="image-20221017215622346"></p>
 <p>然后你的邮箱会收到一封解锁码的邮件</p>
 <p>X2A4XZK43D65OKRHBA5F</p>
 <p>然后下载boot.img</p>
 <p><a target="_blank" rel="noopener" href="https://mirrors.lolinet.com/firmware/motorola/pstar_retcn/official/CMCC/">https://mirrors.lolinet.com/firmware/motorola/pstar_retcn/official/CMCC/</a></p>
 <p>需要根据你的安卓版本，系统标识 来确定安装 对应的zip 压缩包</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018103413652.png" alt="image-20221018103413652"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018103413652.png" srcset="/img/loading.gif" lazyload alt="image-20221018103413652"></p>
 <p>然后打开线刷包，把boot.img 文件提取出来，再 adb push 到手机。</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018104501654.png" alt="image-20221018104501654"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018104501654.png" srcset="/img/loading.gif" lazyload alt="image-20221018104501654"></p>
 <p>然后手机安装Magisk ，官方Github:<a target="_blank" rel="noopener" href="https://github.com/topjohnwu/Magisk/releases">https://github.com/topjohnwu/Magisk/releases</a></p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018105221661.png" alt="image-20221018105221661"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018105221661.png" srcset="/img/loading.gif" lazyload alt="image-20221018105221661"></p>
 <p>安装完了之后，手机打开Magisk， 点击安装，选择一个修补文件，选择之前push 进去的boot.img。</p>
 <p>然后在 &#x2F;sdcard&#x2F;Download&#x2F; 中可以看到一个magisk_patch_xx.ing 的文件。</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018105421397.png" alt="image-20221018105421397"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018105421397.png" srcset="/img/loading.gif" lazyload alt="image-20221018105421397"></p>
 <p>把这两个文件下到本地目录中。</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018105702062.png" alt="image-20221018105702062"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018105702062.png" srcset="/img/loading.gif" lazyload alt="image-20221018105702062"></p>
 <p>然后adb reboot bootloader，设备会重启，并且卡在bootloader 上。</p>
 <p>然后电脑 fastboot flash boot magisk_patched_xxx.img</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018110622689.png" alt="image-20221018110622689"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018110622689.png" srcset="/img/loading.gif" lazyload alt="image-20221018110622689"></p>
 <p>然后重启</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018111815419.png" alt="image-20221018111815419"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018111815419.png" srcset="/img/loading.gif" lazyload alt="image-20221018111815419"></p>
 <p>打开magrisk，然后点击直接安装后设备会重启</p>
 <p>然后adb  到设备里面，可以看到我们已经是最高的权限了。</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018111750292.png" alt="image-20221018111750292"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20221018111750292.png" srcset="/img/loading.gif" lazyload alt="image-20221018111750292"></p>
 <h2 id="安装Xpose-框架"><a href="#安装Xpose-框架" class="headerlink" title="安装Xpose 框架"></a>安装Xpose 框架</h2><p>安装LSPosed  ，LSPosed 是Edxposed 的一个新分支，也是一款开源的GitHub上的Xposed 框架。</p>
 <p>LSPosed 基于Riru 的ART 挂钩提供与原版Xposed 相同的API,可以在不修改APK文件的情况下调控程序的运行。</p>
 <p>LSPosed开源地址：<a target="_blank" rel="noopener" href="https://github.com/LSPosed/LSPosed/releases">https://github.com/LSPosed/LSPosed/releases</a></p>
@@ -620,15 +402,15 @@
 <p>esay_install frida_package.egg</p>
 <p>下载 frida-tools : pip install frida-tools -i <a target="_blank" rel="noopener" href="http://pypi.douban.com/simple/">http://pypi.douban.com/simple/</a> –trusted-host pypi.douban.com</p>
 <p>运行frida-ps 证明安装成功。</p>
-<p>下载手机服务端的frida:  <a target="_blank" rel="noopener" href="https://github.com/frida/frida/releases">https://github.com/frida/frida/releases</a><br>查看手机的指令架构<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231228215901605.png"><br>下载<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231228215925917.png"></p>
+<p>下载手机服务端的frida:  <a target="_blank" rel="noopener" href="https://github.com/frida/frida/releases">https://github.com/frida/frida/releases</a><br>查看手机的指令架构<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231228215901605.png" srcset="/img/loading.gif" lazyload><br>下载<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231228215925917.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="连接Frida"><a href="#连接Frida" class="headerlink" title="连接Frida"></a>连接Frida</h3><p>手机端启动 frida </p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20230313133800713.png" alt="image-20230313133800713"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20230313133800713.png" srcset="/img/loading.gif" lazyload alt="image-20230313133800713"></p>
 <p>client 连接 frida，报错。</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20230313133722863.png" alt="image-20230313133722863"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20230313133722863.png" srcset="/img/loading.gif" lazyload alt="image-20230313133722863"></p>
 <p>电脑端安装的frida 版本 (可通过 frida –version ) 与adb 传到手机中的 frida-server-版本号-android-arm64不一致。</p>
 <p>确保版本一致后。执行 frida-ps -R (查看进程)   和 frida-ps -U ( 检查Usb 设备 )</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20230313144026020.png" alt="image-20230313144026020"></p>
-<p>问题：测试半天，版本不一致<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231224212056166.png"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20230313144026020.png" srcset="/img/loading.gif" lazyload alt="image-20230313144026020"></p>
+<p>问题：测试半天，版本不一致<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231224212056166.png" srcset="/img/loading.gif" lazyload></p>
 <h1 id="雷电模拟器"><a href="#雷电模拟器" class="headerlink" title="雷电模拟器"></a>雷电模拟器</h1><p>1.下载模拟器</p>
 <p>2.开启root</p>
 <p>3.安装xposed，直接把xposed 拖入到模拟器的共享文件夹中安装。</p>
@@ -638,32 +420,32 @@
 <h3 id="第一步-进入bootloader"><a href="#第一步-进入bootloader" class="headerlink" title="第一步 进入bootloader"></a>第一步 进入bootloader</h3><p>adb reboot bootloader </p>
 <h3 id="第二步-解锁bootloader"><a href="#第二步-解锁bootloader" class="headerlink" title="第二步  解锁bootloader"></a>第二步  解锁bootloader</h3><p>先使用fastboot devices 查看是否识别处于fastboot 模式的pixel。</p>
 <p>然后 fastboot flashing unlock</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205103743301.png"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205103743301.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="第三步-下载对应的系统镜像"><a href="#第三步-下载对应的系统镜像" class="headerlink" title="第三步 下载对应的系统镜像"></a>第三步 下载对应的系统镜像</h3><p>官网下载地址： <a target="_blank" rel="noopener" href="https://developers.google.com/android/images?hl=zh-cn">https://developers.google.com/android/images?hl=zh-cn</a></p>
-<h3 id="第四步"><a href="#第四步" class="headerlink" title="第四步"></a>第四步</h3><p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205141725538.png"></p>
+<h3 id="第四步"><a href="#第四步" class="headerlink" title="第四步"></a>第四步</h3><p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205141725538.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="android-14"><a href="#android-14" class="headerlink" title="android 14"></a>android 14</h2><h3 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h3><p>开启adb<br>解锁bootloader 为unlock<br>安装magisk</p>
-<h3 id="下载镜像文件"><a href="#下载镜像文件" class="headerlink" title="下载镜像文件"></a>下载镜像文件</h3><p><a target="_blank" rel="noopener" href="https://developers.google.com/android/images?hl=zh-cn">https://developers.google.com/android/images?hl=zh-cn</a><br>主要是获取boot.img 文件。<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205155937855.png"></p>
+<h3 id="下载镜像文件"><a href="#下载镜像文件" class="headerlink" title="下载镜像文件"></a>下载镜像文件</h3><p><a target="_blank" rel="noopener" href="https://developers.google.com/android/images?hl=zh-cn">https://developers.google.com/android/images?hl=zh-cn</a><br>主要是获取boot.img 文件。<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205155937855.png" srcset="/img/loading.gif" lazyload></p>
 <p>操作和moto 的一样。</p>
 <p>ps: 如果fastboot boot xxx.img 没有效果，那就重启一下。重新来一次。</p>
 <p>进入到magisk  的设置中，打开zygisk 按钮。</p>
 <h3 id="安装LSPosed"><a href="#安装LSPosed" class="headerlink" title="安装LSPosed"></a>安装LSPosed</h3><h4 id="加载lsposed"><a href="#加载lsposed" class="headerlink" title="加载lsposed"></a>加载lsposed</h4><p><a target="_blank" rel="noopener" href="https://github.com/LSPosed/LSPosed/releases">https://github.com/LSPosed/LSPosed/releases</a> 下载zygisk 版本的zip<br>然后adb push 到sdcard&#x2F;Download&#x2F; 文件目录中</p>
-<p>在magisk 中的模块栏中，添加本地模块，将zip 加载起来。然后重启。<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205164828099.png"></p>
+<p>在magisk 中的模块栏中，添加本地模块，将zip 加载起来。然后重启。<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205164828099.png" srcset="/img/loading.gif" lazyload></p>
 <h4 id="安装apk"><a href="#安装apk" class="headerlink" title="安装apk"></a>安装apk</h4><p>安装这个apk</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205164753413.png"></p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205164818870.png"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205164753413.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205164818870.png" srcset="/img/loading.gif" lazyload></p>
 <h1 id="pixel-6-升级Android14"><a href="#pixel-6-升级Android14" class="headerlink" title="pixel 6 升级Android14"></a>pixel 6 升级Android14</h1><p>旁加载升级</p>
-<h2 id="下载OTA镜像"><a href="#下载OTA镜像" class="headerlink" title="下载OTA镜像"></a>下载OTA镜像</h2><p><a target="_blank" rel="noopener" href="https://developers.google.com/android/ota?hl=zh-cn#raven">https://developers.google.com/android/ota?hl=zh-cn#raven</a><br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152210071.png"></p>
+<h2 id="下载OTA镜像"><a href="#下载OTA镜像" class="headerlink" title="下载OTA镜像"></a>下载OTA镜像</h2><p><a target="_blank" rel="noopener" href="https://developers.google.com/android/ota?hl=zh-cn#raven">https://developers.google.com/android/ota?hl=zh-cn#raven</a><br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152210071.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="进入到recover-模式"><a href="#进入到recover-模式" class="headerlink" title="进入到recover 模式"></a>进入到recover 模式</h2><p>输入adb reboot recovery。</p>
 <p>然后同事按住电源键 + 音量键提升按钮。</p>
 <p>然后跳转到Recovery 清单中。</p>
-<h2 id="选择adb升级"><a href="#选择adb升级" class="headerlink" title="选择adb升级"></a>选择adb升级</h2><p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152133161.png"><br>然后会显示<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152303717.png"></p>
-<h2 id="sideload-zip"><a href="#sideload-zip" class="headerlink" title="sideload zip"></a>sideload zip</h2><p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205145440499.png"></p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152409597.jpeg"></p>
-<p>升级完成<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205151526574.png"></p>
+<h2 id="选择adb升级"><a href="#选择adb升级" class="headerlink" title="选择adb升级"></a>选择adb升级</h2><p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152133161.png" srcset="/img/loading.gif" lazyload><br>然后会显示<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152303717.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="sideload-zip"><a href="#sideload-zip" class="headerlink" title="sideload zip"></a>sideload zip</h2><p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205145440499.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152409597.jpeg" srcset="/img/loading.gif" lazyload></p>
+<p>升级完成<br><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205151526574.png" srcset="/img/loading.gif" lazyload></p>
 <p>adb reboot 重启</p>
-<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152605208.jpeg"></p>
+<p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231205152605208.jpeg" srcset="/img/loading.gif" lazyload></p>
 <p>参考： <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/660890339">https://zhuanlan.zhihu.com/p/660890339</a></p>
-<h1 id="pixel-6P-通过出厂镜像刷机"><a href="#pixel-6P-通过出厂镜像刷机" class="headerlink" title="pixel 6P 通过出厂镜像刷机"></a>pixel 6P 通过出厂镜像刷机</h1><p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231222172407700.png"></p>
+<h1 id="pixel-6P-通过出厂镜像刷机"><a href="#pixel-6P-通过出厂镜像刷机" class="headerlink" title="pixel 6P 通过出厂镜像刷机"></a>pixel 6P 通过出厂镜像刷机</h1><p><img src="/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95.assets/image-20231222172407700.png" srcset="/img/loading.gif" lazyload></p>
 <p>windows 系统直接运行flash-all.bat<br>运行日志</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br></pre></td><td class="code"><pre><span class="line">Sending &#x27;bootloader_b&#x27; (11574 KB)                  OKAY [  0.369s]</span><br><span class="line">Writing &#x27;bootloader_b&#x27;                             (bootloader) Flashing pack version slider-1.2-9152140</span><br><span class="line">(bootloader) flashing platform gs101</span><br><span class="line">(bootloader) Validating partition ufs</span><br><span class="line">(bootloader) Validating partition ufs</span><br><span class="line">(bootloader) Validating partition partition:0</span><br><span class="line">(bootloader) Validating partition partition:1</span><br><span class="line">(bootloader) Validating partition partition:2</span><br><span class="line">(bootloader) Validating partition partition:3</span><br><span class="line">(bootloader) Validating partition bl1_b</span><br><span class="line">(bootloader) Validating partition pbl_b</span><br><span class="line">(bootloader) Validating partition bl2_b</span><br><span class="line">(bootloader) Validating partition abl_b</span><br><span class="line">(bootloader) Validating partition bl31_b</span><br><span class="line">(bootloader) Validating partition tzsw_b</span><br><span class="line">(bootloader) Validating partition gsa_b</span><br><span class="line">(bootloader) Validating partition ldfw_b</span><br><span class="line">(bootloader) Flashing partition ufs</span><br><span class="line">(bootloader) Flashing partition ufs</span><br><span class="line">(bootloader) Flashing partition partition:0</span><br><span class="line">(bootloader) Flashing partition partition:1</span><br><span class="line">(bootloader) Flashing partition partition:2</span><br><span class="line">(bootloader) Flashing partition partition:3</span><br><span class="line">(bootloader) Flashing partition bl1_b</span><br><span class="line">(bootloader) Flashing partition pbl_b</span><br><span class="line">(bootloader) Flashing partition bl2_b</span><br><span class="line">(bootloader) Flashing partition abl_b</span><br><span class="line">(bootloader) Flashing partition bl31_b</span><br><span class="line">(bootloader) Flashing partition tzsw_b</span><br><span class="line">(bootloader) Flashing partition gsa_b</span><br><span class="line">(bootloader) Flashing partition ldfw_b</span><br><span class="line">(bootloader) Loading sideload ufsfwupdate</span><br><span class="line">OKAY [  2.588s]</span><br><span class="line">Finished. Total time: 2.963s</span><br><span class="line">Rebooting into bootloader                          OKAY [  0.000s]</span><br><span class="line">Finished. Total time: 0.002s</span><br><span class="line">&lt; waiting for any device &gt;</span><br><span class="line">Sending &#x27;radio_b&#x27; (94060 KB)                       OKAY [  3.294s]</span><br><span class="line">Writing &#x27;radio_b&#x27;                                  (bootloader) Flashing pack version g5123b-107485-221101-M-9242015</span><br><span class="line">(bootloader) Flashing partition modem_b</span><br><span class="line">OKAY [  0.121s]</span><br><span class="line">Finished. Total time: 3.421s</span><br><span class="line">Rebooting into bootloader                          OKAY [  0.000s]</span><br><span class="line">Finished. Total time: 0.001s</span><br><span class="line">&lt; waiting for any device &gt;</span><br><span class="line">--------------------------------------------</span><br><span class="line">Bootloader Version...: slider-1.2-9152140</span><br><span class="line">Baseband Version.....: g5123b-107485-221101-B-9242015</span><br><span class="line">Serial Number........: 1B231FDEE005T0</span><br><span class="line">--------------------------------------------</span><br><span class="line">extracting android-info.txt (0 MB) to RAM...</span><br><span class="line">Checking &#x27;product&#x27;                                 OKAY [  0.000s]</span><br><span class="line">Checking &#x27;version-bootloader&#x27;                      OKAY [  0.000s]</span><br><span class="line">Checking &#x27;version-baseband&#x27;                        OKAY [  0.000s]</span><br><span class="line">Setting current slot to &#x27;b&#x27;                        OKAY [  0.083s]</span><br><span class="line">extracting boot.img (64 MB) to disk... took 0.294s</span><br><span class="line">archive does not contain &#x27;boot.sig&#x27;</span><br><span class="line">Sending &#x27;boot_b&#x27; (65536 KB)                        OKAY [  2.322s]</span><br><span class="line">Writing &#x27;boot_b&#x27;                                   OKAY [  0.079s]</span><br><span class="line">archive does not contain &#x27;init_boot.img&#x27;</span><br><span class="line">extracting dtbo.img (16 MB) to disk... took 0.048s</span><br><span class="line">archive does not contain &#x27;dtbo.sig&#x27;</span><br><span class="line">Sending &#x27;dtbo_b&#x27; (16384 KB)                        OKAY [  0.524s]</span><br><span class="line">Writing &#x27;dtbo_b&#x27;                                   OKAY [  0.021s]</span><br><span class="line">archive does not contain &#x27;dt.img&#x27;</span><br><span class="line">extracting pvmfw.img (1 MB) to disk... took 0.005s</span><br><span class="line">archive does not contain &#x27;pvmfw.sig&#x27;</span><br><span class="line">Sending &#x27;pvmfw_b&#x27; (1024 KB)                        OKAY [  0.032s]</span><br><span class="line">Writing &#x27;pvmfw_b&#x27;                                  OKAY [  0.003s]</span><br><span class="line">archive does not contain &#x27;recovery.img&#x27;</span><br><span class="line">extracting vbmeta.img (0 MB) to disk... took 0.001s</span><br><span class="line">archive does not contain &#x27;vbmeta.sig&#x27;</span><br><span class="line">Sending &#x27;vbmeta_b&#x27; (12 KB)                         OKAY [  0.001s]</span><br><span class="line">Writing &#x27;vbmeta_b&#x27;                                 OKAY [  0.002s]</span><br><span class="line">extracting vbmeta_system.img (0 MB) to disk... took 0.000s</span><br><span class="line">archive does not contain &#x27;vbmeta_system.sig&#x27;</span><br><span class="line">Sending &#x27;vbmeta_system_b&#x27; (4 KB)                   OKAY [  0.000s]</span><br><span class="line">Writing &#x27;vbmeta_system_b&#x27;                          OKAY [  0.002s]</span><br><span class="line">extracting vbmeta_vendor.img (0 MB) to disk... took 0.001s</span><br><span class="line">archive does not contain &#x27;vbmeta_vendor.sig&#x27;</span><br><span class="line">Sending &#x27;vbmeta_vendor_b&#x27; (4 KB)                   OKAY [  0.000s]</span><br><span class="line">Writing &#x27;vbmeta_vendor_b&#x27;                          OKAY [  0.002s]</span><br><span class="line">extracting vendor_boot.img (64 MB) to disk... took 0.439s</span><br><span class="line">archive does not contain &#x27;vendor_boot.sig&#x27;</span><br><span class="line">Sending &#x27;vendor_boot_b&#x27; (65536 KB)                 OKAY [  2.079s]</span><br><span class="line">Writing &#x27;vendor_boot_b&#x27;                            OKAY [  0.077s]</span><br><span class="line">archive does not contain &#x27;vendor_kernel_boot.img&#x27;</span><br><span class="line">extracting super_empty.img (0 MB) to disk... took 0.000s</span><br><span class="line">Rebooting into fastboot                            OKAY [  0.000s]</span><br><span class="line">&lt; waiting for any device &gt;</span><br><span class="line">Sending &#x27;super&#x27; (4 KB)                             OKAY [  0.001s]</span><br><span class="line">Updating super partition                           OKAY [  0.019s]</span><br><span class="line">Resizing &#x27;product_b&#x27;                               OKAY [  0.003s]</span><br><span class="line">Resizing &#x27;system_b&#x27;                                OKAY [  0.003s]</span><br><span class="line">Resizing &#x27;system_ext_b&#x27;                            OKAY [  0.003s]</span><br><span class="line">Resizing &#x27;system_a&#x27;                                OKAY [  0.003s]</span><br><span class="line">Resizing &#x27;vendor_b&#x27;                                OKAY [  0.003s]</span><br><span class="line">Resizing &#x27;vendor_dlkm_b&#x27;                           OKAY [  0.002s]</span><br><span class="line">Resizing &#x27;vendor_a&#x27;                                OKAY [  0.003s]</span><br><span class="line">archive does not contain &#x27;boot_other.img&#x27;</span><br><span class="line">archive does not contain &#x27;odm.img&#x27;</span><br><span class="line">archive does not contain &#x27;odm_dlkm.img&#x27;</span><br><span class="line">extracting product.img (2588 MB) to disk... took 17.016s</span><br><span class="line">Invalid sparse file format at header magic</span><br><span class="line">archive does not contain &#x27;product.sig&#x27;</span><br><span class="line">Resizing &#x27;product_b&#x27;                               OKAY [  0.006s]</span><br><span class="line">Sending sparse &#x27;product_b&#x27; 1/11 (262112 KB)        OKAY [  8.788s]</span><br><span class="line">Writing &#x27;product_b&#x27;                                OKAY [  0.321s]</span><br><span class="line">Sending sparse &#x27;product_b&#x27; 2/11 (262124 KB)        OKAY [  8.759s]</span><br><span class="line">Writing &#x27;product_b&#x27;                                OKAY [  0.327s]</span><br><span class="line">Sending sparse &#x27;product_b&#x27; 3/11 (262128 KB)        OKAY [  8.752s]</span><br><span class="line">Writing &#x27;product_b&#x27;                                OKAY [  0.338s]</span><br><span class="line">Sending sparse &#x27;product_b&#x27; 4/11 (262116 KB)        OKAY [  8.779s]</span><br><span class="line">Writing &#x27;product_b&#x27;                                OKAY [  0.331s]</span><br><span class="line">Sending sparse &#x27;product_b&#x27; 5/11 (262120 KB)        OKAY [  8.814s]</span><br><span class="line">Writing &#x27;product_b&#x27;                                OKAY [  0.331s]</span><br><span class="line">Sending sparse &#x27;product_b&#x27; 6/11 (262124 KB)        OKAY [  8.867s]</span><br><span class="line">Writing &#x27;product_b&#x27;                                OKAY [  0.340s]</span><br><span class="line">Sending sparse &#x27;product_b&#x27; 7/11 (262124 KB)        OKAY [  8.819s]</span><br><span class="line">Writing &#x27;product_b&#x27;                                OKAY [  0.304s]</span><br><span class="line">Sending sparse &#x27;product_b&#x27; 8/11 (262128 KB)        OKAY [  8.894s]</span><br><span class="line">Writing &#x27;product_b&#x27;                                OKAY [  0.340s]</span><br><span class="line">Sending sparse &#x27;product_b&#x27; 9/11 (262128 KB)        OKAY [  8.803s]</span><br><span class="line">Writing &#x27;product_b&#x27;                                OKAY [  0.356s]</span><br><span class="line">Sending sparse &#x27;product_b&#x27; 10/11 (241248 KB)       OKAY [  8.124s]</span><br><span class="line">Writing &#x27;product_b&#x27;                                OKAY [  0.368s]</span><br><span class="line">Sending sparse &#x27;product_b&#x27; 11/11 (41336 KB)        OKAY [  1.400s]</span><br><span class="line">Writing &#x27;product_b&#x27;                                OKAY [  0.104s]</span><br><span class="line">extracting system.img (840 MB) to disk... took 5.310s</span><br><span class="line">Invalid sparse file format at header magic</span><br><span class="line">archive does not contain &#x27;system.sig&#x27;</span><br><span class="line">Resizing &#x27;system_b&#x27;                                OKAY [  0.006s]</span><br><span class="line">Sending sparse &#x27;system_b&#x27; 1/4 (262116 KB)          OKAY [  8.625s]</span><br><span class="line">Writing &#x27;system_b&#x27;                                 OKAY [  0.339s]</span><br><span class="line">Sending sparse &#x27;system_b&#x27; 2/4 (262120 KB)          OKAY [  8.675s]</span><br><span class="line">Writing &#x27;system_b&#x27;                                 OKAY [  0.318s]</span><br><span class="line">Sending sparse &#x27;system_b&#x27; 3/4 (262140 KB)          OKAY [  8.607s]</span><br><span class="line">Writing &#x27;system_b&#x27;                                 OKAY [  0.374s]</span><br><span class="line">Sending sparse &#x27;system_b&#x27; 4/4 (71380 KB)           OKAY [  2.356s]</span><br><span class="line">Writing &#x27;system_b&#x27;                                 OKAY [  0.147s]</span><br><span class="line">archive does not contain &#x27;system_dlkm.img&#x27;</span><br><span class="line">extracting system_ext.img (353 MB) to disk... took 2.108s</span><br><span class="line">Invalid sparse file format at header magic</span><br><span class="line">archive does not contain &#x27;system_ext.sig&#x27;</span><br><span class="line">Resizing &#x27;system_ext_b&#x27;                            OKAY [  0.007s]</span><br><span class="line">Sending sparse &#x27;system_ext_b&#x27; 1/2 (262140 KB)      OKAY [  8.655s]</span><br><span class="line">Writing &#x27;system_ext_b&#x27;                             OKAY [  0.329s]</span><br><span class="line">Sending sparse &#x27;system_ext_b&#x27; 2/2 (99100 KB)       OKAY [  3.283s]</span><br><span class="line">Writing &#x27;system_ext_b&#x27;                             OKAY [  0.166s]</span><br><span class="line">extracting system_other.img (24 MB) to disk... took 0.157s</span><br><span class="line">archive does not contain &#x27;system.sig&#x27;</span><br><span class="line">Resizing &#x27;system_a&#x27;                                OKAY [  0.006s]</span><br><span class="line">Sending &#x27;system_a&#x27; (25220 KB)                      OKAY [  0.825s]</span><br><span class="line">Writing &#x27;system_a&#x27;                                 OKAY [  0.103s]</span><br><span class="line">extracting vendor.img (509 MB) to disk... took 3.057s</span><br><span class="line">Invalid sparse file format at header magic</span><br><span class="line">archive does not contain &#x27;vendor.sig&#x27;</span><br><span class="line">Resizing &#x27;vendor_b&#x27;                                OKAY [  0.007s]</span><br><span class="line">Sending sparse &#x27;vendor_b&#x27; 1/2 (262116 KB)          OKAY [  8.684s]</span><br><span class="line">Writing &#x27;vendor_b&#x27;                                 OKAY [  0.322s]</span><br><span class="line">Sending sparse &#x27;vendor_b&#x27; 2/2 (257860 KB)          OKAY [  8.539s]</span><br><span class="line">Writing &#x27;vendor_b&#x27;                                 OKAY [  0.334s]</span><br><span class="line">extracting vendor_dlkm.img (38 MB) to disk... took 0.181s</span><br><span class="line">archive does not contain &#x27;vendor_dlkm.sig&#x27;</span><br><span class="line">Resizing &#x27;vendor_dlkm_b&#x27;                           OKAY [  0.008s]</span><br><span class="line">Sending &#x27;vendor_dlkm_b&#x27; (39796 KB)                 OKAY [  1.332s]</span><br><span class="line">Writing &#x27;vendor_dlkm_b&#x27;                            OKAY [  0.089s]</span><br><span class="line">archive does not contain &#x27;vendor_other.img&#x27;</span><br><span class="line">Erasing &#x27;userdata&#x27;                                 OKAY [  0.218s]</span><br><span class="line">Erase successful, but not automatically formatting.</span><br><span class="line">File system type raw not supported.</span><br><span class="line">Erasing &#x27;metadata&#x27;                                 OKAY [  0.003s]</span><br><span class="line">Erase successful, but not automatically formatting.</span><br><span class="line">File system type raw not supported.</span><br><span class="line">Rebooting                                          OKAY [  0.000s]</span><br><span class="line">Finished. Total time: 397.746s</span><br></pre></td></tr></table></figure>
 
@@ -675,194 +457,344 @@
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014602228/article/details/117921430">https://blog.csdn.net/u014602228/article/details/117921430</a></p>
 <p>记一次Android刷机的小结（青橙GO T5）<br><a target="_blank" rel="noopener" href="https://jmsliu.cn/tech/%e8%ae%b0%e4%b8%80%e6%ac%a1%e5%ae%89%e5%8d%93%e5%88%b7%e6%9c%ba%e7%9a%84%e5%b0%8f%e7%bb%93.html">https://jmsliu.cn/tech/%e8%ae%b0%e4%b8%80%e6%ac%a1%e5%ae%89%e5%8d%93%e5%88%b7%e6%9c%ba%e7%9a%84%e5%b0%8f%e7%bb%93.html</a></p>
 
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Android各种机型刷机踩坑记录</div>
+      <div>https://tig3rhu.github.io/2024/01/02/13__Android各种机型刷机记录/</div>
+    </div>
+    <div class="license-meta">
       
-       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，交流请邮件至 1161629782@qq.com </span>
-    </div>
-</article>
-
-
-<p>
-    <a  class="dashang" onclick="dashangToggle()">💰</a>
-</p>
-
-
-
-
-
-
-    
-
-
-
-
-    </div>
-    <div class="copyright">
-        <p class="footer-entry">
-    ©2016-2020 Yelog
-</p>
-<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
-
-    </div>
-    <div class="full-toc">
-        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
-<a class="" id="rocket" ></a>
-
-    </div>
-</div>
-
-<div class="hide_box" onclick="dashangToggle()"></div>
-<div class="shang_box">
-    <a class="shang_close"  onclick="dashangToggle()">×</a>
-    <div class="shang_tit">
-        <p>Help us with donation</p>
-    </div>
-    <div class="shang_payimg">
-        <div class="pay_img">
-            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
-            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Tig3rHu</div>
         </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 2, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
     </div>
-    <div class="shang_payselect">
-        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/" title="apk逆向__婚礼纪逆向">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">apk逆向__婚礼纪逆向</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/" title="apk逆向__懒人驾考去会员">
+                        <span class="hidden-mobile">apk逆向__懒人驾考去会员</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
     </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
 </div>
 
 
-</body>
-<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
 
-<script src="/js/script.js?v=1.1.0" ></script>
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
 <script>
-    var img_resize = 'default';
-    function initArticle() {
-        /*渲染对应的表格样式*/
-        
-            $("#post .pjax table").addClass("green_title");
-        
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
 
-        /*渲染打赏样式*/
-        
-        $("input[name=pay]").on("click", function () {
-            if($("input[name=pay]:checked").val()=="weixin"){
-                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
-            } else {
-                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
-            }
-        })
-        
-
-        /*高亮代码块行号*/
-        
-
-        /*访问数量*/
-        
-        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
-        
-
-        /*代码高亮，行号对齐*/
-        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
-
-        
-        
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
 
-    /*打赏页面隐藏与展示*/
-    
-    function dashangToggle() {
-        $(".shang_box").fadeToggle();
-        $(".hide_box").fadeToggle();
-    }
-    
-
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
 </script>
 
-<!--加入行号的高亮代码块样式-->
 
-<!--自定义样式设置-->
-<style>
-    
-    
-    .nav {
-        width: 542px;
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
     }
-    .nav.fullscreen {
-        margin-left: -542px;
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
     }
-    .nav-left {
-        width: 120px;
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
     }
-    
-    
-    @media screen and (max-width: 1468px) {
-        .nav {
-            width: 492px;
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
         }
-        .nav.fullscreen {
-            margin-left: -492px;
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
         }
-        .nav-left {
-            width: 100px;
-        }
-    }
-    
-    
-    @media screen and (max-width: 1024px) {
-        .nav {
-            width: 492px;
-            margin-left: -492px
-        }
-        .nav.fullscreen {
-            margin-left: 0;
-        }
-    }
-    
-    @media screen and (max-width: 426px) {
-        .nav {
-            width: 100%;
-        }
-        .nav-left {
-            width: 100%;
-        }
-    }
-    
-    
-    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
-        color: #383636;
-    }
-    
-    
-    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
-        color: #5e5e5f;
-    }
-    
-    
-    .nav-right nav a.hover, #local-search-result a.hover{
-        background-color: #e2e0e0;
-    }
-    
-    
-
-    /*列表样式*/
-    
-
-    /* 背景图样式 */
-    
-    
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
 
 
-    /*引用块样式*/
-    
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
-    /*文章列表背景图*/
-    
 
-    
-</style>
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

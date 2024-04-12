@@ -1,538 +1,298 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
 <head>
-  <meta charset="utf-8">
-  <title>apk逆向__他趣APP脱壳&amp;运行环境检测分析 | Tig3rHu&#39;s Blog</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="apk逆向__他趣APP脱壳&amp;运行环境检测分析 | Tig3rHu&#39;s Blog">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="HigerHu,vulnerability,security,cyber,iot,Android">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tig3rHu&#39;s Blog">
-<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Tig3rHu">
+  <meta name="keywords" content="HigerHu,vulnerability,security,cyber">
+  
+    <meta name="description" content="ROOT检测“  当前APP运行环境存在风险 (Root设备)，请您及时知晓并注意信息安全! “  Hook 检测使用算法助手定位到root检测弹窗的一些常规设置，去除弹窗，或者其他的绕过。当使用算法助手hook app 的时候，app 会检测hook 的环境，从而闪退。 使用frida 脚本直接闪退   frida -U -p 32218 -l .\java_hook通杀.js 可以看到直接会闪">
+<meta property="og:type" content="article">
+<meta property="og:title" content="apk逆向__他趣APP脱壳&amp;运行环境检测分析">
+<meta property="og:url" content="https://tig3rhu.github.io/2024/01/14/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP/index.html">
 <meta property="og:site_name" content="Tig3rHu&#39;s Blog">
-<meta property="og:description" content="HigerHu,vulnerability,security,cyber,iot,Android">
+<meta property="og:description" content="ROOT检测“  当前APP运行环境存在风险 (Root设备)，请您及时知晓并注意信息安全! “  Hook 检测使用算法助手定位到root检测弹窗的一些常规设置，去除弹窗，或者其他的绕过。当使用算法助手hook app 的时候，app 会检测hook 的环境，从而闪退。 使用frida 脚本直接闪退   frida -U -p 32218 -l .\java_hook通杀.js 可以看到直接会闪">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
-<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240109221636023.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240110215010880.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240110215626753.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111100934608.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111101359601.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111223623332.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240109222700682.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111223826464.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111224602621.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240112145319294.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240114160423598.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240112145342031.png">
+<meta property="og:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240112145108350.png">
+<meta property="article:published_time" content="2024-01-14T14:15:58.761Z">
+<meta property="article:modified_time" content="2024-01-14T14:18:11.849Z">
 <meta property="article:author" content="Tig3rHu">
 <meta property="article:tag" content="HigerHu,vulnerability,security,cyber">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tig3rhu.github.io/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240109221636023.png">
+  
+  
+  
+  <title>apk逆向__他趣APP脱壳&amp;运行环境检测分析 - Tig3rHu&#39;s Blog</title>
 
-
-<link rel="icon" href="/img/heard.png">
-
-<link href="/css/style.css?v=1.1.0" rel="stylesheet">
-
-<link href="/css/hl_theme/atom-dark.css?v=1.1.0" rel="stylesheet">
-
-<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
-
-<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<script src="/js/titleTip.js?v=1.1.0" ></script>
-
-<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
-<script>
-    hljs.initHighlightingOnLoad();
-</script>
-
-<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
 
-<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-<script src="/js/iconfont.js?v=1.1.0" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tig3rhu.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 7.0.0"></head>
-<div style="display: none">
-  <input class="theme_disqus_on" value="false">
-  <input class="theme_preload_comment" value="">
-  <input class="theme_blog_path" value="">
-  <input id="theme_shortcut" value="true" />
-  <input id="theme_highlight_on" value="true" />
-  <input id="theme_code_copy" value="true" />
-</div>
-
 
 
 <body>
-<aside class="nav">
-    <div class="nav-left">
-        <a href="/"
-   class="avatar_target">
-    <img class="avatar"
-         src="/img/heard.png"/>
-</a>
-<div class="author">
-    <span>Tig3rHu</span>
-</div>
+  
 
-<div class="icon">
+  <header>
     
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-            <a title="rss"
-               href="/atom.xml"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-rss"></use>
-                    </svg>
-                
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
             </a>
+          </li>
+          
         
-    
         
-            <a title="github"
-               href="https://github.com/Tig3rHu"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-github"></use>
-                    </svg>
-                
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
             </a>
+          </li>
         
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-</div>
+      </ul>
+    </div>
+  </div>
+</nav>
 
+  
 
-
-
-
-<ul>
-    <li>
-        <div class="all active" data-rel="All">All
-            
-                <small>(28)</small>
-            
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="apk逆向__他趣APP脱壳&amp;运行环境检测分析"></span>
+          
         </div>
-    </li>
+
+        
+          
+  <div class="mt-3">
     
-</ul>
-<div class="left-bottom">
-    <div class="menus">
-        
-            
-            
-            
-    </div>
-    <div>
-        
-        <a 
-                                           class="friends">Friends</a>
-        
-    </div>
-</div>
-<input type="hidden" id="yelog_site_posts_number" value="28">
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-01-14 22:15" pubdate>
+          January 14, 2024 pm
+        </time>
+      </span>
+    
+  </div>
 
-<div style="display: none">
-    <span id="busuanzi_value_site_uv"></span>
-    <span id="busuanzi_value_site_pv"></span>
-</div>
-
-    </div>
-    <div class="nav-right">
-        <div class="friends-area">
-    <div class="friends-title">
-        Links
-        <i class="iconfont icon-left"></i>
-    </div>
-    <div class="friends-content">
-        <ul>
-            
-            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
-            
-        </ul>
-    </div>
-</div>
-        <div class="title-list">
-    <div class="right-top">
-        <div id="default-panel">
-            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
-            <div class="right-title">All</div>
-            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
-        </div>
-        <div id="search-panel">
-            <i class="iconfont icon-left" data-title="返回"></i>
-            <input id="local-search-input" autocomplete="off"/>
-            <label class="border-line" for="input"></label>
-            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
-            <i class="iconfont icon-tag" data-title="标签"></i>
-        </div>
-        <div id="outline-panel" style="display: none">
-            <div class="right-title">大纲</div>
-            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
-        </div>
-    </div>
-
-    <div class="tags-list">
-    <input id="tag-search" />
-    <div class="tag-wrapper">
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
         
-    </div>
-
-</div>
+          3.8k words
+        
+      </span>
+    
 
     
-    <nav id="title-list-nav">
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
         
         
-        <a  class="All "
-           href="/2024/04/07/20__Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linux_Kernel编译调试env">Linux_Kernel编译调试env</span>
-            <span class="post-date" title="2024-04-07 23:15:34">2024/04/07</span>
-        </a>
         
+          32 mins
         
-        <a  class="All "
-           href="/2024/04/06/73__dajiang__Android%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="dajiang_Android固件分析&amp;漏洞审计">dajiang_Android固件分析&amp;漏洞审计</span>
-            <span class="post-date" title="2024-04-06 22:48:50">2024/04/06</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/03/28/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro Android驱动模块编译">Pixel 6Pro Android驱动模块编译</span>
-            <span class="post-date" title="2024-03-28 23:23:22">2024/03/28</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/02/29/19__KernelSU%E6%90%9E%E6%9C%BA/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro Kernel编译整合KernelSU">Pixel 6Pro Kernel编译整合KernelSU</span>
-            <span class="post-date" title="2024-02-29 11:27:35">2024/02/29</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/02/08/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro AOSP源码在Docker内编译全过程">Pixel 6Pro AOSP源码在Docker内编译全过程</span>
-            <span class="post-date" title="2024-02-08 18:38:54">2024/02/08</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/Motorola_Mesh%20%E6%BC%8F%E6%B4%9E%E5%85%AC%E5%91%8A/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Motorola_Mesh漏洞公告">Motorola_Mesh漏洞公告</span>
-            <span class="post-date" title="2024-01-14 22:44:55">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/110_jadx_%E5%86%85%E5%AD%98%E4%B8%8D%E5%A4%9F_%E4%BD%BF%E7%94%A8%E9%97%AA%E9%80%80/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="环境搭建_jadx_内存不足&amp;使用闪退">环境搭建_jadx_内存不足&amp;使用闪退</span>
-            <span class="post-date" title="2024-01-14 22:20:30">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__他趣APP脱壳&amp;运行环境检测分析">apk逆向__他趣APP脱壳&amp;运行环境检测分析</span>
-            <span class="post-date" title="2024-01-14 22:15:58">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/07/68__%E9%80%86%E5%90%91__%E6%87%92%E4%BA%BA%E5%90%AC%E4%B9%A6%E5%8E%BB%E4%BC%9A%E5%91%98/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__懒人听书逆向">apk逆向__懒人听书逆向</span>
-            <span class="post-date" title="2024-01-07 22:15:49">2024/01/07</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
-            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
-            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
-            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
-            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
-            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
-            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
-            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
-            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
-            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
-            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
-            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
-            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
-            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
-            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
-            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
-            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
-            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
-            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/hello-world/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Hello World">Hello World</span>
-            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
-        </a>
-        
-        <div id="no-item-tips">
+      </span>
+    
 
-        </div>
-    </nav>
-    <div id="outline-list">
-    </div>
-</div>
+    
+    
+  </div>
 
-    </div>
-    <div class="hide-list">
-        <div class="semicircle" data-title="切换全屏 快捷键 s">
-            <div class="brackets first"><</div>
-            <div class="brackets">&gt;</div>
-        </div>
-    </div>
-</aside>
-<div id="post">
-    <div class="pjax">
-        <article id="post-70__逆向__他趣APP" class="article article-type-post" itemscope itemprop="blogPost">
-    
-        <h1 class="article-title">apk逆向__他趣APP脱壳&amp;运行环境检测分析</h1>
-    
-    <div class="article-meta">
+
         
-        
-        
-        
-    </div>
-    <div class="article-meta">
-        
-            Created At : <time class="date" title='Updated At: 2024-01-14 22:18:11'>2024-01-14 22:15</time>
-        
-    </div>
-    <div class="article-meta">
-        
-        
-        <span id="busuanzi_container_page_pv">
-            Views 👀 :<span id="busuanzi_value_page_pv">
-                <span class="count-comment">
-                    <span class="spinner">
-                      <div class="cube1"></div>
-                      <div class="cube2"></div>
-                    </span>
-                </span>
-            </span>
-        </span>
-        
-        
-    </div>
-    
-    <div class="toc-ref">
-    
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ROOT%E6%A3%80%E6%B5%8B"><span class="toc-text">ROOT检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hook-%E6%A3%80%E6%B5%8B"><span class="toc-text">Hook 检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#load-so-js"><span class="toc-text">load_so.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hook-libnesc-so"><span class="toc-text">hook libnesc.so</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E6%98%93%E6%98%93%E7%9B%BE%E8%84%B1%E5%A3%B3"><span class="toc-text">网易易盾脱壳</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E5%A3%B3"><span class="toc-text">查壳</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MT-%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-text">MT 管理器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PKID-%E6%9F%A5%E5%A3%B3"><span class="toc-text">PKID 查壳</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dump-dex%E8%84%B1%E5%A3%B3"><span class="toc-text">dump_dex脱壳</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%86%E6%9E%90app%E5%86%85%E5%90%84%E7%A7%8D%E6%A3%80%E6%B5%8B"><span class="toc-text">分析app内各种检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#root-%E6%A3%80%E6%B5%8B"><span class="toc-text">root 检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E6%80%A7%E7%AD%BE%E5%90%8D%E6%A0%A1%E9%AA%8C"><span class="toc-text">完整性签名校验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%90%86%E6%A3%80%E6%B5%8B"><span class="toc-text">代理检测</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%E5%BD%95"><span class="toc-text">附录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95-1"><span class="toc-text">附录 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%952"><span class="toc-text">附录2</span></a></li></ol>
-    
-<style>
-    .left-col .switch-btn,
-    .left-col .switch-area {
-        display: none;
-    }
-    .toc-level-3 i,
-    .toc-level-3 ol {
-        display: none !important;
-    }
-</style>
-</div>
-    
-    <div class="article-entry" itemprop="articleBody">
+      </div>
+
       
-        <h2 id="ROOT检测"><a href="#ROOT检测" class="headerlink" title="ROOT检测"></a>ROOT检测</h2><p>“  当前APP运行环境存在风险 (Root设备)，请您及时知晓并注意信息安全! “</p>
-<p><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240109221636023.png"></p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">apk逆向__他趣APP脱壳&amp;运行环境检测分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="ROOT检测"><a href="#ROOT检测" class="headerlink" title="ROOT检测"></a>ROOT检测</h2><p>“  当前APP运行环境存在风险 (Root设备)，请您及时知晓并注意信息安全! “</p>
+<p><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240109221636023.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="Hook-检测"><a href="#Hook-检测" class="headerlink" title="Hook 检测"></a>Hook 检测</h2><p>使用算法助手定位到root检测弹窗的一些常规设置，去除弹窗，或者其他的绕过。<br>当使用算法助手hook app 的时候，app 会检测hook 的环境，从而闪退。</p>
-<p>使用frida 脚本直接闪退<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240110215010880.png"></p>
+<p>使用frida 脚本直接闪退<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240110215010880.png" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
-<p> frida -U -p 32218 -l .\java_hook通杀.js<br> 可以看到直接会闪退。<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240110215626753.png"></p>
+<p> frida -U -p 32218 -l .\java_hook通杀.js<br> 可以看到直接会闪退。<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240110215626753.png" srcset="/img/loading.gif" lazyload></p>
 </blockquote>
 <h3 id="load-so-js"><a href="#load-so-js" class="headerlink" title="load_so.js"></a>load_so.js</h3><p>这里可以判定apk 使用了一些方法来阻止frida 进行hook， 一般是在 so 文件内进行处理。所以这里我们直接可以找找app在运行的过程中，使用了那些so。最后调用的那个so 文件，就是检测hook环境的库文件。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// load_so.js</span><br><span class="line">var dlopen = Module.findExportByName(null, &quot;dlopen&quot;);</span><br><span class="line">var android_dlopen_ext = Module.findExportByName(null, &quot;android_dlopen_ext&quot;);</span><br><span class="line">Interceptor.attach(dlopen, &#123;</span><br><span class="line">    onEnter: function(args) &#123;</span><br><span class="line">        var path_ptr = args[0];</span><br><span class="line">        var path = ptr(path_ptr).readCString();</span><br><span class="line">        console.log(&quot;[dlopen:]&quot;, path);</span><br><span class="line">    &#125;,</span><br><span class="line">    onLeave: function(retval) &#123;&#125;</span><br><span class="line">&#125;);</span><br><span class="line">Interceptor.attach(android_dlopen_ext, &#123;</span><br><span class="line">    onEnter: function(args) &#123;</span><br><span class="line">        var path_ptr = args[0];</span><br><span class="line">        var path = ptr(path_ptr).readCString();</span><br><span class="line">        console.log(&quot;[dlopen_ext:]&quot;, path);</span><br><span class="line">    &#125;,</span><br><span class="line">    onLeave: function(retval) &#123;&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
@@ -543,31 +303,31 @@
 
 <p>使用 spawn 模式，可以看到是 libnesec.so 文件，这是网易易盾的加壳so。</p>
 <p>这是pixel 6Pro 手机hook ,可以看到。</p>
-<p><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111100934608.png"></p>
+<p><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111100934608.png" srcset="/img/loading.gif" lazyload></p>
 <p>但是换成moto 手机却不行，“ Failed to spawn: unexpectedly timed out while waiting for signal from process with PID 12337 ”，猜测这与手机系统有关。</p>
-<p><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111101359601.png"></p>
+<p><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111101359601.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="hook-libnesc-so"><a href="#hook-libnesc-so" class="headerlink" title="hook libnesc.so"></a>hook libnesc.so</h3><p>前面我们知道 libnesec 会检测frida hook， 那么可以直接hook libnesec.so ，当调用libnesec 库的时候，让其返回空</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function hook_pthread_create() &#123;</span><br><span class="line">    var pt_create_func = Module.findExportByName(&quot;libc.so&quot;, &#x27;pthread_create&#x27;);</span><br><span class="line">    Interceptor.attach(pt_create_func, &#123;</span><br><span class="line">        onEnter: function(args) &#123;</span><br><span class="line">            // 是那个so文件调用我，创建线程</span><br><span class="line">            var so_name = Process.findModuleByAddress(args[2]).name;</span><br><span class="line">            if (so_name.indexOf(&quot;libnesec&quot;) != -1) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    Interceptor.replace(args[2], new NativeCallback(function() &#123;</span><br><span class="line">                        console.log(&#x27;replace success&#x27;);</span><br><span class="line">                        return null;</span><br><span class="line">                    &#125;, &#x27;void&#x27;, [&quot;void&quot;]));</span><br><span class="line">                &#125; catch (e) &#123;&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        onLeave: function(retval) &#123;&#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">hook_pthread_create();</span><br></pre></td></tr></table></figure>
 
 <p>可以看到替换成功了。</p>
-<p><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111223623332.png"></p>
+<p><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111223623332.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="网易易盾脱壳"><a href="#网易易盾脱壳" class="headerlink" title="网易易盾脱壳"></a>网易易盾脱壳</h2><p>使用 jadx  打开 apk ，会发现存在 libnesec.so 文件，猜测加固了。因为反编译看不到要的伪java源码。因此需要去脱壳。</p>
-<p><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240109222700682.png"></p>
+<p><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240109222700682.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="查壳"><a href="#查壳" class="headerlink" title="查壳"></a>查壳</h3><h4 id="MT-管理器"><a href="#MT-管理器" class="headerlink" title="MT 管理器"></a>MT 管理器</h4><p>可以查出来是网易易盾的加固</p>
 <h4 id="PKID-查壳"><a href="#PKID-查壳" class="headerlink" title="PKID 查壳"></a>PKID 查壳</h4><p>查不出来，看过别人用pkid 可以查出来，可能版本不一样。</p>
-<h3 id="dump-dex脱壳"><a href="#dump-dex脱壳" class="headerlink" title="dump_dex脱壳"></a>dump_dex脱壳</h3><p>脱壳前提： 要一直运行hook_libnesec.js 文件，保证frida 能够hook 而不被libnesec.so 检测到闪退，影响脱壳。<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111223826464.png"></p>
+<h3 id="dump-dex脱壳"><a href="#dump-dex脱壳" class="headerlink" title="dump_dex脱壳"></a>dump_dex脱壳</h3><p>脱壳前提： 要一直运行hook_libnesec.js 文件，保证frida 能够hook 而不被libnesec.so 检测到闪退，影响脱壳。<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111223826464.png" srcset="/img/loading.gif" lazyload></p>
 <p>脱壳脚本</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line">(function() &#123;</span><br><span class="line">    function klog(data) &#123;</span><br><span class="line">        var message = &#123;&#125;;</span><br><span class="line">        message[&quot;jsname&quot;] = &quot;dump_dex&quot;;</span><br><span class="line">        message[&quot;data&quot;] = data;</span><br><span class="line">        send(message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function klogData(data, key, value) &#123;</span><br><span class="line">        var message = &#123;&#125;;</span><br><span class="line">        message[&quot;jsname&quot;] = &quot;dump_dex&quot;;</span><br><span class="line">        message[&quot;data&quot;] = data;</span><br><span class="line">        message[key] = value;</span><br><span class="line">        send(message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function get_self_process_name() &#123;</span><br><span class="line">        var openPtr = Module.getExportByName(&#x27;libc.so&#x27;, &#x27;open&#x27;);</span><br><span class="line">        var open = new NativeFunction(openPtr, &#x27;int&#x27;, [&#x27;pointer&#x27;, &#x27;int&#x27;]);</span><br><span class="line"></span><br><span class="line">        var readPtr = Module.getExportByName(&quot;libc.so&quot;, &quot;read&quot;);</span><br><span class="line">        var read = new NativeFunction(readPtr, &quot;int&quot;, [&quot;int&quot;, &quot;pointer&quot;, &quot;int&quot;]);</span><br><span class="line"></span><br><span class="line">        var closePtr = Module.getExportByName(&#x27;libc.so&#x27;, &#x27;close&#x27;);</span><br><span class="line">        var close = new NativeFunction(closePtr, &#x27;int&#x27;, [&#x27;int&#x27;]);</span><br><span class="line"></span><br><span class="line">        var path = Memory.allocUtf8String(&quot;/proc/self/cmdline&quot;);</span><br><span class="line">        var fd = open(path, 0);</span><br><span class="line">        if (fd != -1) &#123;</span><br><span class="line">            var buffer = Memory.alloc(0x1000);</span><br><span class="line"></span><br><span class="line">            var result = read(fd, buffer, 0x1000);</span><br><span class="line">            close(fd);</span><br><span class="line">            result = ptr(buffer).readCString();</span><br><span class="line">            return result;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return &quot;-1&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    function mkdir(path) &#123;</span><br><span class="line">        var mkdirPtr = Module.getExportByName(&#x27;libc.so&#x27;, &#x27;mkdir&#x27;);</span><br><span class="line">        var mkdir = new NativeFunction(mkdirPtr, &#x27;int&#x27;, [&#x27;pointer&#x27;, &#x27;int&#x27;]);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        var opendirPtr = Module.getExportByName(&#x27;libc.so&#x27;, &#x27;opendir&#x27;);</span><br><span class="line">        var opendir = new NativeFunction(opendirPtr, &#x27;pointer&#x27;, [&#x27;pointer&#x27;]);</span><br><span class="line"></span><br><span class="line">        var closedirPtr = Module.getExportByName(&#x27;libc.so&#x27;, &#x27;closedir&#x27;);</span><br><span class="line">        var closedir = new NativeFunction(closedirPtr, &#x27;int&#x27;, [&#x27;pointer&#x27;]);</span><br><span class="line"></span><br><span class="line">        var cPath = Memory.allocUtf8String(path);</span><br><span class="line">        var dir = opendir(cPath);</span><br><span class="line">        if (dir != 0) &#123;</span><br><span class="line">            closedir(dir);</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">        mkdir(cPath, 755);</span><br><span class="line">        chmod(path);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function chmod(path) &#123;</span><br><span class="line">        var chmodPtr = Module.getExportByName(&#x27;libc.so&#x27;, &#x27;chmod&#x27;);</span><br><span class="line">        var chmod = new NativeFunction(chmodPtr, &#x27;int&#x27;, [&#x27;pointer&#x27;, &#x27;int&#x27;]);</span><br><span class="line">        var cPath = Memory.allocUtf8String(path);</span><br><span class="line">        chmod(cPath, 755);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function dump_dex() &#123;</span><br><span class="line">        var libart = Process.findModuleByName(&quot;libart.so&quot;);</span><br><span class="line">        var addr_DefineClass = null;</span><br><span class="line">        var symbols = libart.enumerateSymbols();</span><br><span class="line">        for (var index = 0; index &lt; symbols.length; index++) &#123;</span><br><span class="line">            var symbol = symbols[index];</span><br><span class="line">            var symbol_name = symbol.name;</span><br><span class="line">            //这个DefineClass的函数签名是Android9的</span><br><span class="line">            //_ZN3art11ClassLinker11DefineClassEPNS_6ThreadEPKcmNS_6HandleINS_6mirror11ClassLoaderEEERKNS_7DexFileERKNS9_8ClassDefE</span><br><span class="line">            if (symbol_name.indexOf(&quot;ClassLinker&quot;) &gt;= 0 &amp;&amp;</span><br><span class="line">                symbol_name.indexOf(&quot;DefineClass&quot;) &gt;= 0 &amp;&amp;</span><br><span class="line">                symbol_name.indexOf(&quot;Thread&quot;) &gt;= 0 &amp;&amp;</span><br><span class="line">                symbol_name.indexOf(&quot;DexFile&quot;) &gt;= 0) &#123;</span><br><span class="line">                console.log(symbol_name, symbol.address);</span><br><span class="line">                addr_DefineClass = symbol.address;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        var dex_maps = &#123;&#125;;</span><br><span class="line">        var dex_count = 1;</span><br><span class="line"></span><br><span class="line">        console.log(&quot;[DefineClass:]&quot;, addr_DefineClass);</span><br><span class="line">        if (addr_DefineClass) &#123;</span><br><span class="line">            Interceptor.attach(addr_DefineClass, &#123;</span><br><span class="line">                onEnter: function(args) &#123;</span><br><span class="line">                    var dex_file = args[5];</span><br><span class="line">                    //ptr(dex_file).add(Process.pointerSize) is &quot;const uint8_t* const begin_;&quot;</span><br><span class="line">                    //ptr(dex_file).add(Process.pointerSize + Process.pointerSize) is &quot;const size_t size_;&quot;</span><br><span class="line">                    var base = ptr(dex_file).add(Process.pointerSize).readPointer();</span><br><span class="line">                    var size = ptr(dex_file).add(Process.pointerSize + Process.pointerSize).readUInt();</span><br><span class="line"></span><br><span class="line">                    if (dex_maps[base] == undefined) &#123;</span><br><span class="line">                        dex_maps[base] = size;</span><br><span class="line">                        var magic = ptr(base).readCString();</span><br><span class="line">                        if (magic.indexOf(&quot;dex&quot;) == 0) &#123;</span><br><span class="line"></span><br><span class="line">                            var process_name = get_self_process_name();</span><br><span class="line">                            if (process_name != &quot;-1&quot;) &#123;</span><br><span class="line">                                var dex_dir_path = &quot;/data/data/&quot; + process_name + &quot;/files/dump_dex_&quot; + process_name;</span><br><span class="line">                                mkdir(dex_dir_path);</span><br><span class="line">                                var dex_path = dex_dir_path + &quot;/class&quot; + (dex_count == 1 ? &quot;&quot; : dex_count) + &quot;.dex&quot;;</span><br><span class="line">                                console.log(&quot;[find dex]:&quot;, dex_path);</span><br><span class="line">                                var fd = new File(dex_path, &quot;wb&quot;);</span><br><span class="line">                                if (fd &amp;&amp; fd != null) &#123;</span><br><span class="line">                                    dex_count++;</span><br><span class="line">                                    var dex_buffer = ptr(base).readByteArray(size);</span><br><span class="line">                                    fd.write(dex_buffer);</span><br><span class="line">                                    fd.flush();</span><br><span class="line">                                    fd.close();</span><br><span class="line">                                    console.log(&quot;[dump dex]:&quot;, dex_path);</span><br><span class="line"></span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                onLeave: function(retval) &#123;&#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function main() &#123;</span><br><span class="line">        klogData(&quot;&quot;, &quot;init&quot;, &quot;dump_dex.js init hook success&quot;)</span><br><span class="line">        dump_dex();</span><br><span class="line">    &#125;</span><br><span class="line">    setImmediate(main);</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>运行  frida -UF -l .\dump_dex.js  ， 为了保证能脱壳，app 的每个板块都点一点。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\TigerHu\NewFlold\7__study\2__Frida\他趣脱壳&gt; frida -UF -l .\dump_dex.js</span><br><span class="line">     ____</span><br><span class="line">    / _  |   Frida 16.1.0 - A world-class dynamic instrumentation toolkit</span><br><span class="line">   | (_| |</span><br><span class="line">    &gt; _  |   Commands:</span><br><span class="line">   /_/ |_|       help      -&gt; Displays the help system</span><br><span class="line">   . . . .       object?   -&gt; Display information about &#x27;object&#x27;</span><br><span class="line">   . . . .       exit/quit -&gt; Exit</span><br><span class="line">   . . . .</span><br><span class="line">   . . . .   More info at https://frida.re/docs/home/</span><br><span class="line">   . . . .</span><br><span class="line">   . . . .   Connected to Pixel 6 Pro (id=1B231FDEE005T0)</span><br><span class="line">_ZN3art11ClassLinker11DefineClassEPNS_6ThreadEPKcmNS_6HandleINS_6mirror11ClassLoaderEEERKNS_7DexFileERKNS_3dex8ClassDefE 0x6d87590ab0</span><br><span class="line">[DefineClass:] 0x6d87590ab0</span><br><span class="line">message: &#123;&#x27;type&#x27;: &#x27;send&#x27;, &#x27;payload&#x27;: &#123;&#x27;jsname&#x27;: &#x27;dump_dex&#x27;, &#x27;data&#x27;: &#x27;&#x27;, &#x27;init&#x27;: &#x27;dump_dex.js init hook success&#x27;&#125;&#125; data: None</span><br><span class="line">[Pixel 6 Pro::他趣 ]-&gt; [find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class2.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class2.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class3.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class3.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class4.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class4.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class5.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class5.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class6.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class6.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class7.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class7.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class8.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class8.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class9.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class9.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class10.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class10.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class11.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class11.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class12.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class12.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class13.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class13.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class14.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class14.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class15.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class15.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class16.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class16.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class17.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class17.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class18.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class18.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class19.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class19.dex</span><br><span class="line">[find dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class20.dex</span><br><span class="line">[dump dex]: /data/data/com.xingjiabi.shengsheng/files/dump_dex_com.xingjiabi.shengsheng/class20.dex</span><br></pre></td></tr></table></figure>
 
-<p>在手机内可以看到脱壳出来的dex 文件，随后直接拖到jadx里，就可以分析了。<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111224602621.png"></p>
+<p>在手机内可以看到脱壳出来的dex 文件，随后直接拖到jadx里，就可以分析了。<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240111224602621.png" srcset="/img/loading.gif" lazyload></p>
 <h1 id="分析app内各种检测"><a href="#分析app内各种检测" class="headerlink" title="分析app内各种检测"></a>分析app内各种检测</h1><p>分析app 反调试、运行环境检测技术。</p>
 <h2 id="root-检测"><a href="#root-检测" class="headerlink" title="root 检测"></a>root 检测</h2><p>前面我们知道app 会对运行环境进行检测，但是直接搜索 字符串 弹窗的信息，是搜不出来的，这是由于 apk 对字符串做了base64 处理。</p>
-<p>然后以前分析过一些对root 环境监测的代码，所以这里直接搜索，定位到代码 cn.taqu.lib.base.utils.AppAntiUtils.isDeviceRooted()<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240112145319294.png"><br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240114160423598.png"></p>
-<p>然后找到这一块的代码<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240112145342031.png"></p>
-<p>base64 解码<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240112145108350.png"></p>
+<p>然后以前分析过一些对root 环境监测的代码，所以这里直接搜索，定位到代码 cn.taqu.lib.base.utils.AppAntiUtils.isDeviceRooted()<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240112145319294.png" srcset="/img/loading.gif" lazyload><br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240114160423598.png" srcset="/img/loading.gif" lazyload></p>
+<p>然后找到这一块的代码<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240112145342031.png" srcset="/img/loading.gif" lazyload></p>
+<p>base64 解码<br><img src="/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP.assets/image-20240112145108350.png" srcset="/img/loading.gif" lazyload></p>
 <p>另外还看到不仅仅对 su 进行检测，还检测了其他的项，如下函数。这个函数在 cn.taqu.lib.base.utils.AppAntiUtils.initAnti() 初始化的时候调用，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public static boolean isDeviceRooted(RootBeer rootBeer) &#123;</span><br><span class="line">  </span><br><span class="line">    HbTrace.d(38850);</span><br><span class="line">    boolean z2 = rootBeer.checkForBinary(x.f13157a) || rootBeer.checkForDangerousProps() || rootBeer.checkForRWPaths() || rootBeer.detectTestKeys() || rootBeer.checkSuExists() || rootBeer.checkForRootNative() || rootBeer.checkForMagiskBinary();</span><br><span class="line">    HbTrace.h(38850);</span><br><span class="line">    return z2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以看到调用了 isDeviceRooted，两个重构函数，来判断是否root，最后弹窗</p>
@@ -602,194 +362,344 @@
 <h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><h2 id="附录-1"><a href="#附录-1" class="headerlink" title="附录 1"></a>附录 1</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">package com.scottyab.rootbeer;</span><br><span class="line"></span><br><span class="line">import java.util.ArrayList;</span><br><span class="line">import java.util.Arrays;</span><br><span class="line">import me.panpf.sketch.uri.FileUriModel;</span><br><span class="line"></span><br><span class="line">/* loaded from: E:\file\android逆向\蓝狐视频\他趣app\class13.dex */</span><br><span class="line">final class Const &#123;</span><br><span class="line">    static final String BINARY_BUSYBOX = &quot;busybox&quot;;</span><br><span class="line">    static final String BINARY_SU = &quot;su&quot;;</span><br><span class="line">    static final String[] knownRootAppsPackages = &#123;&quot;com.noshufou.android.su&quot;, &quot;com.noshufou.android.su.elite&quot;, &quot;eu.chainfire.supersu&quot;, &quot;com.koushikdutta.superuser&quot;, &quot;com.thirdparty.superuser&quot;, &quot;com.yellowes.su&quot;, &quot;com.topjohnwu.magisk&quot;, &quot;com.kingroot.kinguser&quot;, &quot;com.kingo.root&quot;, &quot;com.smedialink.oneclickroot&quot;, &quot;com.zhiqupk.root.global&quot;, &quot;com.alephzain.framaroot&quot;&#125;;</span><br><span class="line">    public static final String[] knownDangerousAppsPackages = &#123;&quot;com.koushikdutta.rommanager&quot;, &quot;com.koushikdutta.rommanager.license&quot;, &quot;com.dimonvideo.luckypatcher&quot;, &quot;com.chelpus.lackypatch&quot;, &quot;com.ramdroid.appquarantine&quot;, &quot;com.ramdroid.appquarantinepro&quot;, &quot;com.android.vending.billing.InAppBillingService.COIN&quot;, &quot;com.android.vending.billing.InAppBillingService.LUCK&quot;, &quot;com.chelpus.luckypatcher&quot;, &quot;com.blackmartalpha&quot;, &quot;org.blackmart.market&quot;, &quot;com.allinone.free&quot;, &quot;com.repodroid.app&quot;, &quot;org.creeplays.hack&quot;, &quot;com.baseappfull.fwd&quot;, &quot;com.zmapp&quot;, &quot;com.dv.marketmod.installer&quot;, &quot;org.mobilism.android&quot;, &quot;com.android.wp.net.log&quot;, &quot;com.android.camera.update&quot;, &quot;cc.madkite.freedom&quot;, &quot;com.solohsu.android.edxp.manager&quot;, &quot;org.meowcat.edxposed.manager&quot;, &quot;com.xmodgame&quot;, &quot;com.cih.game_cih&quot;, &quot;com.charles.lpoqasert&quot;, &quot;catch_.me_.if_.you_.can_&quot;&#125;;</span><br><span class="line">    public static final String[] knownRootCloakingPackages = &#123;&quot;com.devadvance.rootcloak&quot;, &quot;com.devadvance.rootcloakplus&quot;, &quot;de.robv.android.xposed.installer&quot;, &quot;com.saurik.substrate&quot;, &quot;com.zachspong.temprootremovejb&quot;, &quot;com.amphoras.hidemyroot&quot;, &quot;com.amphoras.hidemyrootadfree&quot;, &quot;com.formyhm.hiderootPremium&quot;, &quot;com.formyhm.hideroot&quot;&#125;;</span><br><span class="line">    private static final String[] suPaths = &#123;&quot;/data/local/&quot;, &quot;/data/local/bin/&quot;, &quot;/data/local/xbin/&quot;, &quot;/sbin/&quot;, &quot;/su/bin/&quot;, &quot;/system/bin/&quot;, &quot;/system/bin/.ext/&quot;, &quot;/system/bin/failsafe/&quot;, &quot;/system/sd/xbin/&quot;, &quot;/system/usr/we-need-root/&quot;, &quot;/system/xbin/&quot;, &quot;/cache/&quot;, &quot;/data/&quot;, &quot;/dev/&quot;&#125;;</span><br><span class="line">    static final String[] pathsThatShouldNotBeWritable = &#123;&quot;/system&quot;, &quot;/system/bin&quot;, &quot;/system/sbin&quot;, &quot;/system/xbin&quot;, &quot;/vendor/bin&quot;, &quot;/sbin&quot;, &quot;/etc&quot;&#125;;</span><br><span class="line"></span><br><span class="line">    private Const() throws InstantiationException &#123;</span><br><span class="line">        throw new InstantiationException(&quot;This class is not for instantiation&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* JADX INFO: Access modifiers changed from: package-private */</span><br><span class="line">    public static String[] getPaths() &#123;</span><br><span class="line">        ArrayList arrayList = new ArrayList(Arrays.asList(suPaths));</span><br><span class="line">        String str = System.getenv(&quot;PATH&quot;);</span><br><span class="line">        if (str != null &amp;&amp; !&quot;&quot;.equals(str)) &#123;</span><br><span class="line">            String[] split = str.split(&quot;:&quot;);</span><br><span class="line">            int length = split.length;</span><br><span class="line">            for (int i2 = 0; i2 &lt; length; i2++) &#123;</span><br><span class="line">                String str2 = split[i2];</span><br><span class="line">                if (!str2.endsWith(FileUriModel.SCHEME)) &#123;</span><br><span class="line">                    str2 = str2 + &#x27;/&#x27;;</span><br><span class="line">                &#125;</span><br><span class="line">                if (!arrayList.contains(str2)) &#123;</span><br><span class="line">                    arrayList.add(str2);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            return (String[]) arrayList.toArray(new String[0]);</span><br><span class="line">        &#125;</span><br><span class="line">        return (String[]) arrayList.toArray(new String[0]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="附录2"><a href="#附录2" class="headerlink" title="附录2"></a>附录2</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public boolean checkForRWPaths() &#123;</span><br><span class="line">    String str;</span><br><span class="line">    String str2;</span><br><span class="line">    String[] strArr;</span><br><span class="line">    String[] mountReader = mountReader();</span><br><span class="line">    if (mountReader == null) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    int i2 = Build.VERSION.SDK_INT;</span><br><span class="line">    int length = mountReader.length;</span><br><span class="line">    int i3 = 0;</span><br><span class="line">    boolean z2 = false;</span><br><span class="line">    while (i3 &lt; length) &#123;</span><br><span class="line">        String str3 = mountReader[i3];</span><br><span class="line">        String[] split = str3.split(&quot; &quot;);</span><br><span class="line">        int i4 = 23;</span><br><span class="line">        if ((i2 &lt;= 23 &amp;&amp; split.length &lt; 4) || (i2 &gt; 23 &amp;&amp; split.length &lt; 6)) &#123;</span><br><span class="line">            QLog.e(&quot;Error formatting mount line: &quot; + str3);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (i2 &gt; 23) &#123;</span><br><span class="line">                str = split[2];</span><br><span class="line">                str2 = split[5];</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                str = split[1];</span><br><span class="line">                str2 = split[3];</span><br><span class="line">            &#125;</span><br><span class="line">            String[] strArr2 = Const.pathsThatShouldNotBeWritable;</span><br><span class="line">            int length2 = strArr2.length;</span><br><span class="line">            int i5 = 0;</span><br><span class="line">            while (i5 &lt; length2) &#123;</span><br><span class="line">                String str4 = strArr2[i5];</span><br><span class="line">                if (str.equalsIgnoreCase(str4)) &#123;</span><br><span class="line">                    if (Build.VERSION.SDK_INT &gt; i4) &#123;</span><br><span class="line">                        str2 = str2.replace(&quot;(&quot;, &quot;&quot;).replace(&quot;)&quot;, &quot;&quot;);</span><br><span class="line">                    &#125;</span><br><span class="line">                    String[] split2 = str2.split(&quot;,&quot;);</span><br><span class="line">                    int length3 = split2.length;</span><br><span class="line">                    int i6 = 0;</span><br><span class="line">                    while (i6 &lt; length3) &#123;</span><br><span class="line">                        strArr = mountReader;</span><br><span class="line">                        if (split2[i6].equalsIgnoreCase(&quot;rw&quot;)) &#123;</span><br><span class="line">                            QLog.v(str4 + &quot; path is mounted with rw permissions! &quot; + str3);</span><br><span class="line">                            z2 = true;</span><br><span class="line">                            break;</span><br><span class="line">                        &#125;</span><br><span class="line">                        i6++;</span><br><span class="line">                        mountReader = strArr;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                strArr = mountReader;</span><br><span class="line">                i5++;</span><br><span class="line">                mountReader = strArr;</span><br><span class="line">                i4 = 23;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        i3++;</span><br><span class="line">        mountReader = mountReader;</span><br><span class="line">    &#125;</span><br><span class="line">    return z2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>apk逆向__他趣APP脱壳&amp;运行环境检测分析</div>
+      <div>https://tig3rhu.github.io/2024/01/14/70__逆向__他趣APP/</div>
+    </div>
+    <div class="license-meta">
       
-       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，交流请邮件至 1161629782@qq.com </span>
-    </div>
-</article>
-
-
-<p>
-    <a  class="dashang" onclick="dashangToggle()">💰</a>
-</p>
-
-
-
-
-
-
-    
-
-
-
-
-    </div>
-    <div class="copyright">
-        <p class="footer-entry">
-    ©2016-2020 Yelog
-</p>
-<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
-
-    </div>
-    <div class="full-toc">
-        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
-<a class="" id="rocket" ></a>
-
-    </div>
-</div>
-
-<div class="hide_box" onclick="dashangToggle()"></div>
-<div class="shang_box">
-    <a class="shang_close"  onclick="dashangToggle()">×</a>
-    <div class="shang_tit">
-        <p>Help us with donation</p>
-    </div>
-    <div class="shang_payimg">
-        <div class="pay_img">
-            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
-            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Tig3rHu</div>
         </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 14, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
     </div>
-    <div class="shang_payselect">
-        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/01/14/110_jadx_%E5%86%85%E5%AD%98%E4%B8%8D%E5%A4%9F_%E4%BD%BF%E7%94%A8%E9%97%AA%E9%80%80/" title="环境搭建_jadx_内存不足&amp;使用闪退">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">环境搭建_jadx_内存不足&amp;使用闪退</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/01/07/68__%E9%80%86%E5%90%91__%E6%87%92%E4%BA%BA%E5%90%AC%E4%B9%A6%E5%8E%BB%E4%BC%9A%E5%91%98/" title="apk逆向__懒人听书逆向">
+                        <span class="hidden-mobile">apk逆向__懒人听书逆向</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
     </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
 </div>
 
 
-</body>
-<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
 
-<script src="/js/script.js?v=1.1.0" ></script>
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
 <script>
-    var img_resize = 'default';
-    function initArticle() {
-        /*渲染对应的表格样式*/
-        
-            $("#post .pjax table").addClass("green_title");
-        
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
 
-        /*渲染打赏样式*/
-        
-        $("input[name=pay]").on("click", function () {
-            if($("input[name=pay]:checked").val()=="weixin"){
-                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
-            } else {
-                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
-            }
-        })
-        
-
-        /*高亮代码块行号*/
-        
-
-        /*访问数量*/
-        
-        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
-        
-
-        /*代码高亮，行号对齐*/
-        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
-
-        
-        
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
 
-    /*打赏页面隐藏与展示*/
-    
-    function dashangToggle() {
-        $(".shang_box").fadeToggle();
-        $(".hide_box").fadeToggle();
-    }
-    
-
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
 </script>
 
-<!--加入行号的高亮代码块样式-->
 
-<!--自定义样式设置-->
-<style>
-    
-    
-    .nav {
-        width: 542px;
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
     }
-    .nav.fullscreen {
-        margin-left: -542px;
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
     }
-    .nav-left {
-        width: 120px;
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
     }
-    
-    
-    @media screen and (max-width: 1468px) {
-        .nav {
-            width: 492px;
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
         }
-        .nav.fullscreen {
-            margin-left: -492px;
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
         }
-        .nav-left {
-            width: 100px;
-        }
-    }
-    
-    
-    @media screen and (max-width: 1024px) {
-        .nav {
-            width: 492px;
-            margin-left: -492px
-        }
-        .nav.fullscreen {
-            margin-left: 0;
-        }
-    }
-    
-    @media screen and (max-width: 426px) {
-        .nav {
-            width: 100%;
-        }
-        .nav-left {
-            width: 100%;
-        }
-    }
-    
-    
-    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
-        color: #383636;
-    }
-    
-    
-    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
-        color: #5e5e5f;
-    }
-    
-    
-    .nav-right nav a.hover, #local-search-result a.hover{
-        background-color: #e2e0e0;
-    }
-    
-    
-
-    /*列表样式*/
-    
-
-    /* 背景图样式 */
-    
-    
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
 
 
-    /*引用块样式*/
-    
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
-    /*文章列表背景图*/
-    
 
-    
-</style>
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

@@ -1,541 +1,300 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
 <head>
-  <meta charset="utf-8">
-  <title>NetGear__DNG2200v1系列漏洞分析 | Tig3rHu&#39;s Blog</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="NetGear__DNG2200v1系列漏洞分析 | Tig3rHu&#39;s Blog">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="HigerHu,vulnerability,security,cyber,iot,Android">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tig3rHu&#39;s Blog">
-<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Tig3rHu">
+  <meta name="keywords" content="HigerHu,vulnerability,security,cyber">
+  
+    <meta name="description" content="NetGear DGN2200v1系列漏洞分析获取和解压固件固件可从供应商的网站上获得，这使我们更容易获得副本进行检查。它是一个简单的 .zip 文件，包含发行说明 (.html) 和固件映像本身（.chk 文件）。在 .chk 文件上运行binwalk最终提取了文件系统 ( squash-fs )。  由器固件文件系统本身是一个标准的 Linux 根文件系统，并添加了一些小功能。我们关心和研究有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NetGear__DNG2200v1系列漏洞分析">
+<meta property="og:url" content="https://tig3rhu.github.io/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="Tig3rHu&#39;s Blog">
-<meta property="og:description" content="HigerHu,vulnerability,security,cyber,iot,Android">
+<meta property="og:description" content="NetGear DGN2200v1系列漏洞分析获取和解压固件固件可从供应商的网站上获得，这使我们更容易获得副本进行检查。它是一个简单的 .zip 文件，包含发行说明 (.html) 和固件映像本身（.chk 文件）。在 .chk 文件上运行binwalk最终提取了文件系统 ( squash-fs )。  由器固件文件系统本身是一个标准的 Linux 根文件系统，并添加了一些小功能。我们关心和研究有">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
-<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image1.png">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image2.png">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image3.png">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image4.png">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image5.png">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image6.png">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image7.png">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image8.png">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image9.png">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image10.png">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image11.png">
+<meta property="og:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image12.png">
+<meta property="article:published_time" content="2023-12-16T12:34:25.075Z">
+<meta property="article:modified_time" content="2024-01-08T07:03:38.911Z">
 <meta property="article:author" content="Tig3rHu">
 <meta property="article:tag" content="HigerHu,vulnerability,security,cyber">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tig3rhu.github.io/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image1.png">
+  
+  
+  
+  <title>NetGear__DNG2200v1系列漏洞分析 - Tig3rHu&#39;s Blog</title>
 
-
-<link rel="icon" href="/img/heard.png">
-
-<link href="/css/style.css?v=1.1.0" rel="stylesheet">
-
-<link href="/css/hl_theme/atom-dark.css?v=1.1.0" rel="stylesheet">
-
-<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
-
-<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<script src="/js/titleTip.js?v=1.1.0" ></script>
-
-<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
-<script>
-    hljs.initHighlightingOnLoad();
-</script>
-
-<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
 
-<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-<script src="/js/iconfont.js?v=1.1.0" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tig3rhu.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 7.0.0"></head>
-<div style="display: none">
-  <input class="theme_disqus_on" value="false">
-  <input class="theme_preload_comment" value="">
-  <input class="theme_blog_path" value="">
-  <input id="theme_shortcut" value="true" />
-  <input id="theme_highlight_on" value="true" />
-  <input id="theme_code_copy" value="true" />
-</div>
-
 
 
 <body>
-<aside class="nav">
-    <div class="nav-left">
-        <a href="/"
-   class="avatar_target">
-    <img class="avatar"
-         src="/img/heard.png"/>
-</a>
-<div class="author">
-    <span>Tig3rHu</span>
-</div>
+  
 
-<div class="icon">
+  <header>
     
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-            <a title="rss"
-               href="/atom.xml"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-rss"></use>
-                    </svg>
-                
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
             </a>
+          </li>
+          
         
-    
         
-            <a title="github"
-               href="https://github.com/Tig3rHu"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-github"></use>
-                    </svg>
-                
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
             </a>
+          </li>
         
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-</div>
+      </ul>
+    </div>
+  </div>
+</nav>
 
+  
 
-
-
-
-<ul>
-    <li>
-        <div class="all active" data-rel="All">All
-            
-                <small>(28)</small>
-            
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NetGear__DNG2200v1系列漏洞分析"></span>
+          
         </div>
-    </li>
+
+        
+          
+  <div class="mt-3">
     
-</ul>
-<div class="left-bottom">
-    <div class="menus">
-        
-            
-            
-            
-    </div>
-    <div>
-        
-        <a 
-                                           class="friends">Friends</a>
-        
-    </div>
-</div>
-<input type="hidden" id="yelog_site_posts_number" value="28">
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-16 20:34" pubdate>
+          December 16, 2023 pm
+        </time>
+      </span>
+    
+  </div>
 
-<div style="display: none">
-    <span id="busuanzi_value_site_uv"></span>
-    <span id="busuanzi_value_site_pv"></span>
-</div>
-
-    </div>
-    <div class="nav-right">
-        <div class="friends-area">
-    <div class="friends-title">
-        Links
-        <i class="iconfont icon-left"></i>
-    </div>
-    <div class="friends-content">
-        <ul>
-            
-            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
-            
-        </ul>
-    </div>
-</div>
-        <div class="title-list">
-    <div class="right-top">
-        <div id="default-panel">
-            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
-            <div class="right-title">All</div>
-            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
-        </div>
-        <div id="search-panel">
-            <i class="iconfont icon-left" data-title="返回"></i>
-            <input id="local-search-input" autocomplete="off"/>
-            <label class="border-line" for="input"></label>
-            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
-            <i class="iconfont icon-tag" data-title="标签"></i>
-        </div>
-        <div id="outline-panel" style="display: none">
-            <div class="right-title">大纲</div>
-            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
-        </div>
-    </div>
-
-    <div class="tags-list">
-    <input id="tag-search" />
-    <div class="tag-wrapper">
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
         
-    </div>
-
-</div>
+          1.4k words
+        
+      </span>
+    
 
     
-    <nav id="title-list-nav">
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
         
         
-        <a  class="All "
-           href="/2024/04/07/20__Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linux_Kernel编译调试env">Linux_Kernel编译调试env</span>
-            <span class="post-date" title="2024-04-07 23:15:34">2024/04/07</span>
-        </a>
         
+          12 mins
         
-        <a  class="All "
-           href="/2024/04/06/73__dajiang__Android%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="dajiang_Android固件分析&amp;漏洞审计">dajiang_Android固件分析&amp;漏洞审计</span>
-            <span class="post-date" title="2024-04-06 22:48:50">2024/04/06</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/03/28/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro Android驱动模块编译">Pixel 6Pro Android驱动模块编译</span>
-            <span class="post-date" title="2024-03-28 23:23:22">2024/03/28</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/02/29/19__KernelSU%E6%90%9E%E6%9C%BA/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro Kernel编译整合KernelSU">Pixel 6Pro Kernel编译整合KernelSU</span>
-            <span class="post-date" title="2024-02-29 11:27:35">2024/02/29</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/02/08/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro AOSP源码在Docker内编译全过程">Pixel 6Pro AOSP源码在Docker内编译全过程</span>
-            <span class="post-date" title="2024-02-08 18:38:54">2024/02/08</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/Motorola_Mesh%20%E6%BC%8F%E6%B4%9E%E5%85%AC%E5%91%8A/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Motorola_Mesh漏洞公告">Motorola_Mesh漏洞公告</span>
-            <span class="post-date" title="2024-01-14 22:44:55">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/110_jadx_%E5%86%85%E5%AD%98%E4%B8%8D%E5%A4%9F_%E4%BD%BF%E7%94%A8%E9%97%AA%E9%80%80/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="环境搭建_jadx_内存不足&amp;使用闪退">环境搭建_jadx_内存不足&amp;使用闪退</span>
-            <span class="post-date" title="2024-01-14 22:20:30">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__他趣APP脱壳&amp;运行环境检测分析">apk逆向__他趣APP脱壳&amp;运行环境检测分析</span>
-            <span class="post-date" title="2024-01-14 22:15:58">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/07/68__%E9%80%86%E5%90%91__%E6%87%92%E4%BA%BA%E5%90%AC%E4%B9%A6%E5%8E%BB%E4%BC%9A%E5%91%98/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__懒人听书逆向">apk逆向__懒人听书逆向</span>
-            <span class="post-date" title="2024-01-07 22:15:49">2024/01/07</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
-            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
-            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
-            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
-            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
-            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
-            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
-            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
-            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
-            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
-            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
-            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
-            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
-            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
-            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
-            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
-            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
-            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
-            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/hello-world/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Hello World">Hello World</span>
-            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
-        </a>
-        
-        <div id="no-item-tips">
+      </span>
+    
 
-        </div>
-    </nav>
-    <div id="outline-list">
-    </div>
-</div>
+    
+    
+  </div>
 
-    </div>
-    <div class="hide-list">
-        <div class="semicircle" data-title="切换全屏 快捷键 s">
-            <div class="brackets first"><</div>
-            <div class="brackets">&gt;</div>
-        </div>
-    </div>
-</aside>
-<div id="post">
-    <div class="pjax">
-        <article id="post-NetGear_DGN2200v1系列漏洞分析" class="article article-type-post" itemscope itemprop="blogPost">
-    
-        <h1 class="article-title">NetGear__DNG2200v1系列漏洞分析</h1>
-    
-    <div class="article-meta">
+
         
-        
-        
-        
-    </div>
-    <div class="article-meta">
-        
-            Created At : <time class="date" title='Updated At: 2024-01-08 15:03:38'>2023-12-16 20:34</time>
-        
-    </div>
-    <div class="article-meta">
-        
-        
-        <span id="busuanzi_container_page_pv">
-            Views 👀 :<span id="busuanzi_value_page_pv">
-                <span class="count-comment">
-                    <span class="spinner">
-                      <div class="cube1"></div>
-                      <div class="cube2"></div>
-                    </span>
-                </span>
-            </span>
-        </span>
-        
-        
-    </div>
-    
-    <div class="toc-ref">
-    
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#NetGear-DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-text">NetGear DGN2200v1系列漏洞分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%92%8C%E8%A7%A3%E5%8E%8B%E5%9B%BA%E4%BB%B6"><span class="toc-text">获取和解压固件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A2%E7%B4%A2"><span class="toc-text">探索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DGN-2200V1%E8%B7%AF%E7%94%B1%E5%99%A8%E4%B8%AD%E5%AD%98%E5%9C%A8%E7%9A%84%E6%BC%8F%E6%B4%9E"><span class="toc-text">DGN 2200V1路由器中存在的漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E8%AE%BF%E9%97%AE%E8%B7%AF%E7%94%B1%E5%99%A8%E7%AE%A1%E7%90%86%E7%95%8C%E9%9D%A2"><span class="toc-text">绕过身份验证访问路由器管理界面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%8A%A0%E5%AF%86%E4%BE%A7%E4%BF%A1%E9%81%93%E6%94%BB%E5%87%BB%E6%8E%A8%E6%96%AD%E8%B7%AF%E7%94%B1%E5%99%A8%E5%87%AD%E8%AF%81"><span class="toc-text">通过加密侧信道攻击推断路由器凭证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E7%B4%A2%E5%AD%98%E5%82%A8%E5%9C%A8%E8%AE%BE%E5%A4%87%E4%B8%AD%E7%9A%84%E5%AF%86%E9%92%A5"><span class="toc-text">检索存储在设备中的密钥</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%93%E5%B1%95"><span class="toc-text">拓展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Ex6100v2-%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90"><span class="toc-text">Ex6100v2 固件分析</span></a></li></ol></li></ol></li></ol></li></ol>
-    
-<style>
-    .left-col .switch-btn,
-    .left-col .switch-area {
-        display: none;
-    }
-    .toc-level-3 i,
-    .toc-level-3 ol {
-        display: none !important;
-    }
-</style>
-</div>
-    
-    <div class="article-entry" itemprop="articleBody">
+      </div>
+
       
-        <h1 id="NetGear-DGN2200v1系列漏洞分析"><a href="#NetGear-DGN2200v1系列漏洞分析" class="headerlink" title="NetGear DGN2200v1系列漏洞分析"></a>NetGear DGN2200v1系列漏洞分析</h1><h3 id="获取和解压固件"><a href="#获取和解压固件" class="headerlink" title="获取和解压固件"></a>获取和解压固件</h3><p>固件可从供应商的网站上获得，这使我们更容易获得副本进行检查。它是一个简单的 .zip 文件，包含发行说明 (.html) 和固件映像本身（.chk 文件）。在 .chk 文件上运行binwalk最终提取了文件系统 ( squash-fs )。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image1.png" alt="image-20231216202735932"></p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NetGear__DNG2200v1系列漏洞分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="NetGear-DGN2200v1系列漏洞分析"><a href="#NetGear-DGN2200v1系列漏洞分析" class="headerlink" title="NetGear DGN2200v1系列漏洞分析"></a>NetGear DGN2200v1系列漏洞分析</h1><h3 id="获取和解压固件"><a href="#获取和解压固件" class="headerlink" title="获取和解压固件"></a>获取和解压固件</h3><p>固件可从供应商的网站上获得，这使我们更容易获得副本进行检查。它是一个简单的 .zip 文件，包含发行说明 (.html) 和固件映像本身（.chk 文件）。在 .chk 文件上运行binwalk最终提取了文件系统 ( squash-fs )。</p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image1.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <p>由器固件文件系统本身是一个标准的 Linux 根文件系统，并添加了一些小功能。我们关心和研究有以下几点</p>
 <ul>
 <li>&#x2F;www  –  包含html页面和.gif图片</li>
 <li>&#x2F;usr&#x2F;sbin – 包含 NETGEAR 的各种自定义二进制文件，包括 HTTPd、FTPC 等</li>
 </ul>
 <p>由于我们看到异常通信使用 httpd 服务的标准端口，因此我们将重点放在 httpd 上。httpd 本身是一个 32 位大端 MIPS ELF，针对 uClibc (嵌入式设备的标准 libc）编译，似乎整个服务器端逻辑 (CGI) 都被编译到 httpd 中。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image2.png" alt="image-20231216202735932"></p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image2.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <h3 id="探索"><a href="#探索" class="headerlink" title="探索"></a>探索</h3><p>在探索嵌入式web服务时，首先要考虑以下几个问题</p>
 <ol>
 <li>Web 服务是否显示一些未经身份验证的页面？如果是这样，他们是如何治理的？</li>
@@ -545,221 +304,371 @@
 </ol>
 <p>为了回答这些问题，我们对 httpd 二进制文件进行了静态分析，并通过运行 QEMU（一个开源模拟器）对固件进行仿真模拟，另外使用了hook（例如 NVRAM getter 和 setter）进行了一些动态分析。</p>
 <h3 id="DGN-2200V1路由器中存在的漏洞"><a href="#DGN-2200V1路由器中存在的漏洞" class="headerlink" title="DGN 2200V1路由器中存在的漏洞"></a>DGN 2200V1路由器中存在的漏洞</h3><h4 id="绕过身份验证访问路由器管理界面"><a href="#绕过身份验证访问路由器管理界面" class="headerlink" title="绕过身份验证访问路由器管理界面"></a>绕过身份验证访问路由器管理界面</h4><p>在检查 httpd 如何规定哪些页面应该在没有身份验证的情况下提供时，我们发现了以下伪代码：</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image3.png" alt="image-20231216202735932"></p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image3.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <p>这些代码是httpd中的第一个页面处理代码，它会自动允许一些页面，例如form.css或者func.js，正常来说，这些设置并没有问题，但是异常点在于NetGear使用strstr函数来检查是否有“.jpg”“.gif”或者“ess_“字符串，用来匹配整个 url 。<br>因此我们可以使用GET 方式在URL中带有strstr检查的字符串（如 “?.gif” ）来访问设备的任意界面，其中包括身份验证的界面，使用如下</p>
 <p><code>https://ip/WAN_wan.htm?pic.gif</code></p>
 <p>就可以成功绕过身份验证访问路由器管理界面了。</p>
 <h4 id="通过加密侧信道攻击推断路由器凭证"><a href="#通过加密侧信道攻击推断路由器凭证" class="headerlink" title="通过加密侧信道攻击推断路由器凭证"></a>通过加密侧信道攻击推断路由器凭证</h4><p>在这个阶段，我们已经完全控制了路由器管理界面，但是我们继续研究身份验证本身是如何实现的。<br>我们注意到httpd 组件对http界面进行基础认证，需要将username和password 使用base64来进行编译，然后在http header中发送，最后在路由器内存中保存的用户名和密码进行验证，路由器将这些信息存储在NVRAM中。<br>在我们检查身份验证的过程中，我们发现了一种可以让攻击者获取正确凭据的旁道攻击：</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image4.png" alt="image-20231216202735932"></p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image4.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <p>这里要注意，username 和 password 是使用strcmp来进行比较的，strcmp 在 libc 中的实现是通过逐个字符比较直到观察到 NUL 终止符或直到发生不匹配来工作。</p>
 <p>攻击者可以通过测量失败所需的时间来利用后者。例如，在测量第一个字符的次数时，我们得到如下图：</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image5.png" alt="image-20231216202735932"></p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image5.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <p>这表示第一个字符是“n”。攻击者可以重复此过程（“na”、“nb”、“nc”等）以获取第二个字符，直到泄露整个用户名和密码。</p>
 <p>我们向 NETGEAR 建议他们可以通过执行基于 XOR 的内存比较来避免此类攻击，例如：</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image6.png" alt="image-20231216202735932"></p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image6.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <p>使字节不匹配，该功能也会继续。类似的方法可以在加密安全库中看到，例如OpenSSL 的 CRYPTO_memcmp。</p>
 <h4 id="检索存储在设备中的密钥"><a href="#检索存储在设备中的密钥" class="headerlink" title="检索存储在设备中的密钥"></a>检索存储在设备中的密钥</h4><p>当完成身份验证绕过漏洞之后，我们仍然想看看是否可以利用其他现有的漏洞来恢复路由器使用的username和密码，因为我们决定使用路由器的配置备份\恢复功能。<br>我们可以使用身份绕过获取文件：<br><code> hxxp://router_addr:8080/NETGEAR_DGN2200[.]cfg?pic[.]gif.</code><br>这个文件具有高熵，这表明它已被加密，我们无法直接读取内容，并且binwalk也没有任何结果。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image7.png" alt="image-20231216202735932"></p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image7.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <p>当我们对“备份\恢复“的功能进行逆向后，我们的问题被解决了。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image8.png" alt="image-20231216202735932"></p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image8.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><h4 id="Ex6100v2-固件分析"><a href="#Ex6100v2-固件分析" class="headerlink" title="Ex6100v2 固件分析"></a>Ex6100v2 固件分析</h4><p>看完这边漏洞分析文章之后，根据以往对Netgear固件分析中，发现这种情况存在许多版本的固件中，于是我翻出了实验室的NetGear Ex6100v2 路由设备，下载到对应版本的固件，然后对固件进行解包分析，<br>根据&#x2F;etc&#x2F;init.d&#x2F;rcS文件中的内容<br>找到uhttpd 的组件（<br>uHTTPd 是一个 OpenWrt&#x2F;LUCI 开发者从头编写的 Web 服务器），可以看到这个固件是使用NX的保护措施。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image9.png" alt="image-20231216202735932"></p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image9.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <p>在我分析&#x2F;etc&#x2F;boot文件中，看到如下内容，也可以证明这是一个OpenWRT类型的web组件。</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image10.png" alt="image-20231216202735932"></p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image10.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <p>在uhttpd组件的逆向中，看到了如下的伪代码</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image11.png" alt="image-20231216202735932"></p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image11.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <p>本来以为这也是一个存在身份验证绕过的固件，但是继续查看引用，看到这个函数需要在用户认证之后才会触发</p>
-<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image12.png" alt="image-20231216202735932"></p>
+<p><img src="/NetGear2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.assets/image12.png" srcset="/img/loading.gif" lazyload alt="image-20231216202735932"></p>
 <p>于是在经过实际的测试，确实是需要在经过认证才能访问（鸡肋）</p>
 
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NetGear__DNG2200v1系列漏洞分析</div>
+      <div>https://tig3rhu.github.io/2023/12/16/NetGear_DGN2200v1系列漏洞分析/</div>
+    </div>
+    <div class="license-meta">
       
-       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，交流请邮件至 1161629782@qq.com </span>
-    </div>
-</article>
-
-
-<p>
-    <a  class="dashang" onclick="dashangToggle()">💰</a>
-</p>
-
-
-
-
-
-
-    
-
-
-
-
-    </div>
-    <div class="copyright">
-        <p class="footer-entry">
-    ©2016-2020 Yelog
-</p>
-<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
-
-    </div>
-    <div class="full-toc">
-        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
-<a class="" id="rocket" ></a>
-
-    </div>
-</div>
-
-<div class="hide_box" onclick="dashangToggle()"></div>
-<div class="shang_box">
-    <a class="shang_close"  onclick="dashangToggle()">×</a>
-    <div class="shang_tit">
-        <p>Help us with donation</p>
-    </div>
-    <div class="shang_payimg">
-        <div class="pay_img">
-            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
-            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Tig3rHu</div>
         </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 16, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
     </div>
-    <div class="shang_payselect">
-        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" title="CVE-2021-20090 身份验证绕过漏洞分析">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CVE-2021-20090 身份验证绕过漏洞分析</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/" title="Linksys EA6100 固件解密过程">
+                        <span class="hidden-mobile">Linksys EA6100 固件解密过程</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
     </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
 </div>
 
 
-</body>
-<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
 
-<script src="/js/script.js?v=1.1.0" ></script>
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
 <script>
-    var img_resize = 'default';
-    function initArticle() {
-        /*渲染对应的表格样式*/
-        
-            $("#post .pjax table").addClass("green_title");
-        
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
 
-        /*渲染打赏样式*/
-        
-        $("input[name=pay]").on("click", function () {
-            if($("input[name=pay]:checked").val()=="weixin"){
-                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
-            } else {
-                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
-            }
-        })
-        
-
-        /*高亮代码块行号*/
-        
-
-        /*访问数量*/
-        
-        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
-        
-
-        /*代码高亮，行号对齐*/
-        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
-
-        
-        
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
 
-    /*打赏页面隐藏与展示*/
-    
-    function dashangToggle() {
-        $(".shang_box").fadeToggle();
-        $(".hide_box").fadeToggle();
-    }
-    
-
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
 </script>
 
-<!--加入行号的高亮代码块样式-->
 
-<!--自定义样式设置-->
-<style>
-    
-    
-    .nav {
-        width: 542px;
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
     }
-    .nav.fullscreen {
-        margin-left: -542px;
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
     }
-    .nav-left {
-        width: 120px;
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
     }
-    
-    
-    @media screen and (max-width: 1468px) {
-        .nav {
-            width: 492px;
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
         }
-        .nav.fullscreen {
-            margin-left: -492px;
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
         }
-        .nav-left {
-            width: 100px;
-        }
-    }
-    
-    
-    @media screen and (max-width: 1024px) {
-        .nav {
-            width: 492px;
-            margin-left: -492px
-        }
-        .nav.fullscreen {
-            margin-left: 0;
-        }
-    }
-    
-    @media screen and (max-width: 426px) {
-        .nav {
-            width: 100%;
-        }
-        .nav-left {
-            width: 100%;
-        }
-    }
-    
-    
-    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
-        color: #383636;
-    }
-    
-    
-    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
-        color: #5e5e5f;
-    }
-    
-    
-    .nav-right nav a.hover, #local-search-result a.hover{
-        background-color: #e2e0e0;
-    }
-    
-    
-
-    /*列表样式*/
-    
-
-    /* 背景图样式 */
-    
-    
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
 
 
-    /*引用块样式*/
-    
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
-    /*文章列表背景图*/
-    
 
-    
-</style>
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

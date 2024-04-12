@@ -1,533 +1,292 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
 <head>
-  <meta charset="utf-8">
-  <title>QiLing 框架学习WriteUp | Tig3rHu&#39;s Blog</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="QiLing 框架学习WriteUp | Tig3rHu&#39;s Blog">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="HigerHu,vulnerability,security,cyber,iot,Android">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tig3rHu&#39;s Blog">
-<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Tig3rHu">
+  <meta name="keywords" content="HigerHu,vulnerability,security,cyber">
+  
+    <meta name="description" content="QiLing 框架学习QilingQiling 是一个高级二进制仿真框架，是基于Unicorn（独角兽）具有以下特点：  跨平台：Windows、MacOS、Linux、BSD、UEFI、DOS 跨架构：X86、X86_64、Arm、Arm64、MIPS、8086 多种文件格式：PE、MachO、ELF、COM 通过Demigod支持 Linux Kernel Module(.ko)、Window">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QiLing 框架学习WriteUp">
+<meta property="og:url" content="https://tig3rhu.github.io/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Tig3rHu&#39;s Blog">
-<meta property="og:description" content="HigerHu,vulnerability,security,cyber,iot,Android">
+<meta property="og:description" content="QiLing 框架学习QilingQiling 是一个高级二进制仿真框架，是基于Unicorn（独角兽）具有以下特点：  跨平台：Windows、MacOS、Linux、BSD、UEFI、DOS 跨架构：X86、X86_64、Arm、Arm64、MIPS、8086 多种文件格式：PE、MachO、ELF、COM 通过Demigod支持 Linux Kernel Module(.ko)、Window">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
-<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220412185946587.png">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426181633377.png">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182018533.png">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426183049546.png">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182136100.png">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182517111.png">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182719013.png">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220413170526016.png">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220413170458755.png">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414153151724.png">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414140014259.png">
+<meta property="og:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414160121966.png">
+<meta property="article:published_time" content="2023-12-18T09:12:42.084Z">
+<meta property="article:modified_time" content="2023-12-19T07:32:58.418Z">
 <meta property="article:author" content="Tig3rHu">
 <meta property="article:tag" content="HigerHu,vulnerability,security,cyber">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tig3rhu.github.io/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220412185946587.png">
+  
+  
+  
+  <title>QiLing 框架学习WriteUp - Tig3rHu&#39;s Blog</title>
 
-
-<link rel="icon" href="/img/heard.png">
-
-<link href="/css/style.css?v=1.1.0" rel="stylesheet">
-
-<link href="/css/hl_theme/atom-dark.css?v=1.1.0" rel="stylesheet">
-
-<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
-
-<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<script src="/js/titleTip.js?v=1.1.0" ></script>
-
-<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
-<script>
-    hljs.initHighlightingOnLoad();
-</script>
-
-<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
 
-<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-<script src="/js/iconfont.js?v=1.1.0" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tig3rhu.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 7.0.0"></head>
-<div style="display: none">
-  <input class="theme_disqus_on" value="false">
-  <input class="theme_preload_comment" value="">
-  <input class="theme_blog_path" value="">
-  <input id="theme_shortcut" value="true" />
-  <input id="theme_highlight_on" value="true" />
-  <input id="theme_code_copy" value="true" />
-</div>
-
 
 
 <body>
-<aside class="nav">
-    <div class="nav-left">
-        <a href="/"
-   class="avatar_target">
-    <img class="avatar"
-         src="/img/heard.png"/>
-</a>
-<div class="author">
-    <span>Tig3rHu</span>
-</div>
+  
 
-<div class="icon">
+  <header>
     
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-            <a title="rss"
-               href="/atom.xml"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-rss"></use>
-                    </svg>
-                
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
             </a>
+          </li>
+          
         
-    
         
-            <a title="github"
-               href="https://github.com/Tig3rHu"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-github"></use>
-                    </svg>
-                
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
             </a>
+          </li>
         
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-</div>
+      </ul>
+    </div>
+  </div>
+</nav>
 
+  
 
-
-
-
-<ul>
-    <li>
-        <div class="all active" data-rel="All">All
-            
-                <small>(28)</small>
-            
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="QiLing 框架学习WriteUp"></span>
+          
         </div>
-    </li>
+
+        
+          
+  <div class="mt-3">
     
-</ul>
-<div class="left-bottom">
-    <div class="menus">
-        
-            
-            
-            
-    </div>
-    <div>
-        
-        <a 
-                                           class="friends">Friends</a>
-        
-    </div>
-</div>
-<input type="hidden" id="yelog_site_posts_number" value="28">
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-18 17:12" pubdate>
+          December 18, 2023 pm
+        </time>
+      </span>
+    
+  </div>
 
-<div style="display: none">
-    <span id="busuanzi_value_site_uv"></span>
-    <span id="busuanzi_value_site_pv"></span>
-</div>
-
-    </div>
-    <div class="nav-right">
-        <div class="friends-area">
-    <div class="friends-title">
-        Links
-        <i class="iconfont icon-left"></i>
-    </div>
-    <div class="friends-content">
-        <ul>
-            
-            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
-            
-        </ul>
-    </div>
-</div>
-        <div class="title-list">
-    <div class="right-top">
-        <div id="default-panel">
-            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
-            <div class="right-title">All</div>
-            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
-        </div>
-        <div id="search-panel">
-            <i class="iconfont icon-left" data-title="返回"></i>
-            <input id="local-search-input" autocomplete="off"/>
-            <label class="border-line" for="input"></label>
-            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
-            <i class="iconfont icon-tag" data-title="标签"></i>
-        </div>
-        <div id="outline-panel" style="display: none">
-            <div class="right-title">大纲</div>
-            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
-        </div>
-    </div>
-
-    <div class="tags-list">
-    <input id="tag-search" />
-    <div class="tag-wrapper">
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
         
-    </div>
-
-</div>
+          3k words
+        
+      </span>
+    
 
     
-    <nav id="title-list-nav">
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
         
         
-        <a  class="All "
-           href="/2024/04/07/20__Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linux_Kernel编译调试env">Linux_Kernel编译调试env</span>
-            <span class="post-date" title="2024-04-07 23:15:34">2024/04/07</span>
-        </a>
         
+          26 mins
         
-        <a  class="All "
-           href="/2024/04/06/73__dajiang__Android%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="dajiang_Android固件分析&amp;漏洞审计">dajiang_Android固件分析&amp;漏洞审计</span>
-            <span class="post-date" title="2024-04-06 22:48:50">2024/04/06</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/03/28/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro Android驱动模块编译">Pixel 6Pro Android驱动模块编译</span>
-            <span class="post-date" title="2024-03-28 23:23:22">2024/03/28</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/02/29/19__KernelSU%E6%90%9E%E6%9C%BA/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro Kernel编译整合KernelSU">Pixel 6Pro Kernel编译整合KernelSU</span>
-            <span class="post-date" title="2024-02-29 11:27:35">2024/02/29</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/02/08/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro AOSP源码在Docker内编译全过程">Pixel 6Pro AOSP源码在Docker内编译全过程</span>
-            <span class="post-date" title="2024-02-08 18:38:54">2024/02/08</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/Motorola_Mesh%20%E6%BC%8F%E6%B4%9E%E5%85%AC%E5%91%8A/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Motorola_Mesh漏洞公告">Motorola_Mesh漏洞公告</span>
-            <span class="post-date" title="2024-01-14 22:44:55">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/110_jadx_%E5%86%85%E5%AD%98%E4%B8%8D%E5%A4%9F_%E4%BD%BF%E7%94%A8%E9%97%AA%E9%80%80/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="环境搭建_jadx_内存不足&amp;使用闪退">环境搭建_jadx_内存不足&amp;使用闪退</span>
-            <span class="post-date" title="2024-01-14 22:20:30">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__他趣APP脱壳&amp;运行环境检测分析">apk逆向__他趣APP脱壳&amp;运行环境检测分析</span>
-            <span class="post-date" title="2024-01-14 22:15:58">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/07/68__%E9%80%86%E5%90%91__%E6%87%92%E4%BA%BA%E5%90%AC%E4%B9%A6%E5%8E%BB%E4%BC%9A%E5%91%98/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__懒人听书逆向">apk逆向__懒人听书逆向</span>
-            <span class="post-date" title="2024-01-07 22:15:49">2024/01/07</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
-            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
-            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
-            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
-            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
-            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
-            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
-            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
-            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
-            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
-            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
-            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
-            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
-            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
-            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
-            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
-            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
-            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
-            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/hello-world/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Hello World">Hello World</span>
-            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
-        </a>
-        
-        <div id="no-item-tips">
+      </span>
+    
 
-        </div>
-    </nav>
-    <div id="outline-list">
-    </div>
-</div>
+    
+    
+  </div>
 
-    </div>
-    <div class="hide-list">
-        <div class="semicircle" data-title="切换全屏 快捷键 s">
-            <div class="brackets first"><</div>
-            <div class="brackets">&gt;</div>
-        </div>
-    </div>
-</aside>
-<div id="post">
-    <div class="pjax">
-        <article id="post-3__QiLing_框架学习" class="article article-type-post" itemscope itemprop="blogPost">
-    
-        <h1 class="article-title">QiLing 框架学习WriteUp</h1>
-    
-    <div class="article-meta">
+
         
-        
-        
-        
-    </div>
-    <div class="article-meta">
-        
-            Created At : <time class="date" title='Updated At: 2023-12-19 15:32:58'>2023-12-18 17:12</time>
-        
-    </div>
-    <div class="article-meta">
-        
-        
-        <span id="busuanzi_container_page_pv">
-            Views 👀 :<span id="busuanzi_value_page_pv">
-                <span class="count-comment">
-                    <span class="spinner">
-                      <div class="cube1"></div>
-                      <div class="cube2"></div>
-                    </span>
-                </span>
-            </span>
-        </span>
-        
-        
-    </div>
-    
-    <div class="toc-ref">
-    
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#QiLing-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0"><span class="toc-text">QiLing 框架学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Qiling"><span class="toc-text">Qiling</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B"><span class="toc-text">安装过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E5%92%8C%E5%87%BD%E6%95%B0"><span class="toc-text">基础语法和函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#challenge"><span class="toc-text">challenge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge1-writeup"><span class="toc-text">challenge1 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge2-writeup"><span class="toc-text">challenge2 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge3-writeup"><span class="toc-text">challenge3 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge4-writeup"><span class="toc-text">challenge4 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge5-writeup"><span class="toc-text">challenge5 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge6-writeup"><span class="toc-text">challenge6 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge7-writeup"><span class="toc-text">challenge7 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge8-writeup"><span class="toc-text">challenge8 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge9-writeup"><span class="toc-text">challenge9 writeup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#challenge10-writeup-hook-FS"><span class="toc-text">challenge10 writeup hook FS</span></a></li></ol></li></ol></li></ol></li></ol>
-    
-<style>
-    .left-col .switch-btn,
-    .left-col .switch-area {
-        display: none;
-    }
-    .toc-level-3 i,
-    .toc-level-3 ol {
-        display: none !important;
-    }
-</style>
-</div>
-    
-    <div class="article-entry" itemprop="articleBody">
+      </div>
+
       
-        <h1 id="QiLing-框架学习"><a href="#QiLing-框架学习" class="headerlink" title="QiLing 框架学习"></a>QiLing 框架学习</h1><h3 id="Qiling"><a href="#Qiling" class="headerlink" title="Qiling"></a>Qiling</h3><p>Qiling 是一个高级二进制仿真框架，是基于Unicorn（独角兽）具有以下特点：</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">QiLing 框架学习WriteUp</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="QiLing-框架学习"><a href="#QiLing-框架学习" class="headerlink" title="QiLing 框架学习"></a>QiLing 框架学习</h1><h3 id="Qiling"><a href="#Qiling" class="headerlink" title="Qiling"></a>Qiling</h3><p>Qiling 是一个高级二进制仿真框架，是基于Unicorn（独角兽）具有以下特点：</p>
 <ul>
 <li>跨平台：Windows、MacOS、Linux、BSD、UEFI、DOS</li>
 <li>跨架构：X86、X86_64、Arm、Arm64、MIPS、8086</li>
@@ -542,7 +301,7 @@
 </ul>
 <h4 id="安装过程"><a href="#安装过程" class="headerlink" title="安装过程"></a>安装过程</h4><p>新建一个ubuntu 18.04 的虚拟机。伊万说这个东西会改变其他的环境配置</p>
 <p><strong>自动安装</strong> ，这种安装方式失败</p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220412185946587.png" alt="image-20220412185946587"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220412185946587.png" srcset="/img/loading.gif" lazyload alt="image-20220412185946587"></p>
 <p><strong>手动安装</strong> ， </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">安装方式  Ubuntu 20.04</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br><span class="line">sudo apt install python3-pip git cmake</span><br><span class="line">git clone -b dev https://github.com/qilingframework/qiling.git</span><br><span class="line">cd qiling &amp;&amp; git submodule update --init --recursive</span><br><span class="line">sudo pip3 install . </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -571,30 +330,30 @@
 <p>size :  应该映射的内存大小，如果使用linux 系统，至少需要考虑4096的倍数进行对齐。</p>
 </blockquote>
 <p>ql.loader.elf_entry  获取程序入口的地址</p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426181633377.png" alt="image-20220426181633377"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426181633377.png" srcset="/img/loading.gif" lazyload alt="image-20220426181633377"></p>
 <p>ql.loader.load_address  获取加载基地址  </p>
 <p>ql.men.get_lib_base(“httpd”)  和 ql.loader.load_address 获取的值是一样的。</p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182018533.png" alt="image-20220426182018533"></p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426183049546.png" alt="image-20220426183049546"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182018533.png" srcset="/img/loading.gif" lazyload alt="image-20220426182018533"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426183049546.png" srcset="/img/loading.gif" lazyload alt="image-20220426183049546"></p>
 <p>ql.os.set_api(‘sleep’,fake_sleep)  hook 某个函数</p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182136100.png" alt="image-20220426182136100"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182136100.png" srcset="/img/loading.gif" lazyload alt="image-20220426182136100"></p>
 <p>ql.arch.regs.r0 &#x3D;1 设置寄存器r0 的值</p>
 <p>ql.arch.regs.read(‘r0’) 获取寄存器r0 中的值</p>
 <p>ql.mem.show_mapinfo() 显示映射信息</p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182517111.png" alt="image-20220426182517111"></p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182719013.png" alt="image-20220426182719013"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182517111.png" srcset="/img/loading.gif" lazyload alt="image-20220426182517111"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220426182719013.png" srcset="/img/loading.gif" lazyload alt="image-20220426182719013"></p>
 <h3 id="challenge"><a href="#challenge" class="headerlink" title="challenge"></a>challenge</h3><p><a target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-268989.htm">https://bbs.pediy.com/thread-268989.htm</a></p>
 <p>显示找不到registry 文件夹</p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220413170526016.png" alt="image-20220413170526016">解决方案： 需要查看 “ Important note on Windows DLLs and registry “ 这一章节window 依赖</p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220413170526016.png" srcset="/img/loading.gif" lazyload alt="image-20220413170526016">解决方案： 需要查看 “ Important note on Windows DLLs and registry “ 这一章节window 依赖</p>
 <p>在运行的时候会报错</p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220413170458755.png" alt="image-20220413170458755"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220413170458755.png" srcset="/img/loading.gif" lazyload alt="image-20220413170458755"></p>
 <p>解决方案： python3.8以上</p>
 <h4 id="challenge1-writeup"><a href="#challenge1-writeup" class="headerlink" title="challenge1 writeup"></a>challenge1 writeup</h4><p>程序尝试读取0x1337 处未映射的内存，因此，为了通过这个检查，我们只需要映射这虚拟内存区域并写入期望值。</p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414153151724.png" alt="image-20220414153151724"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414153151724.png" srcset="/img/loading.gif" lazyload alt="image-20220414153151724"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#-*- coding:utf-8 -*-</span><br><span class="line">#!/usr/bin/env python3</span><br><span class="line"># </span><br><span class="line"># Cross Platform and Multi Architecture Advanced Binary Emulation Framework</span><br><span class="line">#</span><br><span class="line"></span><br><span class="line">import sys</span><br><span class="line">sys.path.append(&quot;..&quot;)</span><br><span class="line"></span><br><span class="line">from qiling import Qiling</span><br><span class="line">from qiling.const import QL_VERBOSE</span><br><span class="line"></span><br><span class="line"># </span><br><span class="line">def challenge1(ql:Qiling):</span><br><span class="line">	print(&quot;1111111&quot;+str(ql.mem.is_mapped(0x1000,0x1000)))</span><br><span class="line">	ql.mem.map(0x1000,0x1000,info=&#x27;[challenge1]&#x27;)</span><br><span class="line">	ql.mem.write(0x1337,ql.pack16(1337)) # pack16(value) == struct.pack(&#x27;H&#x27;,value)</span><br><span class="line">	</span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    #ql = Qiling([&quot;rootfs/x8664_linux/qilinglab-x86_64&quot;], &quot;rootfs/x8664_linux&quot;, verbose=QL_VERBOSE.DEFAULT)</span><br><span class="line">    ql = Qiling([&quot;rootfs/x8664_linux/qilinglab-x86_64&quot;], &quot;rootfs/x8664_linux&quot;)</span><br><span class="line">    challenge1(ql)</span><br><span class="line">    ql.verbose = 1 # 设置输出信息的详细级别</span><br><span class="line">    ql.mem.show_mapinfo() # 显示完整的内存映射来查看我们刚刚映射的区域</span><br><span class="line">    ql.run()</span><br></pre></td></tr></table></figure>
 
 <p>为啥要ql.mem.map(0x1000,0x1000) ,因为我们要修改的内存地址是0x1337。</p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414140014259.png" alt="image-20220414140014259"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414140014259.png" srcset="/img/loading.gif" lazyload alt="image-20220414140014259"></p>
 <p>主要收获</p>
 <blockquote>
 <p>ql.mem.write(0x1337,ql.pack16(1337)) 修改内存地址上的值。</p>
@@ -602,7 +361,7 @@
 <h4 id="challenge2-writeup"><a href="#challenge2-writeup" class="headerlink" title="challenge2 writeup"></a>challenge2 writeup</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">nsigned __int64 __fastcall challenge2(_BYTE *a1)</span><br><span class="line">&#123;</span><br><span class="line">  unsigned int v2; // [rsp+10h] [rbp-1D0h]</span><br><span class="line">  int v3; // [rsp+14h] [rbp-1CCh]</span><br><span class="line">  int v4; // [rsp+18h] [rbp-1C8h]</span><br><span class="line">  int v5; // [rsp+1Ch] [rbp-1C4h]</span><br><span class="line">  struct utsname name; // [rsp+20h] [rbp-1C0h] BYREF</span><br><span class="line">  char s[10]; // [rsp+1A6h] [rbp-3Ah] BYREF</span><br><span class="line">  char v8[24]; // [rsp+1B0h] [rbp-30h] BYREF</span><br><span class="line">  unsigned __int64 v9; // [rsp+1C8h] [rbp-18h]</span><br><span class="line"></span><br><span class="line">  v9 = __readfsqword(0x28u);</span><br><span class="line">  if ( uname(&amp;name) )</span><br><span class="line">  &#123;</span><br><span class="line">    perror(&quot;uname&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  else</span><br><span class="line">  &#123;</span><br><span class="line">    strcpy(s, &quot;QilingOS&quot;);</span><br><span class="line">    strcpy(v8, &quot;ChallengeStart&quot;);</span><br><span class="line">    v2 = 0;</span><br><span class="line">    v3 = 0;</span><br><span class="line">    while ( v4 &lt; strlen(s) )</span><br><span class="line">    &#123;</span><br><span class="line">      if ( name.sysname[v4] == s[v4] )</span><br><span class="line">        ++v2;</span><br><span class="line">      ++v4;</span><br><span class="line">    &#125;</span><br><span class="line">    while ( v5 &lt; strlen(v8) )</span><br><span class="line">    &#123;</span><br><span class="line">      if ( name.version[v5] == v8[v5] )</span><br><span class="line">        ++v3;</span><br><span class="line">      ++v5;</span><br><span class="line">    &#125;</span><br><span class="line">    if ( v2 == strlen(s) &amp;&amp; v3 == strlen(v8) &amp;&amp; v2 &gt; 5 )</span><br><span class="line">      *a1 = 1;</span><br><span class="line">  &#125;</span><br><span class="line">  return __readfsqword(0x28u) ^ v9;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>可以看到utsname 结构体</p>
-<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414160121966.png" alt="image-20220414160121966"></p>
+<p><img src="/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0.assets/image-20220414160121966.png" srcset="/img/loading.gif" lazyload alt="image-20220414160121966"></p>
 <p>根据前面反汇编出来的代码可以看到，函数调用了系统调用uname函数来获取有关底层操作系统的信息，uname 函数会获取ustname 结构体的指针，为了通过检查，ustname 结构体中的sysname 参数必须是 ”QilingOS“，而version 参数必须是” ChallengeStart”。</p>
 <p>我们可以在uname 函数返回之前，使用Qiling API 进行hook 系统调用。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def hook_uname_on_exit(ql: Qiling, *args):</span><br><span class="line">	&#x27;&#x27;&#x27;</span><br><span class="line">	.text:0000000000000BD8                 lea     rax, [rbp+name]</span><br><span class="line">	.text:0000000000000BDF                 mov     rdi, rax        ; name</span><br><span class="line">	.text:0000000000000BE2                 call    _uname</span><br><span class="line">	.text:0000000000000BE7                 test    eax, eax</span><br><span class="line">	&#x27;&#x27;&#x27;</span><br><span class="line">	rdi = ql.arch.regs.rdi # 控制寄存器</span><br><span class="line">	ql.mem.write(rdi, b&#x27;QilingOS\x00&#x27;)</span><br><span class="line">	ql.mem.write(rdi + 65 * 3, b&#x27;ChallengeStart\x00&#x27;)</span><br><span class="line"> 	</span><br><span class="line">def challenge2(ql:Qiling):</span><br><span class="line">	ql.os.set_syscall(&#x27;uname&#x27;, hook_uname_on_exit, QL_INTERCEPT.EXIT)</span><br></pre></td></tr></table></figure>
@@ -709,194 +468,344 @@
 <p>参考讲解：</p>
 <p><a target="_blank" rel="noopener" href="https://badmonkey.site/archives/qilinglab-writeup#challenge-11">https://badmonkey.site/archives/qilinglab-writeup#challenge-11</a></p>
 
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>QiLing 框架学习WriteUp</div>
+      <div>https://tig3rhu.github.io/2023/12/18/3__QiLing_框架学习/</div>
+    </div>
+    <div class="license-meta">
       
-       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，交流请邮件至 1161629782@qq.com </span>
-    </div>
-</article>
-
-
-<p>
-    <a  class="dashang" onclick="dashangToggle()">💰</a>
-</p>
-
-
-
-
-
-
-    
-
-
-
-
-    </div>
-    <div class="copyright">
-        <p class="footer-entry">
-    ©2016-2020 Yelog
-</p>
-<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
-
-    </div>
-    <div class="full-toc">
-        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
-<a class="" id="rocket" ></a>
-
-    </div>
-</div>
-
-<div class="hide_box" onclick="dashangToggle()"></div>
-<div class="shang_box">
-    <a class="shang_close"  onclick="dashangToggle()">×</a>
-    <div class="shang_tit">
-        <p>Help us with donation</p>
-    </div>
-    <div class="shang_payimg">
-        <div class="pay_img">
-            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
-            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Tig3rHu</div>
         </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 18, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
     </div>
-    <div class="shang_payselect">
-        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/" title="Linux 使用LD_PRELOAD 进行hook">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux 使用LD_PRELOAD 进行hook</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/" title="mips架构堆栈缓冲区溢出调试与利用">
+                        <span class="hidden-mobile">mips架构堆栈缓冲区溢出调试与利用</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
     </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
 </div>
 
 
-</body>
-<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
 
-<script src="/js/script.js?v=1.1.0" ></script>
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
 <script>
-    var img_resize = 'default';
-    function initArticle() {
-        /*渲染对应的表格样式*/
-        
-            $("#post .pjax table").addClass("green_title");
-        
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
 
-        /*渲染打赏样式*/
-        
-        $("input[name=pay]").on("click", function () {
-            if($("input[name=pay]:checked").val()=="weixin"){
-                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
-            } else {
-                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
-            }
-        })
-        
-
-        /*高亮代码块行号*/
-        
-
-        /*访问数量*/
-        
-        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
-        
-
-        /*代码高亮，行号对齐*/
-        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
-
-        
-        
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
 
-    /*打赏页面隐藏与展示*/
-    
-    function dashangToggle() {
-        $(".shang_box").fadeToggle();
-        $(".hide_box").fadeToggle();
-    }
-    
-
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
 </script>
 
-<!--加入行号的高亮代码块样式-->
 
-<!--自定义样式设置-->
-<style>
-    
-    
-    .nav {
-        width: 542px;
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
     }
-    .nav.fullscreen {
-        margin-left: -542px;
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
     }
-    .nav-left {
-        width: 120px;
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
     }
-    
-    
-    @media screen and (max-width: 1468px) {
-        .nav {
-            width: 492px;
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
         }
-        .nav.fullscreen {
-            margin-left: -492px;
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
         }
-        .nav-left {
-            width: 100px;
-        }
-    }
-    
-    
-    @media screen and (max-width: 1024px) {
-        .nav {
-            width: 492px;
-            margin-left: -492px
-        }
-        .nav.fullscreen {
-            margin-left: 0;
-        }
-    }
-    
-    @media screen and (max-width: 426px) {
-        .nav {
-            width: 100%;
-        }
-        .nav-left {
-            width: 100%;
-        }
-    }
-    
-    
-    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
-        color: #383636;
-    }
-    
-    
-    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
-        color: #5e5e5f;
-    }
-    
-    
-    .nav-right nav a.hover, #local-search-result a.hover{
-        background-color: #e2e0e0;
-    }
-    
-    
-
-    /*列表样式*/
-    
-
-    /* 背景图样式 */
-    
-    
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
 
 
-    /*引用块样式*/
-    
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
-    /*文章列表背景图*/
-    
 
-    
-</style>
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

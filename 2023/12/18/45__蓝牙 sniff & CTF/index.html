@@ -1,534 +1,350 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
 <head>
-  <meta charset="utf-8">
-  <title>蓝牙sniff&amp;CTF&amp;develop | Tig3rHu&#39;s Blog</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="蓝牙sniff&amp;CTF&amp;develop | Tig3rHu&#39;s Blog">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="HigerHu,vulnerability,security,cyber,iot,Android">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tig3rHu&#39;s Blog">
-<meta property="og:url" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/2023-08-06.html">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Tig3rHu">
+  <meta name="keywords" content="HigerHu,vulnerability,security,cyber">
+  
+    <meta name="description" content="蓝牙基础蓝牙标准PDU : 协议数据单元，在一个传输单元中的有效传输数据。 低功耗蓝牙消息交互流程 协议栈根据蓝牙协议栈架构图可以看出，蓝牙模块共有三大部分组成：  Controller : 控制器，HCI以下  controller 中的 PHY 层是用来指定BLE所用的无线频段、调制解调方式。由于BLE属于无线通信频率范围是2.4002.4835GHz；为了同时支持多个设备，将整个频带分为40">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蓝牙sniff&amp;CTF&amp;develop">
+<meta property="og:url" content="https://tig3rhu.github.io/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/index.html">
 <meta property="og:site_name" content="Tig3rHu&#39;s Blog">
-<meta property="og:description" content="HigerHu,vulnerability,security,cyber,iot,Android">
+<meta property="og:description" content="蓝牙基础蓝牙标准PDU : 协议数据单元，在一个传输单元中的有效传输数据。 低功耗蓝牙消息交互流程 协议栈根据蓝牙协议栈架构图可以看出，蓝牙模块共有三大部分组成：  Controller : 控制器，HCI以下  controller 中的 PHY 层是用来指定BLE所用的无线频段、调制解调方式。由于BLE属于无线通信频率范围是2.4002.4835GHz；为了同时支持多个设备，将整个频带分为40">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-12-18T09:30:05.460Z">
-<meta property="article:modified_time" content="2023-08-06T14:24:36.000Z">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230702220906359.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230701115920366.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230713221729110.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230720175832564.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230727234105794.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231954245.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914173115924.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914173246414.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914151410101.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914151717385.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220920224829813.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220920225103860.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220920225839769.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230720235008470.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230720234947028.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230721001123680.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230721001234265.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723223357918.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723223416919.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723223705562.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723224154227.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723224300812.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231026835.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723230701858.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231249562.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231651552.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723232419155.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723232431882.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724215548836.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724215724161.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724220620242.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724222418757.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724224359159.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724224526153.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724230259822.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724231357813.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725220201508.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725220415001.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725220645566.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725222437415.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725222716234.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725222759027.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725225234861.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725230829248.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725231653389.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725231916250.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725232424448.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725232520987.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725232842263.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726220429673.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726220732048.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726222620497.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726223325901.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726223958174.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726223949537.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726225344083.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726225410917.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726225913551.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230711172945939.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230805114345297.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/img-20230806222335.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806222649332.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806223403984.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806231005051.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230815231514350.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230816224907026.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806221449861.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806222114730.png">
+<meta property="og:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230815223954076.png">
+<meta property="article:published_time" content="2023-12-18T09:30:59.071Z">
+<meta property="article:modified_time" content="2023-12-19T07:31:54.769Z">
 <meta property="article:author" content="Tig3rHu">
 <meta property="article:tag" content="HigerHu,vulnerability,security,cyber">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tig3rhu.github.io/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230702220906359.png">
+  
+  
+  
+  <title>蓝牙sniff&amp;CTF&amp;develop - Tig3rHu&#39;s Blog</title>
 
-
-<link rel="icon" href="/img/heard.png">
-
-<link href="/css/style.css?v=1.1.0" rel="stylesheet">
-
-<link href="/css/hl_theme/atom-dark.css?v=1.1.0" rel="stylesheet">
-
-<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
-
-<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<script src="/js/titleTip.js?v=1.1.0" ></script>
-
-<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
-<script>
-    hljs.initHighlightingOnLoad();
-</script>
-
-<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
 
-<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-<script src="/js/iconfont.js?v=1.1.0" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tig3rhu.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 7.0.0"></head>
-<div style="display: none">
-  <input class="theme_disqus_on" value="false">
-  <input class="theme_preload_comment" value="">
-  <input class="theme_blog_path" value="">
-  <input id="theme_shortcut" value="true" />
-  <input id="theme_highlight_on" value="true" />
-  <input id="theme_code_copy" value="true" />
-</div>
-
 
 
 <body>
-<aside class="nav">
-    <div class="nav-left">
-        <a href="/"
-   class="avatar_target">
-    <img class="avatar"
-         src="/img/heard.png"/>
-</a>
-<div class="author">
-    <span>Tig3rHu</span>
-</div>
+  
 
-<div class="icon">
+  <header>
     
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-            <a title="rss"
-               href="/atom.xml"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-rss"></use>
-                    </svg>
-                
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
             </a>
+          </li>
+          
         
-    
         
-            <a title="github"
-               href="https://github.com/Tig3rHu"
-               target="_blank">
-                
-                    <svg class="iconfont-svg" aria-hidden="true">
-                        <use xlink:href="#icon-github"></use>
-                    </svg>
-                
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
             </a>
+          </li>
         
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-</div>
+      </ul>
+    </div>
+  </div>
+</nav>
 
+  
 
-
-
-
-<ul>
-    <li>
-        <div class="all active" data-rel="All">All
-            
-                <small>(28)</small>
-            
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="蓝牙sniff&amp;CTF&amp;develop"></span>
+          
         </div>
-    </li>
+
+        
+          
+  <div class="mt-3">
     
-</ul>
-<div class="left-bottom">
-    <div class="menus">
-        
-            
-            
-            
-    </div>
-    <div>
-        
-        <a 
-                                           class="friends">Friends</a>
-        
-    </div>
-</div>
-<input type="hidden" id="yelog_site_posts_number" value="28">
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-18 17:30" pubdate>
+          December 18, 2023 pm
+        </time>
+      </span>
+    
+  </div>
 
-<div style="display: none">
-    <span id="busuanzi_value_site_uv"></span>
-    <span id="busuanzi_value_site_pv"></span>
-</div>
-
-    </div>
-    <div class="nav-right">
-        <div class="friends-area">
-    <div class="friends-title">
-        Links
-        <i class="iconfont icon-left"></i>
-    </div>
-    <div class="friends-content">
-        <ul>
-            
-            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
-            
-        </ul>
-    </div>
-</div>
-        <div class="title-list">
-    <div class="right-top">
-        <div id="default-panel">
-            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
-            <div class="right-title">All</div>
-            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
-        </div>
-        <div id="search-panel">
-            <i class="iconfont icon-left" data-title="返回"></i>
-            <input id="local-search-input" autocomplete="off"/>
-            <label class="border-line" for="input"></label>
-            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
-            <i class="iconfont icon-tag" data-title="标签"></i>
-        </div>
-        <div id="outline-panel" style="display: none">
-            <div class="right-title">大纲</div>
-            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
-        </div>
-    </div>
-
-    <div class="tags-list">
-    <input id="tag-search" />
-    <div class="tag-wrapper">
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
         
-    </div>
-
-</div>
+          7.5k words
+        
+      </span>
+    
 
     
-    <nav id="title-list-nav">
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
         
         
-        <a  class="All "
-           href="/2024/04/07/20__Linux_Kernel%E7%BC%96%E8%AF%91%E8%B0%83%E8%AF%95env/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linux_Kernel编译调试env">Linux_Kernel编译调试env</span>
-            <span class="post-date" title="2024-04-07 23:15:34">2024/04/07</span>
-        </a>
         
+          63 mins
         
-        <a  class="All "
-           href="/2024/04/06/73__dajiang__Android%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="dajiang_Android固件分析&amp;漏洞审计">dajiang_Android固件分析&amp;漏洞审计</span>
-            <span class="post-date" title="2024-04-06 22:48:50">2024/04/06</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/03/28/25__Pixel6P_Android%E9%A9%B1%E5%8A%A8%E6%A8%A1%E5%9D%97%E7%BC%96%E8%AF%91/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro Android驱动模块编译">Pixel 6Pro Android驱动模块编译</span>
-            <span class="post-date" title="2024-03-28 23:23:22">2024/03/28</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/02/29/19__KernelSU%E6%90%9E%E6%9C%BA/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro Kernel编译整合KernelSU">Pixel 6Pro Kernel编译整合KernelSU</span>
-            <span class="post-date" title="2024-02-29 11:27:35">2024/02/29</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/02/08/12__%E5%9C%A8Docker%E5%86%85%E7%BC%96%E8%AF%91AOSP%E5%85%A8%E8%BF%87%E7%A8%8B/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Pixel 6Pro AOSP源码在Docker内编译全过程">Pixel 6Pro AOSP源码在Docker内编译全过程</span>
-            <span class="post-date" title="2024-02-08 18:38:54">2024/02/08</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/Motorola_Mesh%20%E6%BC%8F%E6%B4%9E%E5%85%AC%E5%91%8A/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Motorola_Mesh漏洞公告">Motorola_Mesh漏洞公告</span>
-            <span class="post-date" title="2024-01-14 22:44:55">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/110_jadx_%E5%86%85%E5%AD%98%E4%B8%8D%E5%A4%9F_%E4%BD%BF%E7%94%A8%E9%97%AA%E9%80%80/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="环境搭建_jadx_内存不足&amp;使用闪退">环境搭建_jadx_内存不足&amp;使用闪退</span>
-            <span class="post-date" title="2024-01-14 22:20:30">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/14/70__%E9%80%86%E5%90%91__%E4%BB%96%E8%B6%A3APP/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__他趣APP脱壳&amp;运行环境检测分析">apk逆向__他趣APP脱壳&amp;运行环境检测分析</span>
-            <span class="post-date" title="2024-01-14 22:15:58">2024/01/14</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/07/68__%E9%80%86%E5%90%91__%E6%87%92%E4%BA%BA%E5%90%AC%E4%B9%A6%E5%8E%BB%E4%BC%9A%E5%91%98/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__懒人听书逆向">apk逆向__懒人听书逆向</span>
-            <span class="post-date" title="2024-01-07 22:15:49">2024/01/07</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/03/67__%E9%80%86%E5%90%91__%E5%A9%9A%E7%A4%BC%E7%BA%AAAPP/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__婚礼纪逆向">apk逆向__婚礼纪逆向</span>
-            <span class="post-date" title="2024-01-03 23:51:59">2024/01/03</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/13__Android%E5%90%84%E7%A7%8D%E6%9C%BA%E5%9E%8B%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Android各种机型刷机踩坑记录">Android各种机型刷机踩坑记录</span>
-            <span class="post-date" title="2024-01-02 23:08:52">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/65__%E9%80%86%E5%90%91_%E6%87%92%E4%BA%BA%E9%A9%BE%E8%80%83%E9%80%86%E5%90%91/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__懒人驾考去会员">apk逆向__懒人驾考去会员</span>
-            <span class="post-date" title="2024-01-02 22:42:38">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="apk逆向__滴答清单去会员">apk逆向__滴答清单去会员</span>
-            <span class="post-date" title="2024-01-02 22:34:09">2024/01/02</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/45__%E8%93%9D%E7%89%99%20sniff%20&%20CTF/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="蓝牙sniff&amp;CTF&amp;develop">蓝牙sniff&amp;CTF&amp;develop</span>
-            <span class="post-date" title="2023-12-18 17:30:59">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linux 使用LD_PRELOAD 进行hook">Linux 使用LD_PRELOAD 进行hook</span>
-            <span class="post-date" title="2023-12-18 17:19:56">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/3__QiLing_%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="QiLing 框架学习WriteUp">QiLing 框架学习WriteUp</span>
-            <span class="post-date" title="2023-12-18 17:12:42">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/18/mips%E6%9E%B6%E6%9E%84___%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%A9%E7%94%A8/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="mips架构堆栈缓冲区溢出调试与利用">mips架构堆栈缓冲区溢出调试与利用</span>
-            <span class="post-date" title="2023-12-18 16:47:08">2023/12/18</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/17/NetGear%20R7000P%20%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear R7000P 路由器栈溢出漏洞硬件调试与分析">NetGear R7000P 路由器栈溢出漏洞硬件调试与分析</span>
-            <span class="post-date" title="2023-12-17 16:06:42">2023/12/17</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/NetGear_%E5%A4%9C%E9%B9%B0_RAX40V2_%E8%AE%BE%E5%A4%87%E4%B8%8E%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear_夜鹰_RAX40V2_设备与固件分析">NetGear_夜鹰_RAX40V2_设备与固件分析</span>
-            <span class="post-date" title="2023-12-16 20:57:42">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/CVE-2021-20090(%E5%8D%8E%E7%A1%95DSL-AC3100)%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="CVE-2021-20090 身份验证绕过漏洞分析">CVE-2021-20090 身份验证绕过漏洞分析</span>
-            <span class="post-date" title="2023-12-16 20:46:07">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/NetGear_DGN2200v1%E7%B3%BB%E5%88%97%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="NetGear__DNG2200v1系列漏洞分析">NetGear__DNG2200v1系列漏洞分析</span>
-            <span class="post-date" title="2023-12-16 20:34:25">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/16/Linksys_EA6100_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Linksys EA6100 固件解密过程">Linksys EA6100 固件解密过程</span>
-            <span class="post-date" title="2023-12-16 20:20:43">2023/12/16</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/Cisco_RV110W_%E5%A0%86%E6%A0%88%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用">Cisco_RV110W_堆栈缓冲区溢出漏洞分析和利用</span>
-            <span class="post-date" title="2023-12-15 23:01:41">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/TP-Link_WR841n_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="TP-Link WR841n 路由器多个缓冲区溢出漏洞复现">TP-Link WR841n 路由器多个缓冲区溢出漏洞复现</span>
-            <span class="post-date" title="2023-12-15 22:52:18">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/USG310_4.70_%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%AF%86%E5%88%86%E6%9E%90/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="USG310_4.70_固件解密分析">USG310_4.70_固件解密分析</span>
-            <span class="post-date" title="2023-12-15 22:47:02">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/55__%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="github 博客搭建记录">github 博客搭建记录</span>
-            <span class="post-date" title="2023-12-15 17:58:11">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/Cisco%20Rv160%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Cisco Rv160 远程命令执行漏洞分析">Cisco Rv160 远程命令执行漏洞分析</span>
-            <span class="post-date" title="2023-12-15 17:01:20">2023/12/15</span>
-        </a>
-        
-        
-        <a  class="All "
-           href="/2023/12/15/hello-world/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Hello World">Hello World</span>
-            <span class="post-date" title="2023-12-15 15:15:35">2023/12/15</span>
-        </a>
-        
-        <div id="no-item-tips">
+      </span>
+    
 
-        </div>
-    </nav>
-    <div id="outline-list">
-    </div>
-</div>
+    
+    
+  </div>
 
-    </div>
-    <div class="hide-list">
-        <div class="semicircle" data-title="切换全屏 快捷键 s">
-            <div class="brackets first"><</div>
-            <div class="brackets">&gt;</div>
-        </div>
-    </div>
-</aside>
-<div id="post">
-    <div class="pjax">
-        <article id="post-45__蓝牙 sniff &amp; CTF" class="article article-type-post" itemscope itemprop="blogPost">
-    
-        <h1 class="article-title">蓝牙sniff&amp;CTF&amp;develop</h1>
-    
-    <div class="article-meta">
+
         
-        
-        
-        
-    </div>
-    <div class="article-meta">
-        
-            Created At : <time class="date" title='Updated At: 2023-12-19 15:31:54'>2023-12-18 17:30</time>
-        
-    </div>
-    <div class="article-meta">
-        
-        
-        <span id="busuanzi_container_page_pv">
-            Views 👀 :<span id="busuanzi_value_page_pv">
-                <span class="count-comment">
-                    <span class="spinner">
-                      <div class="cube1"></div>
-                      <div class="cube2"></div>
-                    </span>
-                </span>
-            </span>
-        </span>
-        
-        
-    </div>
-    
-    <div class="toc-ref">
-    
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%93%9D%E7%89%99%E5%9F%BA%E7%A1%80"><span class="toc-text">蓝牙基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%93%9D%E7%89%99%E6%A0%87%E5%87%86"><span class="toc-text">蓝牙标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8E%E5%8A%9F%E8%80%97%E8%93%9D%E7%89%99%E6%B6%88%E6%81%AF%E4%BA%A4%E4%BA%92%E6%B5%81%E7%A8%8B"><span class="toc-text">低功耗蓝牙消息交互流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E6%A0%88"><span class="toc-text">协议栈</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#BLE-HOST"><span class="toc-text">BLE HOST</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HCI-%E5%8D%8F%E8%AE%AE"><span class="toc-text">HCI 协议</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#L2CAP-%E5%8D%8F%E8%AE%AE"><span class="toc-text">L2CAP 协议</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GATT"><span class="toc-text">GATT</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ATT-%E5%B1%9E%E6%80%A7%E5%8D%8F%E8%AE%AE"><span class="toc-text">ATT 属性协议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service-Characteristic-Descriptor"><span class="toc-text">Service Characteristic Descriptor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2"><span class="toc-text">数据交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UUID"><span class="toc-text">UUID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8"><span class="toc-text">工具与命令使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#gatttool"><span class="toc-text">gatttool</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hcitool"><span class="toc-text">hcitool</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xxd"><span class="toc-text">xxd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nRF-Connect-lightblue"><span class="toc-text">nRF Connect &amp; lightblue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bleah"><span class="toc-text">bleah</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%93%9D%E7%89%99-sniff-CTF"><span class="toc-text">蓝牙 sniff &amp; CTF</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E5%9F%BA%E7%A1%80"><span class="toc-text">前置基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E6%9C%BA%E8%93%9D%E7%89%99%E6%8A%93%E5%8C%85"><span class="toc-text">手机蓝牙抓包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NRF52832-BLE-%E6%8A%93%E5%8C%85"><span class="toc-text">NRF52832 BLE 抓包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSR4-0-kali-%E6%8A%93%E5%8C%85"><span class="toc-text">CSR4.0 kali 抓包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BLE-CTF"><span class="toc-text">BLE CTF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E6%96%B9%E6%B3%95"><span class="toc-text">解题方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%A2%98-0x002c"><span class="toc-text">第二题 0x002c</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%A2%98-flag3"><span class="toc-text">第三题 flag3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E9%A2%98-flag4"><span class="toc-text">第四题 flag4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E9%A2%98-flag5"><span class="toc-text">第五题 flag5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E9%A2%98-flag6"><span class="toc-text">第六题 flag6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E9%A2%98-flag7"><span class="toc-text">第七题 flag7</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E9%A2%98-flag8"><span class="toc-text">第八题 flag8</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E9%A2%98-flag9"><span class="toc-text">第九题 flag9</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E9%A2%98-flag10"><span class="toc-text">第十题 flag10</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%80%E9%A2%98-flag11-%E6%B2%A1%E6%87%82notification-%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D"><span class="toc-text">第十一题 flag11 没懂notification 是什么意思</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%BA%8C%E9%A2%98-flag12-%E5%92%8C%E4%B8%8A%E9%9D%A2%E4%B8%80%E9%A2%98%E4%B8%80%E6%A0%B7%E7%9C%8B%E4%B8%8D%E6%87%82"><span class="toc-text">第十二题 flag12 和上面一题一样看不懂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%89%E9%A2%98-flag13"><span class="toc-text">第十三题 flag13</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E5%9B%9B%E9%A2%98-flag14"><span class="toc-text">第十四题 flag14</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%BA%94%E9%A2%98-flag15"><span class="toc-text">第十五题 flag15</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E5%85%AD%E9%A2%98-flag16"><span class="toc-text">第十六题 flag16</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B8%83%E9%A2%98-flag17"><span class="toc-text">第十七题 flag17</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E5%85%AB%E9%A2%98-flag18"><span class="toc-text">第十八题 flag18</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E4%B9%9D%E9%A2%98-flag19"><span class="toc-text">第十九题 flag19</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%8D%81%E9%A2%98-flag20"><span class="toc-text">第二十题  flag20</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83-1"><span class="toc-text">参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83-2"><span class="toc-text">参考</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#esp32-%E8%93%9D%E7%89%99%E5%BC%80%E5%8F%91"><span class="toc-text">esp32 蓝牙开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91"><span class="toc-text">代码开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="toc-text">实例代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%951"><span class="toc-text">开发记录1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%952"><span class="toc-text">开发记录2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%953"><span class="toc-text">开发记录3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%954"><span class="toc-text">开发记录4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%955"><span class="toc-text">开发记录5</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">遇到的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83-3"><span class="toc-text">参考</span></a></li></ol>
-    
-<style>
-    .left-col .switch-btn,
-    .left-col .switch-area {
-        display: none;
-    }
-    .toc-level-3 i,
-    .toc-level-3 ol {
-        display: none !important;
-    }
-</style>
-</div>
-    
-    <div class="article-entry" itemprop="articleBody">
+      </div>
+
       
-        <h2 id="蓝牙基础"><a href="#蓝牙基础" class="headerlink" title="蓝牙基础"></a>蓝牙基础</h2><h3 id="蓝牙标准"><a href="#蓝牙标准" class="headerlink" title="蓝牙标准"></a>蓝牙标准</h3><p>PDU : 协议数据单元，在一个传输单元中的有效传输数据。</p>
-<h3 id="低功耗蓝牙消息交互流程"><a href="#低功耗蓝牙消息交互流程" class="headerlink" title="低功耗蓝牙消息交互流程"></a>低功耗蓝牙消息交互流程</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230702220906359.png"></p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">蓝牙sniff&amp;CTF&amp;develop</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="蓝牙基础"><a href="#蓝牙基础" class="headerlink" title="蓝牙基础"></a>蓝牙基础</h2><h3 id="蓝牙标准"><a href="#蓝牙标准" class="headerlink" title="蓝牙标准"></a>蓝牙标准</h3><p>PDU : 协议数据单元，在一个传输单元中的有效传输数据。</p>
+<h3 id="低功耗蓝牙消息交互流程"><a href="#低功耗蓝牙消息交互流程" class="headerlink" title="低功耗蓝牙消息交互流程"></a>低功耗蓝牙消息交互流程</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230702220906359.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="协议栈"><a href="#协议栈" class="headerlink" title="协议栈"></a>协议栈</h3><p>根据蓝牙协议栈架构图可以看出，蓝牙模块共有三大部分组成：</p>
 <ul>
 <li><p>Controller : 控制器，HCI以下</p>
@@ -549,10 +365,10 @@
 <li>BR&#x2F;EDR 和 LE Controller 组成的 Controller： 双模蓝牙模块，即支持传统蓝牙也支持BLE低功耗蓝牙。</li>
 </ul>
 <h4 id="BLE-HOST"><a href="#BLE-HOST" class="headerlink" title="BLE HOST"></a><strong>BLE HOST</strong></h4><p>L2CAP 层： 负责管理PDU数据的顺序、调度、分片、重组等功能，对蓝牙数据提供封装服务；<br>HCI层： 向上为主机提供软件应用程序接口（API），对外为外部硬件控制接口，可以通过串口、SPI、USB来实现设备控制。<br>SMP层：负责配对和密钥分发，实现安全连接和数据交换。<br>GAP层： 负责设备访问模式和进程，包含设备发现、建立连接、终止连接。初始化安全特性和设备配置，提供。<br>GATT层： 蓝牙设备之间的数据通信。</p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230701115920366.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230701115920366.png" srcset="/img/loading.gif" lazyload></p>
 <h4 id="HCI-协议"><a href="#HCI-协议" class="headerlink" title="HCI 协议"></a>HCI 协议</h4><p>HCI 协议是HCI 接口最底层的协议，可根据传输层的介质分为不同类型<br>•UART传输层：在btsnoop中表示为hci_h4<br>•USB传输层：在btsnoop中表示为hci_h5<br>•SD传输层：Secure Digital</p>
 <p>HCI 数据包分为command 、event 和 data 三种类型。command 表示host 发送给Controller 的命令，event 为Controller 发送给Host 的事件，data 通常是实际的蓝牙传输数据。</p>
-<h4 id="L2CAP-协议"><a href="#L2CAP-协议" class="headerlink" title="L2CAP 协议"></a>L2CAP 协议</h4><p>蓝牙的通信协议格式为<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230713221729110.png"></p>
+<h4 id="L2CAP-协议"><a href="#L2CAP-协议" class="headerlink" title="L2CAP 协议"></a>L2CAP 协议</h4><p>蓝牙的通信协议格式为<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230713221729110.png" srcset="/img/loading.gif" lazyload></p>
 <p>Access Address 接入地址：用于是被是数据包还是广播包。<br><strong>ps:</strong> Octet和字节是相同的概念，都表示计算机中存储和传输数据的基本单位。在计算机科学中，一个字节由8个二进制位组成。因此，8位字节等于1字节。</p>
 <p>PDU，ＢLE在Link Layer的PDU长度最大为<strong>257 octets</strong>。<br>Link Layer 总长度在9~264bytes(1+8 ~257+8)?????</p>
 <h4 id="GATT"><a href="#GATT" class="headerlink" title="GATT"></a>GATT</h4><h5 id="ATT-属性协议"><a href="#ATT-属性协议" class="headerlink" title="ATT 属性协议"></a>ATT 属性协议</h5><p>BLE 里面的数据以属性 ( Attribute ) 方式存在，每条属性由四素质组成：</p>
@@ -577,14 +393,14 @@
 <p>GATT 是用于与BLE设备通信的协议。该设备是一个服务端，连接到设备的计算机或者移动设备是客户端，设备公开包含特征的服务，这些特征值具有值和一些可能的描述符，具体的结构如下所示：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">BLE server</span><br><span class="line">    |-- Service</span><br><span class="line">    |      |-- Characteristic</span><br><span class="line">    |      |      |-- Value</span><br><span class="line">    |      |      |-- Descriptor</span><br><span class="line">    |      |      |-- Descriptor</span><br><span class="line">    |      |     ...</span><br><span class="line">    |      |-- Characteristic</span><br><span class="line">    |      |      |-- Value</span><br><span class="line">    |      |      |-- Descriptor</span><br><span class="line">    |      |      |-- Descriptor</span><br><span class="line">    |      |     ...</span><br><span class="line">    |     ...</span><br><span class="line">    |-- Service</span><br><span class="line">    |      |-- Characteristic</span><br><span class="line">    |      |      |-- Value</span><br><span class="line">    |      |      |-- Descriptor</span><br><span class="line">    |      |      |-- Descriptor</span><br><span class="line">    |      |     ...</span><br><span class="line">    |      |-- Characteristic</span><br><span class="line">    |      |      |-- Value</span><br><span class="line">    |      |      |-- Descriptor</span><br><span class="line">    |      |      |-- Descriptor</span><br><span class="line">    |      |     ...</span><br><span class="line">    |     ...</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure>
 
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230720175832564.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230720175832564.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="数据交换"><a href="#数据交换" class="headerlink" title="数据交换"></a>数据交换</h3><p>把存有数据（属性）的设备叫做服务器（Server), 而将获取别人设备数据的设备叫做客户端（Client）。下面是服务器和客户端间的常用操作：</p>
 <ul>
 <li><strong>客户端给服务端发数据</strong>，通过对服务器的数据进行写操作（Write）,来完成数据发送工作。写操作分两种，一种是写入请求（Write Request）, 一种是写入命令（Write Command）， 两者的主要区别在于前者需要对方回复响应（Write Response）,而后者不需要对方回复响应。</li>
 <li><strong>服务端给客户端发数据</strong>，主要通过服务端指示（Indication）或者通知（Notification）的形式，实现将服务端更新的数据发给客户端。与写操作类似，指示和通知的主要区别是前者需要对方设备在收到数据指示后，进行回复（Confirmation）。</li>
 <li>客户端也可以主动通过读操作读取服务端的数据。</li>
 </ul>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230727234105794.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230727234105794.png" srcset="/img/loading.gif" lazyload></p>
 <pre><code>服务器和客户端之间的交互操作都是通过上述的消息ATT PDU 实现的。每个设备可以指定自己设备支持的最大ATT消息长度，我们称为MTU。
 </code></pre>
 <h3 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h3><p>在BLE GATT 中，每个service、每个characteristic 和每个descriptor 都要一个特定的128比特的UUID表示，就是类似下面一串数字：</p>
@@ -594,7 +410,7 @@
 <p>另外，蓝牙技术联盟所用的基本uuid不能用于任何自定义的属性、服务和特性。对于自定义uuid，必须使用另外完整的128位uuid。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>蓝牙安全与攻击案例分析（好文）<br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Ojm3LSw8q8H5pAT-JxUyqA">https://mp.weixin.qq.com/s/Ojm3LSw8q8H5pAT-JxUyqA</a><br>网络靶场实战——低功耗蓝牙初探（已保存到金山文档中）<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/We8__/article/details/128416397?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-1-128416397-blog-105454527.235%5Ev38%5Epc_relevant_sort_base1&spm=1001.2101.3001.4242.2&utm_relevant_index=4">https://blog.csdn.net/We8__/article/details/128416397?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-1-128416397-blog-105454527.235^v38^pc_relevant_sort_base1&amp;spm=1001.2101.3001.4242.2&amp;utm_relevant_index=4</a><br>低功耗蓝牙攻击实用指南<br><a target="_blank" rel="noopener" href="https://delikely.github.io/2018/12/27/%E4%BD%8E%E5%8A%9F%E8%80%97%E8%93%9D%E7%89%99%E6%94%BB%E5%87%BB%E5%AE%9E%E7%94%A8%E6%8C%87%E5%8D%97/">https://delikely.github.io/2018/12/27/%E4%BD%8E%E5%8A%9F%E8%80%97%E8%93%9D%E7%89%99%E6%94%BB%E5%87%BB%E5%AE%9E%E7%94%A8%E6%8C%87%E5%8D%97/</a><br>利用物联网支持的 BLE 智能灯泡安全<br><a target="_blank" rel="noopener" href="https://blog.attify.com/exploiting-iot-enabled-ble-smart-bulb-security/">https://blog.attify.com/exploiting-iot-enabled-ble-smart-bulb-security/</a><br>关于蓝牙的漏洞研究<br><a target="_blank" rel="noopener" href="https://xuanxuanblingbling.github.io/wireless/ble/2018/08/01/ble/">https://xuanxuanblingbling.github.io/wireless/ble/2018/08/01/ble/</a><br>esp32 蓝牙 文档（很好的学习资料）<br>《esp32_bluetooth_architecture_cn.pdf》<br>《Assigned Numbers》<br><a target="_blank" rel="noopener" href="https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf">https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf</a></p>
 <h1 id="工具与命令使用"><a href="#工具与命令使用" class="headerlink" title="工具与命令使用"></a>工具与命令使用</h1><h2 id="gatttool"><a href="#gatttool" class="headerlink" title="gatttool"></a>gatttool</h2><p>更多命令 <a target="_blank" rel="noopener" href="https://helpmanual.io/man1/gatttool/">https://helpmanual.io/man1/gatttool/</a></p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231954245.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231954245.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="hcitool"><a href="#hcitool" class="headerlink" title="hcitool"></a>hcitool</h2><p>更多命令 <a target="_blank" rel="noopener" href="https://helpmanual.io/man1/hcitool/">https://helpmanual.io/man1/hcitool/</a></p>
 <p>查看蓝牙：hciconfig</p>
 <p>开启蓝牙：hciconfig hci0 up</p>
@@ -636,23 +452,23 @@
 <li>nRF Connect  （<a target="_blank" rel="noopener" href="https://github.com/NordicSemiconductor/Android-nRF-Connect">https://github.com/NordicSemiconductor/Android-nRF-Connect</a>）</li>
 </ul>
 <h2 id="NRF52832-BLE-抓包"><a href="#NRF52832-BLE-抓包" class="headerlink" title="NRF52832 BLE 抓包"></a>NRF52832 BLE 抓包</h2><p>安装wireshark ，安装python。导入插件，导入profile。</p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914173115924.png" alt="image-20220914173115924"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914173115924.png" srcset="/img/loading.gif" lazyload alt="image-20220914173115924"></p>
 <p>点击捕获，刷新，然后就可以看到接口。</p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914173246414.png" alt="image-20220914173246414"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914173246414.png" srcset="/img/loading.gif" lazyload alt="image-20220914173246414"></p>
 <p>参考《青风教你学蓝牙:抓包器教程》</p>
 <h2 id="CSR4-0-kali-抓包"><a href="#CSR4-0-kali-抓包" class="headerlink" title="CSR4.0 kali 抓包"></a>CSR4.0 kali 抓包</h2><p>抓包设备: SCR8510</p>
 <p>hicconfig 查看</p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914151410101.png" alt="image-20220914151410101"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914151410101.png" srcset="/img/loading.gif" lazyload alt="image-20220914151410101"></p>
 <p>激活蓝牙设备 ： hciconfig hci1 up</p>
 <p>查看蓝牙信息：hciconfig hci1 lestates</p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914151717385.png" alt="image-20220914151717385"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220914151717385.png" srcset="/img/loading.gif" lazyload alt="image-20220914151717385"></p>
 <p>扫描低功耗蓝牙的MAC地址，<br>问题1： 如果执行扫描显示超时，重新插拔一次 CSR8510。</p>
 <blockquote>
 <p>C8:F0:9E:A6:C8:D2 BLECTF</p>
 </blockquote>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220920224829813.png" alt="image-20220920224829813"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220920224829813.png" srcset="/img/loading.gif" lazyload alt="image-20220920224829813"></p>
 <p>使用命令<code>gatttool -b $MAC --primary</code>  获取蓝牙服务端提供的Service (服务)</p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220920225103860.png" alt="image-20220920225103860"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220920225103860.png" srcset="/img/loading.gif" lazyload alt="image-20220920225103860"></p>
 <p>使用<code>gatttool -b $MAC --characteristics</code>  设备上所有的 characteristics (特征值)</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[C8:F0:9E:A6:C8:D2][LE]&gt; characteristics </span><br><span class="line">handle: 0x0002, char properties: 0x20, char value handle: 0x0003, uuid: 00002a05-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0015, char properties: 0x02, char value handle: 0x0016, uuid: 00002a00-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0017, char properties: 0x02, char value handle: 0x0018, uuid: 00002a01-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0019, char properties: 0x02, char value handle: 0x001a, uuid: 00002aa6-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0029, char properties: 0x02, char value handle: 0x002a, uuid: 0000ff01-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x002b, char properties: 0x0a, char value handle: 0x002c, uuid: 0000ff02-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x002d, char properties: 0x02, char value handle: 0x002e, uuid: 0000ff03-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x002f, char properties: 0x02, char value handle: 0x0030, uuid: 0000ff04-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0031, char properties: 0x0a, char value handle: 0x0032, uuid: 0000ff05-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0033, char properties: 0x0a, char value handle: 0x0034, uuid: 0000ff06-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0035, char properties: 0x0a, char value handle: 0x0036, uuid: 0000ff07-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0037, char properties: 0x02, char value handle: 0x0038, uuid: 0000ff08-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0039, char properties: 0x08, char value handle: 0x003a, uuid: 0000ff09-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x003b, char properties: 0x0a, char value handle: 0x003c, uuid: 0000ff0a-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x003d, char properties: 0x02, char value handle: 0x003e, uuid: 0000ff0b-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x003f, char properties: 0x1a, char value handle: 0x0040, uuid: 0000ff0c-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0041, char properties: 0x02, char value handle: 0x0042, uuid: 0000ff0d-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0043, char properties: 0x2a, char value handle: 0x0044, uuid: 0000ff0e-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0045, char properties: 0x1a, char value handle: 0x0046, uuid: 0000ff0f-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0047, char properties: 0x02, char value handle: 0x0048, uuid: 0000ff10-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0049, char properties: 0x2a, char value handle: 0x004a, uuid: 0000ff11-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x004b, char properties: 0x02, char value handle: 0x004c, uuid: 0000ff12-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x004d, char properties: 0x02, char value handle: 0x004e, uuid: 0000ff13-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x004f, char properties: 0x0a, char value handle: 0x0050, uuid: 0000ff14-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0051, char properties: 0x0a, char value handle: 0x0052, uuid: 0000ff15-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0053, char properties: 0x9b, char value handle: 0x0054, uuid: 0000ff16-0000-1000-8000-00805f9b34fb</span><br><span class="line">handle: 0x0055, char properties: 0x02, char value handle: 0x0056, uuid: 0000ff17-0000-1000-8000-00805f9b34fb</span><br><span class="line">[C8:F0:9E:A6:C8:D2][LE]&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -664,76 +480,76 @@
 <h3 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h3><p>获取20关</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220920225839769.png" alt="image-20220920225839769"></p>
-<h3 id="第二题-0x002c"><a href="#第二题-0x002c" class="headerlink" title="第二题 0x002c"></a>第二题 0x002c</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230720235008470.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20220920225839769.png" srcset="/img/loading.gif" lazyload alt="image-20220920225839769"></p>
+<h3 id="第二题-0x002c"><a href="#第二题-0x002c" class="headerlink" title="第二题 0x002c"></a>第二题 0x002c</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230720235008470.png" srcset="/img/loading.gif" lazyload></p>
 <p>根据题目的提示，可以知道先要读取 0x002e 句柄的值。</p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230720234947028.png"></p>
-<p>d205303e099ceff44835<br>把读取到的值 写入 0x002c 中，才能通过这道题。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230721001123680.png"><br>查看答题进度<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230721001234265.png"></p>
-<h3 id="第三题-flag3"><a href="#第三题-flag3" class="headerlink" title="第三题 flag3"></a>第三题 flag3</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723223357918.png"></p>
-<p>读取0x0030 的值Ascii 值。 让我们提交设备名的MD5的值到0x002c<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723223416919.png"><br>计算 “BLECTF” 的MD5的值  “5cd56d74049ae40f442ece036c6f4f06”<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723223705562.png"></p>
-<p>提交到0x002c  ， 取MD5 值得20个字符。（不知道为什么是20个字符）<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723224154227.png"></p>
-<h3 id="第四题-flag4"><a href="#第四题-flag4" class="headerlink" title="第四题 flag4"></a>第四题 flag4</h3><p>蓝牙GATT 服务提供一些额外得设备属性。尝试查找通用访问— 设备名称得值。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723224300812.png"><br>chatGTP 的解释<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231026835.png"></p>
-<p>在这个文档里查看Device name 的uuid 的值是 0x2A00，对应的是0x0016<br><a target="_blank" rel="noopener" href="https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf">https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf</a><br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723230701858.png"><br>读取devicename 对应的value的值并转换成 ASCII<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231249562.png"></p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231651552.png"></p>
-<h3 id="第五题-flag5"><a href="#第五题-flag5" class="headerlink" title="第五题 flag5"></a>第五题 flag5</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723232419155.png"></p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723232431882.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230720234947028.png" srcset="/img/loading.gif" lazyload></p>
+<p>d205303e099ceff44835<br>把读取到的值 写入 0x002c 中，才能通过这道题。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230721001123680.png" srcset="/img/loading.gif" lazyload><br>查看答题进度<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230721001234265.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第三题-flag3"><a href="#第三题-flag3" class="headerlink" title="第三题 flag3"></a>第三题 flag3</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723223357918.png" srcset="/img/loading.gif" lazyload></p>
+<p>读取0x0030 的值Ascii 值。 让我们提交设备名的MD5的值到0x002c<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723223416919.png" srcset="/img/loading.gif" lazyload><br>计算 “BLECTF” 的MD5的值  “5cd56d74049ae40f442ece036c6f4f06”<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723223705562.png" srcset="/img/loading.gif" lazyload></p>
+<p>提交到0x002c  ， 取MD5 值得20个字符。（不知道为什么是20个字符）<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723224154227.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第四题-flag4"><a href="#第四题-flag4" class="headerlink" title="第四题 flag4"></a>第四题 flag4</h3><p>蓝牙GATT 服务提供一些额外得设备属性。尝试查找通用访问— 设备名称得值。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723224300812.png" srcset="/img/loading.gif" lazyload><br>chatGTP 的解释<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231026835.png" srcset="/img/loading.gif" lazyload></p>
+<p>在这个文档里查看Device name 的uuid 的值是 0x2A00，对应的是0x0016<br><a target="_blank" rel="noopener" href="https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf">https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf</a><br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723230701858.png" srcset="/img/loading.gif" lazyload><br>读取devicename 对应的value的值并转换成 ASCII<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231249562.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723231651552.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第五题-flag5"><a href="#第五题-flag5" class="headerlink" title="第五题 flag5"></a>第五题 flag5</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723232419155.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230723232431882.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/t/umap2Plus-master [1|0|0|0]&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x0032|awk -F&quot;:&quot; &#x27;&#123;print $2&#125;&#x27;| tr -d &#x27;&#x27;| xxd -r -p</span><br><span class="line">Write anything here⏎                                                                                      tigerortiger@ubuntu ~/t/umap2Plus-master&gt; echo -n &quot;hello&quot;|xxd -ps</span><br><span class="line">68656c6c6f</span><br><span class="line">tigerortiger@ubuntu ~/t/umap2Plus-master&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x0032 -n 68656c6c6f</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="第六题-flag6"><a href="#第六题-flag6" class="headerlink" title="第六题 flag6"></a>第六题 flag6</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724215548836.png"><br>直接读取 0x0034 的value<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724215724161.png"><br>让我们在这个句柄中写入 “yo” </p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724220620242.png"></p>
-<p>做这一题的时候设备崩溃了。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724222418757.png"></p>
+<h3 id="第六题-flag6"><a href="#第六题-flag6" class="headerlink" title="第六题 flag6"></a>第六题 flag6</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724215548836.png" srcset="/img/loading.gif" lazyload><br>直接读取 0x0034 的value<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724215724161.png" srcset="/img/loading.gif" lazyload><br>让我们在这个句柄中写入 “yo” </p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724220620242.png" srcset="/img/loading.gif" lazyload></p>
+<p>做这一题的时候设备崩溃了。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724222418757.png" srcset="/img/loading.gif" lazyload></p>
 <p>这个题目是考察写入ascii 的值到句柄中。先把ascii 值换成16进制，然后读取句柄的值，在转成16进制提交到0x002c 中。</p>
-<h3 id="第七题-flag7"><a href="#第七题-flag7" class="headerlink" title="第七题 flag7"></a>第七题 flag7</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724224359159.png"></p>
-<p>直接按照提示读取 0x0036， 将0x07 写入到0x0036<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724224526153.png"></p>
+<h3 id="第七题-flag7"><a href="#第七题-flag7" class="headerlink" title="第七题 flag7"></a>第七题 flag7</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724224359159.png" srcset="/img/loading.gif" lazyload></p>
+<p>直接按照提示读取 0x0036， 将0x07 写入到0x0036<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724224526153.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x0036|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Write the hex value 0x07 here</span><br><span class="line">tigerortiger@ubuntu ~ [1]&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x0036 -n 07</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x0036</span><br><span class="line">Characteristic value/descriptor: 31 31 37 39 30 38 30 62 32 39 66 38 64 61 31 36 61 64 36 36</span><br><span class="line">tigerortiger@ubuntu ~&gt; echo -n &quot;Characteristic value/descriptor: 31 31 37 39 30 38 30 62 32 39 66 38 64 61 31 36 61 64 36 36 &quot;|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">1179080b29f8da16ad66</span><br><span class="line">tigerortiger@ubuntu ~&gt; echo -n &quot;1179080b29f8da16ad66&quot;|xxd -ps</span><br><span class="line">3131373930383062323966386461313661643636</span><br><span class="line">tigerortiger@ubuntu ~&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x002c -n 3131373930383062323966386461313661643636</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Score:1 /20</span><br></pre></td></tr></table></figure>
 
 
-<h3 id="第八题-flag8"><a href="#第八题-flag8" class="headerlink" title="第八题 flag8"></a>第八题 flag8</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724230259822.png"></p>
+<h3 id="第八题-flag8"><a href="#第八题-flag8" class="headerlink" title="第八题 flag8"></a>第八题 flag8</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724230259822.png" srcset="/img/loading.gif" lazyload></p>
 <p>读取0x0038 的值，发现往58 句柄写入0xC9。 58 是整数，转换成16进制是0x0036</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x0038|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Write 0xC9 to handle 58</span><br><span class="line">tigerortiger@ubuntu ~&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x0036 -n C9</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x0036|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Write the hex value 0x07 here</span><br><span class="line">后面就跟第八题一样</span><br></pre></td></tr></table></figure>
 
-<h3 id="第九题-flag9"><a href="#第九题-flag9" class="headerlink" title="第九题 flag9"></a>第九题 flag9</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724231357813.png"><br>按照提示读取0x003c 的题目，让我们爆破00到ff</p>
+<h3 id="第九题-flag9"><a href="#第九题-flag9" class="headerlink" title="第九题 flag9"></a>第九题 flag9</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230724231357813.png" srcset="/img/loading.gif" lazyload><br>按照提示读取0x003c 的题目，让我们爆破00到ff</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x003c|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Brute force my value 00 to ff</span><br></pre></td></tr></table></figure>
-<p>写一个爆破的脚本，虽然不理解这是什么意思。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725220201508.png"></p>
+<p>写一个爆破的脚本，虽然不理解这是什么意思。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725220201508.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x003c|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">933c1fcfa8ed52d2ec05</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; echo -n &quot;933c1fcfa8ed52d2ec05&quot;| xxd -ps</span><br><span class="line">3933336331666366613865643532643265633035</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x002c -n 3933336331666366613865643532643265633035</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Score:1 /20</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="第十题-flag10"><a href="#第十题-flag10" class="headerlink" title="第十题 flag10"></a>第十题 flag10</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725220415001.png"><br>按照题目的意思是，读取0x003e 一千次。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725220645566.png"><br>写脚本<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725222437415.png"></p>
+<h3 id="第十题-flag10"><a href="#第十题-flag10" class="headerlink" title="第十题 flag10"></a>第十题 flag10</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725220415001.png" srcset="/img/loading.gif" lazyload><br>按照题目的意思是，读取0x003e 一千次。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725220645566.png" srcset="/img/loading.gif" lazyload><br>写脚本<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725222437415.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">echo &quot;Characteristic value/descriptor: 36 66 66 63 64 32 31 34 66 66 65 62 64 63 30 64 30 36 39 65 &quot;|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">6ffcd214ffebdc0d069e</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; echo &quot;6ffcd214ffebdc0d069e&quot;|xxd -ps</span><br><span class="line">36666663643231346666656264633064303639650a</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x002c -n 3666666364323134666665626463306430363965</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Score:1 /20</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="第十一题-flag11-没懂notification-是什么意思"><a href="#第十一题-flag11-没懂notification-是什么意思" class="headerlink" title="第十一题 flag11 没懂notification 是什么意思"></a>第十一题 flag11 没懂notification 是什么意思</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725222716234.png"><br>没看懂，监听notification<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725222759027.png"></p>
+<h3 id="第十一题-flag11-没懂notification-是什么意思"><a href="#第十一题-flag11-没懂notification-是什么意思" class="headerlink" title="第十一题 flag11 没懂notification 是什么意思"></a>第十一题 flag11 没懂notification 是什么意思</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725222716234.png" srcset="/img/loading.gif" lazyload><br>没看懂，监听notification<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725222759027.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x0040 -n 0a --listen</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">Notification handle = 0x0040 value: 35 65 63 33 37 37 32 62 63 64 30 30 63 66 30 36 64 38 65 62 </span><br><span class="line">^C⏎ </span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">echo &quot;35 65 63 33 37 37 32 62 63 64 30 30 63 66 30 36 64 38 65 62&quot;|xxd -ps -r</span><br><span class="line">5ec3772bcd00cf06d8eb</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; echo &quot;5ec3772bcd00cf06d8eb&quot;|xxd -ps</span><br><span class="line">35656333373732626364303063663036643865620a</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x002c -n 3565633337373262636430306366303664386562</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Score:1 /2</span><br></pre></td></tr></table></figure>
 
-<h3 id="第十二题-flag12-和上面一题一样看不懂"><a href="#第十二题-flag12-和上面一题一样看不懂" class="headerlink" title="第十二题 flag12 和上面一题一样看不懂"></a>第十二题 flag12 和上面一题一样看不懂</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725225234861.png"></p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725230829248.png"></p>
+<h3 id="第十二题-flag12-和上面一题一样看不懂"><a href="#第十二题-flag12-和上面一题一样看不懂" class="headerlink" title="第十二题 flag12 和上面一题一样看不懂"></a>第十二题 flag12 和上面一题一样看不懂</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725225234861.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725230829248.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x0042|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Listen to handle 0x0044 for a single indication</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x0044 -n 0a --listen</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">Indication   handle = 0x0044 value: 63 37 62 38 36 64 64 31 32 31 38 34 38 63 37 37 63 31 31 33 </span><br><span class="line">^C⏎                                                                                  tigerortiger@ubuntu ~/s/pthon [SIGINT]&gt; </span><br><span class="line">echo &quot;63 37 62 38 36 64 64 31 32 31 38 34 38 63 37 37 63 31 31 33&quot;|xxd -ps -r</span><br><span class="line">c7b86dd121848c77c113⏎                                                                tigerortiger@ubuntu ~/s/pthon&gt; echo &quot;c7b86dd121848c77c113&quot;|xxd -ps</span><br><span class="line">63376238366464313231383438633737633131330a</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x002c -n 6337623836646431323138343863373763313133</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Score:1 /20</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="第十三题-flag13"><a href="#第十三题-flag13" class="headerlink" title="第十三题 flag13"></a>第十三题 flag13</h3><p>Check out handle 0x0046 and do what it says. Keep in mind that this notification clallange requires you to recieve multiple responses in order to complete.<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725231653389.png"></p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725231916250.png"></p>
+<h3 id="第十三题-flag13"><a href="#第十三题-flag13" class="headerlink" title="第十三题 flag13"></a>第十三题 flag13</h3><p>Check out handle 0x0046 and do what it says. Keep in mind that this notification clallange requires you to recieve multiple responses in order to complete.<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725231653389.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725231916250.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/s/pthon [1]&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x0046 -n 0a --listen</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">Notification handle = 0x0046 value: 55 20 6e 6f 20 77 61 6e 74 20 74 68 69 73 20 6d 73 67 00 00 </span><br><span class="line">Notification handle = 0x0046 value: 63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64 </span><br><span class="line">Notification handle = 0x0046 value: 63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64 </span><br><span class="line">Notification handle = 0x0046 value: 63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64 </span><br><span class="line">Notification handle = 0x0046 value: 63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64 </span><br><span class="line">Notification handle = 0x0046 value: 63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64 </span><br><span class="line">Notification handle = 0x0046 value: 63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64 </span><br><span class="line">Notification handle = 0x0046 value: 63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64 </span><br><span class="line">Notification handle = 0x0046 value: 63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64 </span><br><span class="line">Notification handle = 0x0046 value: 63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64 </span><br><span class="line">Notification handle = 0x0046 value: 63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64 </span><br><span class="line">Notification handle = 0x0046 value: 63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64 </span><br><span class="line">^C⏎                                                                                  </span><br><span class="line">tigerortiger@ubuntu ~/s/pthon [SIGINT]&gt; </span><br><span class="line">echo &quot;63 39 34 35 37 64 65 35 66 64 38 63 61 66 65 33 34 39 66 64&quot;|xxd -ps -r</span><br><span class="line">c9457de5fd8cafe349fd⏎                                                                tigerortiger@ubuntu ~/s/pthon&gt; echo &quot;c9457de5fd8cafe349fd&quot;|xxd -ps</span><br><span class="line">63393435376465356664386361666533343966640a</span><br><span class="line"></span><br><span class="line">tigerortiger@ubuntu ~/s/pthon [1]&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x002c -n 6339343537646535666438636166653334396664</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Score:1 /20</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
-<h3 id="第十四题-flag14"><a href="#第十四题-flag14" class="headerlink" title="第十四题 flag14"></a>第十四题 flag14</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725232424448.png"></p>
+<h3 id="第十四题-flag14"><a href="#第十四题-flag14" class="headerlink" title="第十四题 flag14"></a>第十四题 flag14</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725232424448.png" srcset="/img/loading.gif" lazyload></p>
 <p>跟十三题一样。</p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725232520987.png"></p>
-<h3 id="第十五题-flag15"><a href="#第十五题-flag15" class="headerlink" title="第十五题 flag15"></a>第十五题 flag15</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725232842263.png"><br>要修改CSR 的MAC 地址为上述地址，要使用bdaddr ，但是没办法使用。后面再说。</p>
-<h3 id="第十六题-flag16"><a href="#第十六题-flag16" class="headerlink" title="第十六题 flag16"></a>第十六题 flag16</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726220429673.png"><br>设置MTU 为444<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726220732048.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725232520987.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第十五题-flag15"><a href="#第十五题-flag15" class="headerlink" title="第十五题 flag15"></a>第十五题 flag15</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230725232842263.png" srcset="/img/loading.gif" lazyload><br>要修改CSR 的MAC 地址为上述地址，要使用bdaddr ，但是没办法使用。后面再说。</p>
+<h3 id="第十六题-flag16"><a href="#第十六题-flag16" class="headerlink" title="第十六题 flag16"></a>第十六题 flag16</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726220429673.png" srcset="/img/loading.gif" lazyload><br>设置MTU 为444<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726220732048.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; gatttool -b C8:F0:9E:A6:C8:D2 -I</span><br><span class="line">[C8:F0:9E:A6:C8:D2][LE]&gt; connect</span><br><span class="line">Attempting to connect to C8:F0:9E:A6:C8:D2</span><br><span class="line">Connection successful</span><br><span class="line">[C8:F0:9E:A6:C8:D2][LE]&gt; mtu 444</span><br><span class="line">MTU was exchanged successfully: 444</span><br><span class="line">[C8:F0:9E:A6:C8:D2][LE]&gt; char-</span><br><span class="line">char-desc       char-read-hnd   char-read-uuid  char-write-cmd  char-write-req</span><br><span class="line">[C8:F0:9E:A6:C8:D2][LE]&gt; char-read-hnd 0x004e</span><br><span class="line">Characteristic value/descriptor: 62 31 65 34 30 39 65 35 61 34 65 61 66 39 66 65 35 31 35 38 </span><br><span class="line">[C8:F0:9E:A6:C8:D2][LE]&gt; exit</span><br><span class="line"></span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">echo &quot;Characteristic value/descriptor: 62 31 65 34 30 39 65 35 61 34 65 61 66 39 66 65 35 31 35 38&quot;|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">b1e409e5a4eaf9fe5158</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; echo -n &quot;b1e409e5a4eaf9fe5158&quot;|xxd -ps </span><br><span class="line">6231653430396535613465616639666535313538</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x002c -n 6231653430396535613465616639666535313538</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Score:1 /20</span><br></pre></td></tr></table></figure>
 
 
-<h3 id="第十七题-flag17"><a href="#第十七题-flag17" class="headerlink" title="第十七题 flag17"></a>第十七题 flag17</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726222620497.png"></p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726223325901.png"></p>
+<h3 id="第十七题-flag17"><a href="#第十七题-flag17" class="headerlink" title="第十七题 flag17"></a>第十七题 flag17</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726222620497.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726223325901.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; echo -n &quot;hello&quot;| xxd -ps</span><br><span class="line">68656c6c6f</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x0050 -n 68656c6c6f</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x0050</span><br><span class="line">Characteristic value/descriptor: 64 34 31 64 38 63 64 39 38 66 30 30 62 32 30 34 65 39 38 30 00</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">echo &quot;Characteristic value/descriptor: 64 34 31 64 38 63 64 39 38 66 30 30 62 32 30 34 65 39 38 30 00&quot;|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">d41d8cd98f00b204e980</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; echo &quot;d41d8cd98f00b204e980&quot; | xxd -ps</span><br><span class="line">64343164386364393866303062323034653938300a</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x002c -n 6434316438636439386630306232303465393830</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Score:1 /20</span><br></pre></td></tr></table></figure>
 
-<h3 id="第十八题-flag18"><a href="#第十八题-flag18" class="headerlink" title="第十八题 flag18"></a>第十八题 flag18</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726223958174.png"></p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726223949537.png"></p>
+<h3 id="第十八题-flag18"><a href="#第十八题-flag18" class="headerlink" title="第十八题 flag18"></a>第十八题 flag18</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726223958174.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726223949537.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x0052 -n 0a --listen</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">Notification handle = 0x0052 value: 66 63 39 32 30 63 36 38 62 36 30 30 36 31 36 39 34 37 37 62 </span><br><span class="line">^C⏎                                                                                  </span><br><span class="line">tigerortiger@ubuntu ~/s/pthon [SIGINT]&gt; </span><br><span class="line">echo &quot;66 63 39 32 30 63 36 38 62 36 30 30 36 31 36 39 34 37 37 62&quot;|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line"></span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">echo &quot;aa:66 63 39 32 30 63 36 38 62 36 30 30 36 31 36 39 34 37 37 62&quot;|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">fc920c68b6006169477b</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; echo -n &quot;fc920c68b6006169477b&quot;|xxd -ps</span><br><span class="line">6663393230633638623630303631363934373762</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x002c -n 6663393230633638623630303631363934373762</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Score:1 /20</span><br></pre></td></tr></table></figure>
 
-<h3 id="第十九题-flag19"><a href="#第十九题-flag19" class="headerlink" title="第十九题 flag19"></a>第十九题 flag19</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726225344083.png"></p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726225410917.png"></p>
+<h3 id="第十九题-flag19"><a href="#第十九题-flag19" class="headerlink" title="第十九题 flag19"></a>第十九题 flag19</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726225344083.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726225410917.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x0054 -n 00</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x0054</span><br><span class="line">Characteristic value/descriptor: 66 62 62 39 36 36 39 35 38 66 </span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x0054 -n 0a --listen</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">Notification handle = 0x0054 value: 30 37 65 34 61 30 63 63 34 38 </span><br><span class="line">^C⏎                                                                                  tigerortiger@ubuntu ~/s/pthon [SIGINT]&gt; </span><br><span class="line">echo &quot;aa:66 62 62 39 36 36 39 35 38 66 30 37 65 34 61 30 63 63 34 38&quot;|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">fbb966958f07e4a0cc48</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; echo &quot;fbb966958f07e4a0cc48&quot;|xxd -ps</span><br><span class="line">66626239363639353866303765346130636334380a</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon [1]&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x002c -n 6662623936363935386630376534613063633438</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Score:1 /20</span><br></pre></td></tr></table></figure>
 
 
-<h3 id="第二十题-flag20"><a href="#第二十题-flag20" class="headerlink" title="第二十题  flag20"></a>第二十题  flag20</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726225913551.png"></p>
+<h3 id="第二十题-flag20"><a href="#第二十题-flag20" class="headerlink" title="第二十题  flag20"></a>第二十题  flag20</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230726225913551.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x0056|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">md5 of author&#x27;s twitter handle</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; echo &quot;@hackgnar&quot; -n | md5sum</span><br><span class="line">0e8fe5a24d807605f3ac6c13f45172a0  -</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; echo -n &quot;d953bfb9846acc2e15ee&quot;|xxd -ps</span><br><span class="line">6439353362666239383436616363326531356565</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-write-req -a 0x002c -n 6439353362666239383436616363326531356565</span><br><span class="line">Characteristic value was written successfully</span><br><span class="line">tigerortiger@ubuntu ~/s/pthon&gt; </span><br><span class="line">gatttool -b C8:F0:9E:A6:C8:D2 --char-read -a 0x002a|awk -F&#x27;:&#x27; &#x27;&#123;print $2&#125;&#x27;|tr -d &#x27; &#x27;|xxd -r -p;printf &#x27;\n&#x27;</span><br><span class="line">Score:1 /20</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
@@ -748,15 +564,15 @@
 <p><a target="_blank" rel="noopener" href="https://yaseng.org/how-to-crack-a-ble-lock.html">https://yaseng.org/how-to-crack-a-ble-lock.html</a></p>
 <p><a target="_blank" rel="noopener" href="http://drops.xmd5.com/static/drops/tips-10109.html">http://drops.xmd5.com/static/drops/tips-10109.html</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/karaxiaoyu/article/details/123588009#:~:text=%E5%A4%A7%E5%AE%B6%E5%A5%BD%EF%BC%8C%E8%BF%91%E6%9C%9F%E6%9B%B4%E6%96%B0%E4%BA%86ESP32%E7%9A%84%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%8C%E4%B8%80%E5%85%B1%2012%E7%AF%87%20%E5%9F%BA%E7%A1%80%E6%96%87%E7%AB%A0%EF%BC%8C%E6%B6%89%E5%8F%8AESP32%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%B8%B8%E7%94%A8%E5%A4%96%E8%AE%BE%E7%9A%84%E4%BB%8B%E7%BB%8D%EF%BC%8C%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E5%B7%B2%E7%BB%8F%E5%AE%8C%E6%AF%95%EF%BC%8C%E6%8E%A5%E4%B8%8B%E6%9D%A5%E4%BC%9A%E5%87%BA%E4%B8%80%E4%BA%9B%20WiFi%E3%80%81%E8%93%9D%E7%89%99%E3%80%81%E5%B1%8F%E5%B9%95%E4%BB%A5%E5%8F%8A%E4%BC%A0%E6%84%9F%E5%99%A8%20%E7%AD%89%E6%9B%B4%E5%A4%9A%20%E5%A5%BD%E7%8E%A9%E5%84%BF%E7%9A%84%E9%A1%B9%E7%9B%AE%20%E4%BB%8B%E7%BB%8D%EF%BC%8C%E5%9C%A8%E5%85%AC%E4%BC%97%E5%8F%B7%20%E8%B7%B3%E5%8A%A8%E7%9A%84%E5%AD%97%E8%8A%82,01%20%E5%85%A5%E9%97%A8%E4%BB%8B%E7%BB%8D%20%E8%80%81%E5%AE%87%E5%93%A5%E5%B8%A6%E4%BD%A0%E7%8E%A9%E8%BD%ACESP32%EF%BC%9A01%E5%85%A5%E9%97%A8%E4%BB%8B%E7%BB%8D%2002%20%E4%BD%BF%E7%94%A8VSCode%2BPlatformIO%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%20%E8%80%81%E5%AE%87%E5%93%A5%E5%B8%A6%E4%BD%A0%E7%8E%A9%E8%BD%ACESP32%EF%BC%9A02%E4%BD%BF%E7%94%A8VSCode%2BPlatformIO%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%2003%20GPIO%E6%95%B0%E5%AD%97%E8%BE%93%E5%85%A5%E4%B8%8E%E6%95%B0%E5%AD%97%E8%BE%93%E5%87%BA">https://blog.csdn.net/karaxiaoyu/article/details/123588009#:~:text=%E5%A4%A7%E5%AE%B6%E5%A5%BD%EF%BC%8C%E8%BF%91%E6%9C%9F%E6%9B%B4%E6%96%B0%E4%BA%86ESP32%E7%9A%84%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%EF%BC%8C%E4%B8%80%E5%85%B1%2012%E7%AF%87%20%E5%9F%BA%E7%A1%80%E6%96%87%E7%AB%A0%EF%BC%8C%E6%B6%89%E5%8F%8AESP32%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%B8%B8%E7%94%A8%E5%A4%96%E8%AE%BE%E7%9A%84%E4%BB%8B%E7%BB%8D%EF%BC%8C%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E5%B7%B2%E7%BB%8F%E5%AE%8C%E6%AF%95%EF%BC%8C%E6%8E%A5%E4%B8%8B%E6%9D%A5%E4%BC%9A%E5%87%BA%E4%B8%80%E4%BA%9B%20WiFi%E3%80%81%E8%93%9D%E7%89%99%E3%80%81%E5%B1%8F%E5%B9%95%E4%BB%A5%E5%8F%8A%E4%BC%A0%E6%84%9F%E5%99%A8%20%E7%AD%89%E6%9B%B4%E5%A4%9A%20%E5%A5%BD%E7%8E%A9%E5%84%BF%E7%9A%84%E9%A1%B9%E7%9B%AE%20%E4%BB%8B%E7%BB%8D%EF%BC%8C%E5%9C%A8%E5%85%AC%E4%BC%97%E5%8F%B7%20%E8%B7%B3%E5%8A%A8%E7%9A%84%E5%AD%97%E8%8A%82,01%20%E5%85%A5%E9%97%A8%E4%BB%8B%E7%BB%8D%20%E8%80%81%E5%AE%87%E5%93%A5%E5%B8%A6%E4%BD%A0%E7%8E%A9%E8%BD%ACESP32%EF%BC%9A01%E5%85%A5%E9%97%A8%E4%BB%8B%E7%BB%8D%2002%20%E4%BD%BF%E7%94%A8VSCode%2BPlatformIO%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%20%E8%80%81%E5%AE%87%E5%93%A5%E5%B8%A6%E4%BD%A0%E7%8E%A9%E8%BD%ACESP32%EF%BC%9A02%E4%BD%BF%E7%94%A8VSCode%2BPlatformIO%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%2003%20GPIO%E6%95%B0%E5%AD%97%E8%BE%93%E5%85%A5%E4%B8%8E%E6%95%B0%E5%AD%97%E8%BE%93%E5%87%BA</a></p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230711172945939.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230711172945939.png" srcset="/img/loading.gif" lazyload></p>
 <h1 id="esp32-蓝牙开发"><a href="#esp32-蓝牙开发" class="headerlink" title="esp32 蓝牙开发"></a>esp32 蓝牙开发</h1><p>ESP32 支持双模蓝牙，即同时支持经典蓝牙和低功耗蓝牙。</p>
 <h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>选择开发板，端口，上传的波特率。</p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230805114345297.png"></p>
-<h2 id="代码开发"><a href="#代码开发" class="headerlink" title="代码开发"></a>代码开发</h2><h3 id="实例代码"><a href="#实例代码" class="headerlink" title="实例代码"></a>实例代码</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/img-20230806222335.png"><br>这里选择了BLE-server 实例的代码。</p>
-<p>选择进行编译<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806222649332.png"></p>
-<p>上传代码到板子上，上传完后，拔掉板子。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806223403984.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230805114345297.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="代码开发"><a href="#代码开发" class="headerlink" title="代码开发"></a>代码开发</h2><h3 id="实例代码"><a href="#实例代码" class="headerlink" title="实例代码"></a>实例代码</h3><p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/img-20230806222335.png" srcset="/img/loading.gif" lazyload><br>这里选择了BLE-server 实例的代码。</p>
+<p>选择进行编译<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806222649332.png" srcset="/img/loading.gif" lazyload></p>
+<p>上传代码到板子上，上传完后，拔掉板子。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806223403984.png" srcset="/img/loading.gif" lazyload></p>
 <p>给板子重新上电，手机蓝牙就可以扫描到板子设置的蓝牙名称。</p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806231005051.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806231005051.png" srcset="/img/loading.gif" lazyload></p>
 <p>实例代码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">    Based on Neil Kolban example for IDF: https://github.com/nkolban/esp32-snippets/blob/master/cpp_utils/tests/BLE%20Tests/SampleServer.cpp</span><br><span class="line">    Ported to Arduino ESP32 by Evandro Copercini</span><br><span class="line">    updates by chegewara</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">#include &lt;BLEDevice.h&gt;</span><br><span class="line">#include &lt;BLEUtils.h&gt;</span><br><span class="line">#include &lt;BLEServer.h&gt;</span><br><span class="line"></span><br><span class="line">// See the following for generating UUIDs:</span><br><span class="line">// https://www.uuidgenerator.net/</span><br><span class="line"></span><br><span class="line">#define SERVICE_UUID        &quot;4fafc201-1fb5-459e-8fcc-c5c9c331914b&quot;</span><br><span class="line">#define CHARACTERISTIC_UUID &quot;beb5483e-36e1-4688-b7f5-ea07361b26a8&quot;</span><br><span class="line"></span><br><span class="line">void setup() &#123;</span><br><span class="line">  Serial.begin(115200);</span><br><span class="line">  Serial.println(&quot;Starting BLE work!&quot;);</span><br><span class="line"></span><br><span class="line">  BLEDevice::init(&quot;iqiqiya&quot;);</span><br><span class="line">  BLEServer *pServer = BLEDevice::createServer();</span><br><span class="line">  BLEService *pService = pServer-&gt;createService(SERVICE_UUID);</span><br><span class="line">  BLECharacteristic *pCharacteristic = pService-&gt;createCharacteristic(</span><br><span class="line">                                         CHARACTERISTIC_UUID,</span><br><span class="line">                                         BLECharacteristic::PROPERTY_READ |</span><br><span class="line">                                         BLECharacteristic::PROPERTY_WRITE</span><br><span class="line">                                       );</span><br><span class="line"></span><br><span class="line">  pCharacteristic-&gt;setValue(&quot;Hello World says Neil&quot;);</span><br><span class="line">  pService-&gt;start();</span><br><span class="line">  // BLEAdvertising *pAdvertising = pServer-&gt;getAdvertising();  // this still is working for backward compatibility</span><br><span class="line">  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();</span><br><span class="line">  pAdvertising-&gt;addServiceUUID(SERVICE_UUID);</span><br><span class="line">  pAdvertising-&gt;setScanResponse(true);</span><br><span class="line">  pAdvertising-&gt;setMinPreferred(0x06);  // functions that help with iPhone connections issue</span><br><span class="line">  pAdvertising-&gt;setMinPreferred(0x12);</span><br><span class="line">  BLEDevice::startAdvertising();</span><br><span class="line">  Serial.println(&quot;Characteristic defined! Now you can read it in your phone!&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void loop() &#123;</span><br><span class="line">  // put your main code here, to run repeatedly:</span><br><span class="line">  delay(2000);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -768,11 +584,11 @@
 <h3 id="开发记录2"><a href="#开发记录2" class="headerlink" title="开发记录2"></a>开发记录2</h3><p>作为服务器使用还需要在上面的基础上将蓝牙设备指定为Server（服务器）使用。Server可以传入一组回调函数，分别会在有客户端设备接入时和断开连接时触发。 在有设备接入后Advertising广播会被停止，所以要在设备断开连接时重新开启广播，可以通过此处的回调函数知道设备是否断开连接。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;BLEDevice.h&gt; // 引入相关库</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line">// 作为服务器使用还需要在上面的基础上将蓝牙设备指定为Server（服务器）使用。</span><br><span class="line">// Server可以传入一组回调函数，分别会在有客户端设备接入时和断开连接时触发。 </span><br><span class="line">// 在有设备接入后Advertising广播会被停止，所以要在设备断开连接时重新开启广播，</span><br><span class="line">// 可以通过此处的回调函数知道设备是否断开连接。</span><br><span class="line"></span><br><span class="line">class MyServerCallbacks: public BLEServerCallbacks&#123;</span><br><span class="line"></span><br><span class="line">  void onConnect(BLEServer * pServer)&#123;</span><br><span class="line">      Serial.println(&quot;现在有设备接入~&quot;);</span><br><span class="line">    &#125;;</span><br><span class="line">  void onDisconnect(BLEServer * pServer)&#123;</span><br><span class="line">      Serial.println(&quot;现在有设备断开连接~&quot;);</span><br><span class="line">      // 在有设备接入后Advertising 广播会被停止，所以要在设备断开连接时重新开启广播</span><br><span class="line">      // 不然的话只有重启esp32 才能重新搜到</span><br><span class="line">      pServer-&gt;startAdvertising();</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">void setup()&#123;</span><br><span class="line">  Serial.begin(115200);</span><br><span class="line">  Serial.println();</span><br><span class="line">  BLEDevice::init(&quot;HelloWorldBLEServer&quot;);  // 填写自身对外显示的蓝牙设备名称，并初始化蓝牙功能</span><br><span class="line">  BLEServer *pServer = BLEDevice::createServer(); // 创建服务器</span><br><span class="line">  pServer-&gt;setCallbacks(new MyServerCallbacks()); // 绑定回调函数</span><br><span class="line">  BLEDevice::startAdvertising();     // 开启Advertising 广播</span><br><span class="line">&#125;</span><br><span class="line">void loop()&#123;&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230815231514350.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230815231514350.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="开发记录3"><a href="#开发记录3" class="headerlink" title="开发记录3"></a>开发记录3</h3><p>创建一个服务Service</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;BLEDevice.h&gt; // 引入相关库</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line">#define SERVICE_UUID1 &quot;4fafc201-1fb5-459e-8fcc-c5c9c331914b&quot; // 自定义UUID</span><br><span class="line">#define SERVICE_UUID2 &quot;0000180F-0000-1000-8000-00805F9B34FB&quot; // 0x180F是蓝牙技术联盟定义的Battery Service的16-bit UUID</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void setup()&#123;</span><br><span class="line">  Serial.begin(115200);</span><br><span class="line">  Serial.println();</span><br><span class="line">  BLEDevice::init(&quot;HelloWorld_Battery&quot;);  // 填写自身对外显示的蓝牙设备名称，并初始化蓝牙功能</span><br><span class="line">  BLEServer *pServer = BLEDevice::createServer(); // 创建服务器</span><br><span class="line">  BLEService *pService1 = pServer-&gt;createService(SERVICE_UUID1);  // 创建服务</span><br><span class="line">  pService1-&gt;start();  // 启动服务</span><br><span class="line">  BLEService *pService2 = pServer-&gt;createService(SERVICE_UUID2);</span><br><span class="line">  pService2-&gt;start();</span><br><span class="line">  </span><br><span class="line">  BLEDevice::startAdvertising();     // 开启Advertising 广播</span><br><span class="line">&#125;</span><br><span class="line">void loop()&#123;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230816224907026.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230816224907026.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="开发记录4"><a href="#开发记录4" class="headerlink" title="开发记录4"></a>开发记录4</h3><p>这段代码，设置characteristic 中设置值，可以在BLE调试助手中看到，可以读取Characteristic 的值</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;BLEDevice.h&gt; // 引入相关库</span><br><span class="line"></span><br><span class="line">#define SERVICE_UUID &quot;4fafc201-1fb5-459e-8fcc-c5c9c331914b&quot;</span><br><span class="line">#define CHARACTERISTIC_UUID1 &quot;beb5483e-36e1-4688-b7f5-ea07361b26a8&quot; // 自定义UUID</span><br><span class="line">#define CHARACTERISTIC_UUID2 &quot;00002A23-0000-1000-8000-00805F9B34FB&quot; // 0x2A23是蓝牙技术联盟定义的System ID Characteristic的16-bit UUID</span><br><span class="line"></span><br><span class="line">void setup()&#123;</span><br><span class="line">  Serial.begin(115200);</span><br><span class="line">  Serial.println();</span><br><span class="line">  BLEDevice::init(&quot;HelloWorld_Characteristic&quot;);  // 填写自身对外显示的蓝牙设备名称，并初始化蓝牙功能</span><br><span class="line">  BLEServer *pServer = BLEDevice::createServer(); // 创建服务器</span><br><span class="line">  BLEService *pService = pServer-&gt;createService(SERVICE_UUID);  // 创建服务</span><br><span class="line">  BLECharacteristic *pCharacteristic1 = pService-&gt;createCharacteristic( // 创建特征</span><br><span class="line">                                                      CHARACTERISTIC_UUID1,</span><br><span class="line">                                                      BLECharacteristic::PROPERTY_READ|</span><br><span class="line">                                                      BLECharacteristic::PROPERTY_WRITE</span><br><span class="line">                                                      );</span><br><span class="line">  BLECharacteristic *pCharacteristic2 = pService-&gt;createCharacteristic(</span><br><span class="line">                                                      CHARACTERISTIC_UUID2,</span><br><span class="line">                                                      BLECharacteristic::PROPERTY_NOTIFY</span><br><span class="line">                                                      );</span><br><span class="line">  pCharacteristic1-&gt;setValue(&quot;Hello World&quot;);  // 设置该Characteristic的value值</span><br><span class="line">                                             // 如果客户端连上设备后没有任何写入的情况下</span><br><span class="line">  </span><br><span class="line">  pService-&gt;start();                 // 启动服务</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  BLEDevice::startAdvertising();     // 开启Advertising 广播</span><br><span class="line">&#125;</span><br><span class="line">void loop()&#123;&#125;</span><br></pre></td></tr></table></figure>
 
@@ -783,9 +599,9 @@
 <h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>问题1：esp32 插上电脑，电脑端不显示串口信息。</p>
 <p>解决： 有的USB-micro 线只有电源功能，而没有串口转换功能。</p>
 <p>问题2：找到实例代码，进行编译得时候，显示如下错误，这个错误是因为 ArduinoBLE 的库的问题</p>
-<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806221449861.png"></p>
-<p>解决：在安装库的时候安装了最新的版本，后面换成这个就可以编译了。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806222114730.png"></p>
-<p>问题3： 尝试使用ArduinoBLE 库来开发的时候，编译会报如下的错误<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230815223954076.png"></p>
+<p><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806221449861.png" srcset="/img/loading.gif" lazyload></p>
+<p>解决：在安装库的时候安装了最新的版本，后面换成这个就可以编译了。<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230806222114730.png" srcset="/img/loading.gif" lazyload></p>
+<p>问题3： 尝试使用ArduinoBLE 库来开发的时候，编译会报如下的错误<br><img src="/45__%E8%93%9D%E7%89%99_sniff_CTF.assets/image-20230815223954076.png" srcset="/img/loading.gif" lazyload></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Error while detecting libraries included by C:\Users\TigerHu\Documents\Arduino\libraries\ArduinoBLE\src\utility\HCIUartTransport.cpp</span><br><span class="line"></span><br><span class="line">警告： ArduinoBLE 库要求运行在 samd, megaavr, mbed, apollo3, mbed_nano, mbed_portenta, mbed_nicla 架构()，可能与你现在运行在 esp32 架构上的开发板()不兼容。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>解决3:  是因为ArduinoBLE库目前不支持esp32架构，该库只支持运行在指定的硬件平台（如<code>samd</code>、<code>megaavr</code>等）上，而ESP32开发板属于不支持的架构。<br>如果您想在 ESP32 上使用 BLE 功能，可以考虑使用其他适用于 ESP32 的 BLE 库，例如 ESP32 BLE Arduino 库或 NimBLE-Arduino 库。您可以通过 Arduino 库管理器在 Arduino IDE 中搜索并安装这些库。</p>
@@ -797,194 +613,344 @@
 <p><a target="_blank" rel="noopener" href="https://github.com/nkolban/ESP32_BLE_Arduino/blob/master/src/BLEServer.h">https://github.com/nkolban/ESP32_BLE_Arduino/blob/master/src/BLEServer.h</a></p>
 <p>蓝牙灯泡hack<br><a target="_blank" rel="noopener" href="https://www.instructables.com/Reverse-Engineering-Smart-Bluetooth-Low-Energy-Dev/">https://www.instructables.com/Reverse-Engineering-Smart-Bluetooth-Low-Energy-Dev/</a></p>
 
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>蓝牙sniff&amp;CTF&amp;develop</div>
+      <div>https://tig3rhu.github.io/2023/12/18/45__蓝牙 sniff &amp; CTF/</div>
+    </div>
+    <div class="license-meta">
       
-       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，交流请邮件至 1161629782@qq.com </span>
-    </div>
-</article>
-
-
-<p>
-    <a  class="dashang" onclick="dashangToggle()">💰</a>
-</p>
-
-
-
-
-
-
-    
-
-
-
-
-    </div>
-    <div class="copyright">
-        <p class="footer-entry">
-    ©2016-2020 Yelog
-</p>
-<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
-
-    </div>
-    <div class="full-toc">
-        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
-<a class="" id="rocket" ></a>
-
-    </div>
-</div>
-
-<div class="hide_box" onclick="dashangToggle()"></div>
-<div class="shang_box">
-    <a class="shang_close"  onclick="dashangToggle()">×</a>
-    <div class="shang_tit">
-        <p>Help us with donation</p>
-    </div>
-    <div class="shang_payimg">
-        <div class="pay_img">
-            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
-            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Tig3rHu</div>
         </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 18, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
     </div>
-    <div class="shang_payselect">
-        <span><label><input type="radio" name="pay" checked value="alipay">alipay</label></span><span><label><input type="radio" name="pay" value="weixin">weixin</label></span>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/01/02/66__%E9%80%86%E5%90%91_%E6%BB%B4%E7%AD%94%E6%B8%85%E5%8D%95%E5%8E%BB%E4%BC%9A%E5%91%98/" title="apk逆向__滴答清单去会员">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">apk逆向__滴答清单去会员</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/18/22_%E4%BD%BF%E7%94%A8LD_PROLOAD_%E8%BF%9B%E8%A1%8Chook/" title="Linux 使用LD_PRELOAD 进行hook">
+                        <span class="hidden-mobile">Linux 使用LD_PRELOAD 进行hook</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
     </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
 </div>
 
 
-</body>
-<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
 
-<script src="/js/script.js?v=1.1.0" ></script>
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
 <script>
-    var img_resize = 'default';
-    function initArticle() {
-        /*渲染对应的表格样式*/
-        
-            $("#post .pjax table").addClass("green_title");
-        
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
 
-        /*渲染打赏样式*/
-        
-        $("input[name=pay]").on("click", function () {
-            if($("input[name=pay]:checked").val()=="weixin"){
-                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
-            } else {
-                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
-            }
-        })
-        
-
-        /*高亮代码块行号*/
-        
-
-        /*访问数量*/
-        
-        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
-        
-
-        /*代码高亮，行号对齐*/
-        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
-
-        
-        
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
 
-    /*打赏页面隐藏与展示*/
-    
-    function dashangToggle() {
-        $(".shang_box").fadeToggle();
-        $(".hide_box").fadeToggle();
-    }
-    
-
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
 </script>
 
-<!--加入行号的高亮代码块样式-->
 
-<!--自定义样式设置-->
-<style>
-    
-    
-    .nav {
-        width: 542px;
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
     }
-    .nav.fullscreen {
-        margin-left: -542px;
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
     }
-    .nav-left {
-        width: 120px;
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
     }
-    
-    
-    @media screen and (max-width: 1468px) {
-        .nav {
-            width: 492px;
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
         }
-        .nav.fullscreen {
-            margin-left: -492px;
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
         }
-        .nav-left {
-            width: 100px;
-        }
-    }
-    
-    
-    @media screen and (max-width: 1024px) {
-        .nav {
-            width: 492px;
-            margin-left: -492px
-        }
-        .nav.fullscreen {
-            margin-left: 0;
-        }
-    }
-    
-    @media screen and (max-width: 426px) {
-        .nav {
-            width: 100%;
-        }
-        .nav-left {
-            width: 100%;
-        }
-    }
-    
-    
-    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
-        color: #383636;
-    }
-    
-    
-    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
-        color: #5e5e5f;
-    }
-    
-    
-    .nav-right nav a.hover, #local-search-result a.hover{
-        background-color: #e2e0e0;
-    }
-    
-    
-
-    /*列表样式*/
-    
-
-    /* 背景图样式 */
-    
-    
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
 
 
-    /*引用块样式*/
-    
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
-    /*文章列表背景图*/
-    
 
-    
-</style>
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
 </html>

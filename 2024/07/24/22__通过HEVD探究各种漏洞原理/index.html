@@ -1,0 +1,684 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/heard.png">
+  <link rel="icon" href="/img/heard.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Tig3rHu">
+  <meta name="keywords" content="HigerHu,vulnerability,security,cyber">
+  
+    <meta name="description" content="背景知识本篇 blog 主要讲述的内容是通过HEVD，来讲述对二进制漏洞的理解以及各种漏洞形成的原理，深化对各种漏洞形态以及特点的理解，有关HEVD 的优秀writeup 有很多，由于对windows 的内核驱动并不擅长，但漏洞原理都是相通的，这里我也只是写一些自己的理解。 源码 https:&#x2F;&#x2F;github.com&#x2F;hacksysteam&#x2F;HackSysExtremeVulnerableDriv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tig3rHu&#39;s Blog">
+<meta property="og:url" content="https://tig3rhu.github.io/2024/07/24/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:description" content="背景知识本篇 blog 主要讲述的内容是通过HEVD，来讲述对二进制漏洞的理解以及各种漏洞形成的原理，深化对各种漏洞形态以及特点的理解，有关HEVD 的优秀writeup 有很多，由于对windows 的内核驱动并不擅长，但漏洞原理都是相通的，这里我也只是写一些自己的理解。 源码 https:&#x2F;&#x2F;github.com&#x2F;hacksysteam&#x2F;HackSysExtremeVulnerableDriv">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240713223534759.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240713223602961.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240713223635496.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240714211825312.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240714211835362.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240714211853726.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240714225234836.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240714234952953.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240717225548896.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240717225330947.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240717230452891.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240717231324492.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240717233134980.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240719232843681.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240721212832224.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240721225725483.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240722225042378.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240722231138336.png">
+<meta property="og:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240722232309943.png">
+<meta property="article:published_time" content="2024-07-24T15:48:40.243Z">
+<meta property="article:modified_time" content="2024-07-24T15:50:31.789Z">
+<meta property="article:author" content="Tig3rHu">
+<meta property="article:tag" content="HigerHu,vulnerability,security,cyber">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tig3rhu.github.io/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240713223534759.png">
+  
+  
+  
+  <title>Tig3rHu&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tig3rhu.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Tiger</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/radio.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-24 23:48" pubdate>
+          July 24, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          32 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h2><p>本篇 blog 主要讲述的内容是通过HEVD，来讲述对二进制漏洞的理解以及各种漏洞形成的原理，深化对各种漏洞形态以及特点的理解，有关HEVD 的优秀writeup 有很多，由于对windows 的内核驱动并不擅长，但漏洞原理都是相通的，这里我也只是写一些自己的理解。</p>
+<p>源码 <a target="_blank" rel="noopener" href="https://github.com/hacksysteam/HackSysExtremeVulnerableDriver/tree/master/Driver/HEVD">https://github.com/hacksysteam/HackSysExtremeVulnerableDriver/tree/master/Driver/HEVD</a></p>
+<p>首先在看HEVD之前，得了解windows驱动开发的一些常用的框架，了解什么是IOCTL、DriverEntry、驱动注册路径，驱动设备、注册设备各类系统接口函数 等概念。</p>
+<h2 id="栈溢出"><a href="#栈溢出" class="headerlink" title="栈溢出"></a>栈溢出</h2><p>有关栈溢出的这里就不多介绍了。</p>
+<p><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240713223534759.png" srcset="/img/loading.gif" lazyload></p>
+<p><code> TriggerBufferOverflowStack(v3, IrpSp-&gt;Parameters.Create.Options);</code><br><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240713223602961.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240713223635496.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="任意地址写"><a href="#任意地址写" class="headerlink" title="任意地址写"></a>任意地址写</h2><p><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240714211825312.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240714211835362.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240714211853726.png" srcset="/img/loading.gif" lazyload></p>
+<p>起初不理解这段代码的漏洞，任意地址写，但随着不断的查阅资料，不断解惑。</p>
+<p>我理解这段代码中可以通过传入 v1 的值来更改v2地址指向的内容。因此如果v1地址保存的内容是一个非法的地址，传递给v2地址指向的内容。这种情况是正常更改了，但是没有人调用v2地址指向的内容，那漏洞就不成立。<br>在这篇blog中看到了答案 <a target="_blank" rel="noopener" href="https://tttang.com/archive/1344/">https://tttang.com/archive/1344/</a> 。<br><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240714225234836.png" srcset="/img/loading.gif" lazyload></p>
+<p>现在可以透彻的理解任意地址写漏洞了。在具有任意地址写漏洞的程序中，需要满足以下条件：<br>    1. 控制被任意写地址的指针：这段代码中的被任意写的指针是 *v2，如果 *v2 指针是返回地址，注意这里是指针地址，而不是指针地址指向的内容，这两者意思完全不同。<br>    2. 可控制的指针:这段代码中控制的指针还有 *v1， 如果*v1  指针指向内容是shellcode地址。<br>    3. 写入操作： 这里指的是<code>*v2 = *v1</code> ，将*v1 指针地址指向的内容（shellcode） 赋给 *v2 指针地址（返回地址）指向的内容。<br>    4. 触发执行： 如果控制流到达了被修改的的地址时，比如这里的返回地址已经被修改到了shellcode地址。那么程序会跳转到这里来。</p>
+<p>另外，任何利用和漏洞原理要结合汇编来理解。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">PAGE:</span>00444BEE <span class="hljs-comment">; int __stdcall TriggerArbitraryWrite(_WRITE_WHAT_WHERE *UserWriteWhatWhere)</span><br><span class="hljs-symbol">PAGE:</span>00444BEE _TriggerArbitraryWrite@<span class="hljs-number">4</span> proc <span class="hljs-built_in">near</span>      <span class="hljs-comment">; CODE XREF: ArbitraryWriteIoctlHandler(x,x)+13↑p</span><br><span class="hljs-symbol">PAGE:</span>00444BEE<br><span class="hljs-symbol">PAGE:</span>00444BEE var_20          = <span class="hljs-built_in">dword</span> <span class="hljs-built_in">ptr</span> -<span class="hljs-number">20h</span><br><span class="hljs-symbol">PAGE:</span>00444BEE var_1C          = <span class="hljs-built_in">dword</span> <span class="hljs-built_in">ptr</span> -<span class="hljs-number">1Ch</span><br><span class="hljs-symbol">PAGE:</span>00444BEE ms_exc          = CPPEH_RECORD <span class="hljs-built_in">ptr</span> -<span class="hljs-number">18h</span><br><span class="hljs-symbol">PAGE:</span>00444BEE UserWriteWhatWhere= <span class="hljs-built_in">dword</span> <span class="hljs-built_in">ptr</span>  <span class="hljs-number">8</span><br><span class="hljs-symbol">PAGE:</span>00444BEE<br><span class="hljs-symbol">PAGE:</span>00444BEE <span class="hljs-comment">; __unwind &#123; // __SEH_prolog4</span><br><span class="hljs-symbol">PAGE:</span>00444BEE                 <span class="hljs-keyword">push</span>    <span class="hljs-number">10h</span><br><span class="hljs-symbol">PAGE:</span>00444BF0                 <span class="hljs-keyword">push</span>    offset stru_402360<br><span class="hljs-symbol">PAGE:</span>00444BF5                 <span class="hljs-keyword">call</span>    __SEH_prolog4<br><span class="hljs-symbol">PAGE:</span>00444BFA                 <span class="hljs-keyword">xor</span>     <span class="hljs-built_in">eax</span>, <span class="hljs-built_in">eax</span><br><span class="hljs-symbol">PAGE:</span>00444BFC                 <span class="hljs-keyword">mov</span>     [<span class="hljs-built_in">ebp</span>+var_1C], <span class="hljs-built_in">eax</span><br><span class="hljs-symbol">PAGE:</span>00444BFF                 <span class="hljs-keyword">mov</span>     [<span class="hljs-built_in">ebp</span>+ms_exc<span class="hljs-number">.</span>registration<span class="hljs-number">.</span>TryLevel], <span class="hljs-built_in">eax</span><br><span class="hljs-symbol">PAGE:</span>00444C02                 <span class="hljs-keyword">push</span>    <span class="hljs-number">1</span>               <span class="hljs-comment">; Alignment</span><br><span class="hljs-symbol">PAGE:</span>00444C04                 <span class="hljs-keyword">push</span>    <span class="hljs-number">8</span>               <span class="hljs-comment">; Length</span><br><span class="hljs-symbol">PAGE:</span>00444C06                 <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">esi</span>, [<span class="hljs-built_in">ebp</span>+UserWriteWhatWhere]<br><span class="hljs-symbol">PAGE:</span>00444C09                 <span class="hljs-keyword">push</span>    <span class="hljs-built_in">esi</span>             <span class="hljs-comment">; Address // 将UserWriteWhatWhere 结构体地址的值(指针) 传递给 esi ，然后再将esi 寄存器内的值压入堆栈。</span><br><span class="hljs-symbol">PAGE:</span>00444C0A                 <span class="hljs-keyword">call</span>    <span class="hljs-built_in">ds</span>:__imp__ProbeForRead@<span class="hljs-number">12</span> <span class="hljs-comment">; ProbeForRead(x,x,x)</span><br><span class="hljs-symbol">PAGE:</span>00444C10                 <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">edi</span>, [<span class="hljs-built_in">esi</span>] // 从<span class="hljs-built_in">esi</span>寄存器指向的内存地址中读取数据，然后将这个值移动到<span class="hljs-built_in">edi</span> 中，这是what 指针<br><span class="hljs-symbol">PAGE:</span>00444C12                 <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">ebx</span>, [<span class="hljs-built_in">esi</span>+<span class="hljs-number">4</span>] // 这里是where 指针<br><span class="hljs-symbol">PAGE:</span>00444C15                 <span class="hljs-keyword">push</span>    <span class="hljs-built_in">esi</span><br><span class="hljs-symbol">PAGE:</span>00444C16                 <span class="hljs-keyword">push</span>    offset aUserwritewhatw <span class="hljs-comment">; &quot;[+] UserWriteWhatWhere: 0x%p\n&quot;</span><br><span class="hljs-symbol">PAGE:</span>00444C1B                 <span class="hljs-keyword">push</span>    <span class="hljs-number">3</span>               <span class="hljs-comment">; Level</span><br><span class="hljs-symbol">PAGE:</span>00444C1D                 <span class="hljs-keyword">push</span>    <span class="hljs-number">4Dh</span> <span class="hljs-comment">; &#x27;M&#x27;       ; ComponentId</span><br><span class="hljs-symbol">PAGE:</span>00444C1F                 <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">esi</span>, <span class="hljs-built_in">ds</span>:__imp__DbgPrintEx<br><span class="hljs-symbol">PAGE:</span>00444C25                 <span class="hljs-keyword">call</span>    <span class="hljs-built_in">esi</span> <span class="hljs-comment">; __imp__DbgPrintEx</span><br>...<br><span class="hljs-symbol">PAGE:</span>00444C5A                 <span class="hljs-keyword">add</span>     <span class="hljs-built_in">esp</span>, <span class="hljs-number">0Ch</span><br><span class="hljs-symbol">PAGE:</span>00444C5D                 <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">eax</span>, [<span class="hljs-built_in">edi</span>] // 从<span class="hljs-built_in">edi</span>寄存器指向的内存地址中读取数据移动到<span class="hljs-built_in">eax</span>寄存器中，这里是what 指针指向的shellcode地址。<br><span class="hljs-symbol">PAGE:</span>00444C5F                 <span class="hljs-keyword">mov</span>     [<span class="hljs-built_in">ebx</span>], <span class="hljs-built_in">eax</span> // 将<span class="hljs-built_in">eax</span>寄存器的值移动到<span class="hljs-built_in">ebx</span> 寄存器指向的内存地址中，这里指的是what 指针指向的shellcode 地址 赋值给 where 指针指向的内存地址。<br><span class="hljs-symbol">PAGE:</span>00444C61                 <span class="hljs-keyword">jmp</span>     short loc_444C8D<br></code></pre></td></tr></table></figure>
+<p>以上就是 <code>TriggerArbitraryWrite</code> 函数的代码，我将一些无关的代码精简了。</p>
+<p>另外在 <a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-270176.htm">https://bbs.kanxue.com/thread-270176.htm</a> 中的漏洞利用中也可以理解</p>
+<p><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240714234952953.png" srcset="/img/loading.gif" lazyload></p>
+<p>其中的 &amp;dwZero  表示的是what 的地址，这里的地址是0 ，可以将shellcode 写到 地址为0 的内存空间中。然后 pXHalQuerySystemInformation 是where 的指针，这里应该是可以控制的程序地址，并且这个地址会有控制流执行到这里。 一言以蔽之，当别的程序执行到 pXHalQuerySystemInformation指针指向的内存地址的时候，那么程序就会跳转到 shellcode 中进行执行。</p>
+<h2 id="UAF"><a href="#UAF" class="headerlink" title="UAF"></a>UAF</h2><p>UAF漏洞，需要以下的几个步骤:<br>    1. 申请一块内存以后释放掉它，但是没有清空该内存的指针<br>    2. 重新申请一块同样大小的内存，此时这两个指针对指向同一块内存<br>    3. 对第一步的指针进行操作，它将会影响到第二步申请的指针指向的内存</p>
+<p><strong>申请内存分配</strong></p>
+<p>在这个函数中，可以很明显的看到调用ExAllocatePoolWithTag( ) 函数分配内存大小为0x58 给v0 局部变量，并且后续这块分配v0 内存块做了以下的操作：<br>        1. 将 v0+1 后的0x54 个内存都赋值为”A“<br>        2. 将内存的最后一个字节设置为0<br>        3. 并且将内存的前四个字节设置为 UAFObjectCallbackNonPagedPool  函数的地址。<br>        4. 将v0内存的地址赋值给g_UseAfterFreeObjectNonPagedPool<br><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240717225548896.png" srcset="/img/loading.gif" lazyload><br>仔细看一下g_UseAfterFreeObjectNonPagedPool，这是一个在.data 段的全局变量<br><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240717225330947.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>释放之前给指针分配的内存</strong></p>
+<p>这里会调用这个 ExFreePoolWithTag() 函数来释放内存，这里释放的是这个全局变量g_UseAfterFreeObjectNonPagedPool的指针，前面在分析指针指向内存分配的时候，了解到g_UseAfterFreeObjectNonPagedPool 这个全局变量指向的内存就是分配的内存。</p>
+<p>并且在释放之前会判断 g_UseAfterFreeObjectNonPagedPool 是否为0<br><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240717230452891.png" srcset="/img/loading.gif" lazyload></p>
+<p>这里值得注意的是 g_UseAfterFreeObjectNonPagedPool 这个全局变量在释放后，并没有被完全置空，所以 g_UseAfterFreeObjectNonPagedPool 全局变量的指针仍然指向 0x58 内存块起始地址，只是内存块内的数据已经被释放了。</p>
+<p>所以如果有人能调用 g_UseAfterFreeObjectNonPagedPool 指针，则将造成UAF 漏洞。</p>
+<p><strong>调用 g_UseAfterFreeObjectNonPagedPool 指针</strong><br>在 UseUaFObjectNonPagedPool() 函数中，可以看到会调用UseUaFObjectNonPagedPool 指针。</p>
+<p>在前面分配内存，并且给内存赋值的过程中，UseUaFObjectNonPagedPool 指向的内存0x58内存中，前四个字节保存的是 UAFObjectCallbackNonPagedPool 函数的地址。</p>
+<p>因此最终调用的是 UAFObjectCallbackNonPagedPool 这个函数。如果 0x58内存块中的数据被释放后，UAFObjectCallbackNonPagedPool 函数的地址就不复存在，所以通过调用UseUaFObjectNonPagedPool 指针来访问内存就会出现内存错误，因为内存已经被释放了。<br><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240717231324492.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>AllocateFakeObjectNonPagedPool 函数</strong></p>
+<p>为了能够更好的利用这个漏洞，还存在 AllocateFakeObjectNonPagedPool 函数，这个函数就是重新分配一个0x58大小的内存。由于内存管理中在内存分配的时候，上一块已经被释放的0x58大小的内存没人用，这次分配一样大小的内存，就会覆盖上去，这样的话 g_UseAfterFreeObjectNonPagedPool 全局变量指向的内存区域就是这一次分配同样大小的内存区域。那么就可以控制程序的执行流程，调用shellcode。<br><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240717233134980.png" srcset="/img/loading.gif" lazyload></p>
+<p>总结一下： 其实这个漏洞的模式还是很理想的，在真实的UAF 漏洞环境中，是不会有 AllocateFakeObjectNonPagedPool 这样的函数。其实最好的利用方式就是直接AllocateUaFObjectNonPagedPool 分配内存的时候，就将shellcode地址放到内存的前四个字节，因为在调用g_UseAfterFreeObjectNonPagedPool 指针的时候，并没有校验指针指向的内存是否合法。<br>因此也存在任意地址访问的漏洞。</p>
+<h2 id="整数溢出"><a href="#整数溢出" class="headerlink" title="整数溢出"></a>整数溢出</h2><p>这个案例是整数溢出的案例，有关整数溢出相关原理不详细展开说：<br>    - 1. 有符号整数可以溢出。<br>    - 2. 无符号的整数存在回绕的问题，常用于绕过判断语句<br>    - 3. 有符号整数在某些情况下会强转成无符号整数，就会出现溢出。比如memcpy，strncpy</p>
+<p>函数 TriggerIntegerOverflow 中存在整数溢出漏洞<br>    1.  定义一个局部变量分配的大小是 512* 4 字节 &#x3D; 2048<br>    2.  将userbuffer 用户传入内存地址赋值给 局部变量 v3， 其中的size 是userbuffer 的大小。<br>    3. 这里会判断用户传入的size 的大小，首先是size +4 &lt;&#x3D;2048，说明size 的值要小于2044， 因为userbuffer 的最后四个字节是0x0BAD0B0B0，是用户终止userbuffer 拷贝到kernelbuffer 的符号；这里如果Size的值是一个很大的值，在 size +4 后，就会发生整数回绕的问题，进而小于2048，绕过这个判断。<br>    4.  这里会将userBuffer 逐个字节的拷贝到 KernelBuffer，如果前面的Size+4 &lt;&#x3D;2048 被绕过了，那么如果userBuffer 的字节数量，超过了给KernelBuffer 分配的2048个字节内存，就会引发缓冲区溢出的问题。</p>
+<p><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240719232843681.png" srcset="/img/loading.gif" lazyload></p>
+<p>这个案例的漏洞利用比较好理解，首先输入 0x820个字节覆盖kernelBuffer缓冲区，然后再传入4个字节覆盖栈底，然后覆盖 返回地址 ret 为 shellcode 的地址，这样以来，函数执行流程中会跳转到shellcode 执行。</p>
+<h2 id="空指针解引用"><a href="#空指针解引用" class="headerlink" title="空指针解引用"></a>空指针解引用</h2><p>空指针引用（NULL POINT），程序在申请完内存并设置好指向内存的指针，再该内存被使用后，程序会对该内存进行释放，并且对指向该内存的指针进行清空（置空，设为NULL）, 如果之后还对这个指针进行使用，很有可能会出现问题。</p>
+<p>TriggerNullPointerDereference 漏洞函数中，按照空指针解引用漏洞的触发条件来分析：<br>        1 . 给局部变量 v1 分配0x08 大小的内存区域， 并把内存地址赋值给指针 v1<br>        2.  将用户输入的 userBuffer 内存地址赋值给指针v3<br>        3.  判断 指针v3 指向内存区域的的前四个字节数据是否为 0xBAD0B0B0 ，然后进入到正常的代码流程中，给指针v1 指向的内存区域传入数据，具体操作是 前四个字节为0xBAD0B0B0，后四个字节为 NullPointerDereferenceObjectCallback 函数地址。<br>        4. 如果 [3] 中的判断错误，那就会释放之前给指针 v1分配的 0x08字节大小的内存区域，然后将指针 v1 设置成空指针。<br>        5. 接下来会执行v1[1]，也就是v1 后四个字节保存的函数地址，这里就存在漏洞，如果用户输入的userBuffer 数据中不包含 0xBAD0B0B0，那指针v1 指向的内存区域会被释放，并且指针v1 会被指向内存地址为0（置空），没有指向任何有效内存地址，因此调用 v1[1] 函数就会出现空指针解引用的漏洞。</p>
+<p><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240721212832224.png" srcset="/img/loading.gif" lazyload></p>
+<p>在漏洞利用的时候，可以设置shellcode 的内存首地址是NULL，然后在后四个字节中放入shellcode 的地址，在最后执行的时候，会执行shellcode。</p>
+<p>但是这只是在理想的情况下，大部分的空指针解引用的问题就是程序员在开的时候，在逻辑错综复杂的代码中，没有在指针调用的时候，没有对指针是否为空进行判断。如果恰好有个地方可以释放指针指向的内存空间并且将指针置空，但在离置空指针较远的地方存在没对指针进行校验就引用指针中的数据，由于指针已经置空了，因此指向的内存区域是无效的，所以程序会产生拒绝服务的现象。</p>
+<h2 id="未初始化栈变量"><a href="#未初始化栈变量" class="headerlink" title="未初始化栈变量"></a>未初始化栈变量</h2><p>未初始化栈变量 指的是在函数中，局部变量没有被初始化。 <a target="_blank" rel="noopener" href="https://cwe.mitre.org/data/definitions/457.html">https://cwe.mitre.org/data/definitions/457.html</a></p>
+<p>由于局部变量未初始化，因为在函数调用的时候，函数的栈空间分配时，可能会给这个局部变量分配一些意想不到的数据，因此如果当有程序调用这个局部变量的时候，就会从栈上获取这个数据，从而造成内存损坏的问题。比如拒绝服务，崩溃等危害。</p>
+<p>在TriggerUninitializedMemoryStack函数中：<br>        1. UninitializedMemory 变量在整个函数中被定义。<br>        2. 传入userBuffer<br>        3. 判断userBuffer 前四个字节是否是 0xBAD0B0B0， 如果是的话，就初始化 UninitializedMemory 局部变量。<br>        4. 就算没有初始化UninitializedMemory局部变量，最终还是会调用 UninitializedMemory.callback() 回调函数，这里就出现了问题，如果没有对UninitializedMemory局部变量进行初始化，就直接从UninitializedMemory.callback 指针指向的内存区域中获取函数地址，并调用该函数，由于没有初始化，所以指针指向的内存地址是未知的，所以一切行为就不可控，进而产生漏洞。</p>
+<p><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240721225725483.png" srcset="/img/loading.gif" lazyload></p>
+<p>这里在 <a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-270204.htm">https://bbs.kanxue.com/thread-270204.htm</a> 中进行漏洞利用的时候，callBack 指针指向的内存地址是无法预测的，因此使用了栈喷射技术</p>
+<h2 id="DoubleFetch"><a href="#DoubleFetch" class="headerlink" title="DoubleFetch"></a>DoubleFetch</h2><p>参考：<br><a target="_blank" rel="noopener" href="https://research.nccgroup.com/wp-content/uploads/2022/03/NCC_Group_Whitepaper_DoubleFetch2022_Report_2022-03-25_v1.0.pdf">https://research.nccgroup.com/wp-content/uploads/2022/03/NCC_Group_Whitepaper_DoubleFetch2022_Report_2022-03-25_v1.0.pdf</a></p>
+<p>CTF wiki 的说法： <a target="_blank" rel="noopener" href="https://ctf-wiki.org/en/pwn/linux/kernel-mode/exploitation/race/double-fetch/">https://ctf-wiki.org/en/pwn/linux/kernel-mode/exploitation/race/double-fetch/</a><br>这里对Double Fetch 的讲述很明确，一个用户态线程准备数据并通过系统调用进入内核，该数据在内核最终有两次被取用，内核第一次取用数据进行安全检查（比如缓冲区大小、指针可用性等），当检查通过后内核第二次取用数据进行实际处理。而在两次取用数据之间，另一个用户态线程可创造条件竞争，对已通过检查的用户态数据进行篡改，在真实使用时造成访问越界或缓冲区溢出，最终导致内核崩溃或权限提升。<br><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240722225042378.png" srcset="/img/loading.gif" lazyload></p>
+<p>结合代码来看，要明确这几个信息：<br>        1. 首先确定从用户空间输入的信息，也就是userDoubleFetch 结构体中成员变量指向用户缓冲区的内存地址。<br>        2. 找到第一次fetch 的地方，也就是检查大小的地方，但这里检查的是userDoubleFetch-&gt;size 的大小，这个值是用户空间的值，可以在使用之前，检查之后进行修改，比如检查的时候使用0x100，在检查之后，立马在竞态线程中，修改为0x900。<br>        3. 第二次fetch 在memcpy，也就是使用userDoubleFetch-&gt;size 值得地方，如果这里在通过检查之后，更改为了0x900,会造成缓冲区溢出的问题。</p>
+<p>漏洞利用的话，只需要将shellcode 覆盖到返回地址就行了，kernBuffer离ebp栈底的距离是0x81C(2076个字节)，那么ebp栈底的位置在2076+4，覆盖到返回地址需要 2076+4+4，也就是2084个字节。<br><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240722231138336.png" srcset="/img/loading.gif" lazyload></p>
+<p>安全修复的代码，根据修复代码修复的逻辑可以进行如下的理解：<br>        1. 首先将 UserDoubleFetch-&gt;Size 的值赋值给局部变量 userBuffersize，因此 userBuffersize 在当前线程函数中是不会被改变的。<br>        2. 然后判断局部变量userBuffersize的大小是否超过内核缓冲区kernelBuffer，<br>        3. 其实这么做的话，我们知道doublefecth 是在第一次fetch 之后，通过多线程的竞态条件下更改用户缓冲区大小也就是UserDoubleFetch-&gt;Size 的值，会造成memcpy 的缓冲区溢出，但是这里由于 userBufferSize 是局部变量，因此在第一次fetch检查大小，和第二次fetch 使用之间的时间差内不会被更改，从而避免了doublefetch。<br><img src="/22__%E9%80%9A%E8%BF%87HEVD%E6%8E%A2%E7%A9%B6%E5%90%84%E7%A7%8D%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86.assets/image-20240722232309943.png" srcset="/img/loading.gif" lazyload></p>
+<p>参考： <a target="_blank" rel="noopener" href="https://www.freebuf.com/vuls/341170.html">https://www.freebuf.com/vuls/341170.html</a><br>           <a target="_blank" rel="noopener" href="https://yuvaly0.github.io/2020/09/15/hevd-writeups">https://yuvaly0.github.io/2020/09/15/hevd-writeups</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://tig3rhu.github.io/2024/07/24/22__通过HEVD探究各种漏洞原理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Tig3rHu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 24, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/26/58__Qualcomm%20Securitybulletin%20CVE-2023-33029%20%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" title="Qualcomm Securitybulletin CVE-2023-33029 漏洞分析">
+                        <span class="hidden-mobile">Qualcomm Securitybulletin CVE-2023-33029 漏洞分析</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

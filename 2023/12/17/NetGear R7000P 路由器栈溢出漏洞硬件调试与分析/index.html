@@ -342,18 +342,18 @@
 <p><strong>PCB串口接入</strong><br>接线方式：<br>TTL    —– 路由器UART<br>GND  —– GND<br>TX   —– RX<br>RX  —– TX<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image19.jpg" srcset="/img/loading.gif" lazyload alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image19"><br>使用SecureCRT 接入连接<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image20.png" srcset="/img/loading.gif" lazyload alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image20"></p>
 <h3 id="远程动态调试"><a href="#远程动态调试" class="headerlink" title="远程动态调试"></a>远程动态调试</h3><p>动态调试工具：编译好的 gdbserver (arm 架构)、gdb(arm 架构)<br>poc: 【<a target="_blank" rel="noopener" href="https://github.com/grimm-co/NotQuite0DayFriday/blob/trunk/2020.06.15-netgear/exploit.py%E3%80%91">https://github.com/grimm-co/NotQuite0DayFriday/blob/trunk/2020.06.15-netgear/exploit.py】</a></p>
 <p><strong>gdbserver 启动</strong><br>在使用串口接入设备之后，把gdbserver 上传到设备的&#x2F;tmp 目录中</p>
-<pre><code>cd /tmp/;wget http://xx.xx.xx.xx:xxxx/gdbserver;chmod 777 gdbserver
+<pre><code class="hljs">cd /tmp/;wget http://xx.xx.xx.xx:xxxx/gdbserver;chmod 777 gdbserver
 </code></pre>
 <p><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image21.png" srcset="/img/loading.gif" lazyload alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image21"><br>在设备中查找 “httpd” 的进程号<br><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image22.png" srcset="/img/loading.gif" lazyload alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image22"><br>将httpd 进行附加到 gdbserver</p>
-<pre><code>./gdbserver *:12345 --attach 3256
+<pre><code class="hljs">./gdbserver *:12345 --attach 3256
 </code></pre>
 <p><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image23.png" srcset="/img/loading.gif" lazyload alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image23"></p>
 <p><strong>gdb 远程连接gdbserver</strong></p>
-<pre><code>target remote 192.168.1.1:12345
+<pre><code class="hljs">target remote 192.168.1.1:12345
 </code></pre>
 <p><img src="/NetGea_R7000P_%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E7%A1%AC%E4%BB%B6%E8%B0%83%E8%AF%95%E4%B8%8E%E5%88%86%E6%9E%90.assets/Image24.png" srcset="/img/loading.gif" lazyload alt="NetGea_R7000P_路由器栈溢出漏洞硬件调试与分析.assets/Image24"></p>
 <p><strong>开始调试</strong><br>在关键的地点打好断点<br>打断点</p>
-<pre><code>(gdb) break *0x00017398
+<pre><code class="hljs">(gdb) break *0x00017398
 Breakpoint 1 at 0x17398
 (gdb) break *0x0001CFF0
 Breakpoint 2 at 0x1cff0

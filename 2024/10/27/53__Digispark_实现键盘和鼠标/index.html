@@ -1,0 +1,671 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/heard.png">
+  <link rel="icon" href="/img/heard.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Tig3rHu">
+  <meta name="keywords" content="HigerHu,vulnerability,security,cyber">
+  
+    <meta name="description" content="0x01 前言在日常对设备进行安全测试的过程中，可能会遇到需要频繁的手动输入密码情况，比如在对智能设备的人脸生物识别研究工作中的时候，发现设备的人脸解锁失败几次之后，就需要人工手动的去输入设备锁屏密码。为了解决这个问题，还专门去参观了那些制作仿真人脸头模绕过手机人脸识别厂商的实验室，发现虽然他们可以自动化的设置人脸生物识别实验室环境的亮度，头模角度，光线。但依旧没有解决每几次识别失败就需要输入密码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Digispark_实现键盘和鼠标应用">
+<meta property="og:url" content="https://tig3rhu.github.io/2024/10/27/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87/index.html">
+<meta property="og:site_name" content="Tig3rHu&#39;s Blog">
+<meta property="og:description" content="0x01 前言在日常对设备进行安全测试的过程中，可能会遇到需要频繁的手动输入密码情况，比如在对智能设备的人脸生物识别研究工作中的时候，发现设备的人脸解锁失败几次之后，就需要人工手动的去输入设备锁屏密码。为了解决这个问题，还专门去参观了那些制作仿真人脸头模绕过手机人脸识别厂商的实验室，发现虽然他们可以自动化的设置人脸生物识别实验室环境的亮度，头模角度，光线。但依旧没有解决每几次识别失败就需要输入密码">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tig3rhu.github.io/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20241027220341340.png">
+<meta property="og:image" content="https://tig3rhu.github.io/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230715184200148.png">
+<meta property="og:image" content="https://tig3rhu.github.io/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230715184834722.png">
+<meta property="og:image" content="https://tig3rhu.github.io/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230715185233418.png">
+<meta property="og:image" content="https://tig3rhu.github.io/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230715190718532.png">
+<meta property="og:image" content="https://tig3rhu.github.io/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230720112624998.png">
+<meta property="og:image" content="https://tig3rhu.github.io/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230720112737604.png">
+<meta property="og:image" content="https://tig3rhu.github.io/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230720112847798.png">
+<meta property="og:image" content="https://tig3rhu.github.io/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230720112934427.png">
+<meta property="og:image" content="https://tig3rhu.github.io/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20241023224525991.png">
+<meta property="article:published_time" content="2024-10-27T14:34:36.706Z">
+<meta property="article:modified_time" content="2024-10-27T14:36:56.733Z">
+<meta property="article:author" content="Tig3rHu">
+<meta property="article:tag" content="HigerHu,vulnerability,security,cyber">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tig3rhu.github.io/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20241027220341340.png">
+  
+  
+  
+  <title>Digispark_实现键盘和鼠标应用 - Tig3rHu&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tig3rhu.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Tiger</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/radio.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Digispark_实现键盘和鼠标应用"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-27 22:34" pubdate>
+          October 27, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Digispark_实现键盘和鼠标应用</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="0x01-前言"><a href="#0x01-前言" class="headerlink" title="0x01 前言"></a>0x01 前言</h2><p>在日常对设备进行安全测试的过程中，可能会遇到需要频繁的手动输入密码情况，比如在对智能设备的人脸生物识别研究工作中的时候，发现设备的人脸解锁失败几次之后，就需要人工手动的去输入设备锁屏密码。为了解决这个问题，还专门去参观了那些制作仿真人脸头模绕过手机人脸识别厂商的实验室，发现虽然他们可以自动化的设置人脸生物识别实验室环境的亮度，头模角度，光线。但依旧没有解决每几次识别失败就需要输入密码以开启设备的步骤，非常影响效率和测试自动化的效果，因此需要一种能自动化输入设备锁屏密码的解决办法。</p>
+<p>于是偶然在一则报道中，看到有人用一个特别小巧的，和硬币一般大小的开发板来爆破一些移动应用安全设置中的锁定密码，比如私密相册等，经过简单的检索之后，了解到是Digispark，那么这个廉价的板子可以用于解决人脸解锁失败后需要手动输入密码的问题。只要思想不滑坡，方法总比困难多。</p>
+<h2 id="0x02-关于Digispark"><a href="#0x02-关于Digispark" class="headerlink" title="0x02 关于Digispark"></a>0x02 关于Digispark</h2><p>Digispark是一种基于ATtiny85微控制器的微型开发板，通常用于创建小型嵌入式项目和原型设计。它由Digistump公司推出，是一个低成本、小巧的开发工具，适用于简单的电子项目、物联网设备、小型自动化等应用。 <br><a target="_blank" rel="noopener" href="https://github.com/matteocelani/Digispark">https://github.com/matteocelani/Digispark</a></p>
+<p>Digispark开发板的特点包括： </p>
+<ol>
+<li>微型尺寸： Digispark非常小巧，形状大小尺寸类似于一个USB插头，可以方便地连接到计算机或其他设备。 </li>
+<li>基于ATtiny85： Digispark使用了ATtiny85微控制器，具有8KB的闪存和512字节的SRAM，适合一些小规模项目。 </li>
+<li>USB接口： Digispark通过USB接口进行供电和通信，可以作为USB设备与计算机通信，也可以通过USB进行编程。 </li>
+<li>Arduino编程语言和库来开发项目。 </li>
+<li>开源： Digispark的设计是开源的，用户可以访问其GitHub仓库获取相关资料和资源。 </li>
+<li>适用于简单项目： 由于资源有限，Digispark适用于一些较为简单的嵌入式项目，例如小型传感器应用、自动化控制等。</li>
+</ol>
+<p> </p>
+<p>Digispark 开发板 在淘宝里买来只需要要几十块钱，就可以拥有它，如下图所示：<br><img src="/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20241027220341340.png" srcset="/img/loading.gif" lazyload></p>
+<p>另外对于PC或者手机来说，USB 设备的接入是不需要认证都可以用的，因此可以使用Digispark 来模拟鼠标和键盘做一些力所能及的事情。</p>
+<h2 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h2><p>系统： windows10<br>软件： Arduino 18.05</p>
+<p>1、下载Digispark 兼容板的描述文件：<a target="_blank" rel="noopener" href="http://digistump.com/package_digistump_index.json" title="http://digistump.com/package_digistump_index.json">http://digistump.com/package_digistump_index.json</a> 直接在“首选项” – &gt; “开发板管理器网址”的输入框中填入上面的URL。<br><img src="/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230715184200148.png" srcset="/img/loading.gif" lazyload></p>
+<p>然后下载开发板需要的包<br>在上方的菜单中找到工具-&gt;开发板-&gt;开发板管理器，在“类型”下选择“贡献”一栏，下载并安装下图中所示的包“Digistmup AVR Boards”。注意<strong>：下载时请科学上网，</strong>否则速度可能会很慢。<br><img src="/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230715184834722.png" srcset="/img/loading.gif" lazyload></p>
+<p>下载驱动<br><a href="https://link.zhihu.com/?target=https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip">https://link.zhihu.com/?target=https%3A//github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip</a><br>然后插上板子，在设备管理器中可以看到开发板<br><img src="/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230715185233418.png" srcset="/img/loading.gif" lazyload></p>
+<p>代码上传的时候，当出现整个的时候，记得要热插拔一次（热插拔就是物理上拔出来然后插进去）<br><img src="/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230715190718532.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Digispark-键盘库使用"><a href="#Digispark-键盘库使用" class="headerlink" title="Digispark 键盘库使用"></a>Digispark 键盘库使用</h2><p>当你正常将环境搭建完毕之后，可以在 DigiKeyboard.h中看到有关键盘的API 函数以供使用。但常见的API 如下。</p>
+<h3 id="API-函数原型"><a href="#API-函数原型" class="headerlink" title="API 函数原型"></a>API 函数原型</h3><h4 id="delay-函数"><a href="#delay-函数" class="headerlink" title="delay() 函数"></a>delay() 函数</h4><p>void delay(long milli)   延迟，毫秒为单位</p>
+<h4 id="sendKeyStroke-函数"><a href="#sendKeyStroke-函数" class="headerlink" title="sendKeyStroke() 函数"></a>sendKeyStroke() 函数</h4><p>void sendKeyStroke(byte KeyStroke)  发送按键并释放</p>
+<p>void sendKeyStroke(byte KeyStroke, byte modifiers) 发送带有关联按键和释放，第一个参数是主键，第二个按键是组合键。</p>
+<h4 id="sendKeyPress-函数"><a href="#sendKeyPress-函数" class="headerlink" title="sendKeyPress() 函数"></a>sendKeyPress() 函数</h4><p>void sendKeyPress(byte KeyPress)  发送按键但不释放，若要释放再次调用此函数并参数KeyPress &#x3D;0</p>
+<p>void sendKeyPress(byte KeyPress, byte modifiers)  发送带有关联按键，但不释放，若要释放需再次调用此函数并且参数KeyPress &#x3D; 0</p>
+<p>测试代码</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-meta">#include &quot;DigiKeyboard.h&quot;</span><br><br><span class="hljs-meta"># 打开微信输入</span><br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setup</span>()</span> &#123;<br>  <span class="hljs-comment">// put your setup code here, to run once:</span><br>  DigiKeyboard.delay(<span class="hljs-number">2000</span>); <br>  <br>  DigiKeyboard.sendKeyStroke(KEY_W,MOD_ALT_LEFT);   <span class="hljs-comment">//打开微信快捷键</span><br>  DigiKeyboard.delay(<span class="hljs-number">300</span>);<br>  DigiKeyboard.println(<span class="hljs-string">&quot;helloworld &quot;</span>);<br>&#125;<br> <br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">loop</span>()</span> &#123;<br>  <span class="hljs-comment">// put your main code here, to run repeatedly:</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="键盘键码"><a href="#键盘键码" class="headerlink" title="键盘键码"></a>键盘键码</h4><figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs tap">键 键码 <br>A <span class="hljs-number"> 65 </span>B<span class="hljs-number"> 66 </span>C<span class="hljs-number"> 67 </span>D<span class="hljs-number"> 68 </span>E<span class="hljs-number"> 69 </span>F<span class="hljs-number"> 70 </span>G<span class="hljs-number"> 71 </span>H<span class="hljs-number"> 72 </span>I<span class="hljs-number"> 73 </span>J<span class="hljs-number"> 74 </span>K<span class="hljs-number"> 75 </span>L<span class="hljs-number"> 76 </span>M<span class="hljs-number"> 77 </span>N<span class="hljs-number"> 78 </span>O<span class="hljs-number"> 79 </span>P<span class="hljs-number"> 80 </span>Q<span class="hljs-number"> 81 </span>R<span class="hljs-number"> 82 </span>S<span class="hljs-number"> 83 </span>T<span class="hljs-number"> 84 </span>U<span class="hljs-number"> 85 </span>V<span class="hljs-number"> 86 </span>W<span class="hljs-number"> 87 </span>X<span class="hljs-number"> 88 </span>Y<span class="hljs-number"> 89 </span>Z<span class="hljs-number"> 90 </span>0<span class="hljs-number"> 48 </span>1<span class="hljs-number"> 49 </span>2<span class="hljs-number"> 50 </span>3<span class="hljs-number"> 51 </span>4<span class="hljs-number"> 52 </span>5<span class="hljs-number"> 53 </span>6<span class="hljs-number"> 54 </span>7<span class="hljs-number"> 55 </span>8<span class="hljs-number"> 56 </span>9<span class="hljs-number"> 57 </span>回车键<span class="hljs-number"> 13 </span>制表键<span class="hljs-number"> 9 </span>空格键<span class="hljs-number"> 32 </span>退格键<span class="hljs-number"> 8 </span>删除键<span class="hljs-number"> 46 </span>逗号键<span class="hljs-number"> 44 </span>句点键<span class="hljs-number"> 46 </span>上箭头键<span class="hljs-number"> 38 </span>下箭头键<span class="hljs-number"> 40 </span>左箭头键<span class="hljs-number"> 37 </span>右箭头键<span class="hljs-number"> 39 </span>功能键 F1<span class="hljs-number"> 112 </span>功能键 F2<span class="hljs-number"> 113 </span>功能键 F3<span class="hljs-number"> 114 </span>功能键 F4<span class="hljs-number"> 115 </span>功能键 F5<span class="hljs-number"> 116 </span>功能键 F6<span class="hljs-number"> 117 </span>功能键 F7<span class="hljs-number"> 118 </span>功能键 F8<span class="hljs-number"> 119 </span>功能键 F9<span class="hljs-number"> 120 </span>功能键 F10<span class="hljs-number"> 121 </span>功能键 F11<span class="hljs-number"> 122 </span>功能键 F12 123<br>--------------------------------------<span class="language-yaml"><span class="hljs-meta">---</span></span><br><span class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-string">`KEY_ENTER`:</span> <span class="hljs-string">回车键</span></span><br><span class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-string">`KEY_TAB`:</span> <span class="hljs-string">制表键</span></span><br><span class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-string">`KEY_ESC`:</span> <span class="hljs-string">Esc键</span></span><br><span class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-string">`KEY_SPACE`:</span> <span class="hljs-string">空格键</span></span><br><span class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-string">`KEY_BACKSPACE`:</span> <span class="hljs-string">退格键</span></span><br><span class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-string">`KEY_DELETE`:</span> <span class="hljs-string">删除键</span></span><br><span class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-string">`KEY_ARROW_UP`:</span> <span class="hljs-string">上箭头键</span></span><br><span class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-string">`KEY_ARROW_DOWN`:</span> <span class="hljs-string">下箭头键</span></span><br><span class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-string">`KEY_ARROW_LEFT`:</span> <span class="hljs-string">左箭头键</span></span><br><span class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-string">`KEY_ARROW_RIGHT`:</span> <span class="hljs-string">右箭头键</span></span><br><span class="language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-string">`KEY_F1`</span> <span class="hljs-string">到</span> <span class="hljs-string">`KEY_F12`:</span> <span class="hljs-string">功能键</span> <span class="hljs-string">F1</span> <span class="hljs-string">到</span> <span class="hljs-string">F12</span></span><br></code></pre></td></tr></table></figure>
+
+
+<h2 id="模拟键盘输入（用于手机）"><a href="#模拟键盘输入（用于手机）" class="headerlink" title="模拟键盘输入（用于手机）"></a>模拟键盘输入（用于手机）</h2><p>首先对于手机来说，真实键盘按键输入密码的顺序如：</p>
+<p>space – space — 密码 — enter —密码 — enter</p>
+<p>实现代码，实际使用的时候，需要根据每次人脸识别模糊测试的时间间隔来判定大概多长时间输入一次正确密码，然后将具体的逻辑放到 loop 作用域中。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-selector-id">#include</span> &quot;DigiKeyboard<span class="hljs-selector-class">.h</span>&quot;<br>void <span class="hljs-built_in">setup</span>() &#123;<br>  <span class="hljs-comment">// put your setup code here, to run once:</span><br>  DigiKeyboard<span class="hljs-selector-class">.delay</span>(<span class="hljs-number">2000</span>); <br>  <br>  DigiKeyboard<span class="hljs-selector-class">.sendKeyStroke</span>(KEY_SPACE); <br>  DigiKeyboard<span class="hljs-selector-class">.delay</span>(<span class="hljs-number">300</span>);<br>  DigiKeyboard<span class="hljs-selector-class">.sendKeyStroke</span>(KEY_SPACE);<br>  DigiKeyboard<span class="hljs-selector-class">.delay</span>(<span class="hljs-number">300</span>);<br>  DigiKeyboard<span class="hljs-selector-class">.println</span>(&quot;<span class="hljs-number">1234</span>&quot;);<br>  DigiKeyboard<span class="hljs-selector-class">.delay</span>(<span class="hljs-number">300</span>);<br>  DigiKeyboard<span class="hljs-selector-class">.println</span>(&quot;<span class="hljs-number">2345</span>&quot;);<br>  DigiKeyboard<span class="hljs-selector-class">.delay</span>(<span class="hljs-number">300</span>);<br>  DigiKeyboard<span class="hljs-selector-class">.println</span>(&quot;<span class="hljs-number">9876</span>&quot;);<br>  DigiKeyboard<span class="hljs-selector-class">.sendKeyStroke</span>(KEY_ENTER);<br>&#125;<br> <br>void <span class="hljs-built_in">loop</span>() &#123;<br>  <span class="hljs-comment">// put your main code here, to run repeatedly:</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1088490">https://cloud.tencent.com/developer/article/1088490</a></p>
+<p><img src="/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230720112624998.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230720112737604.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230720112847798.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20230720112934427.png" srcset="/img/loading.gif" lazyload></p>
+<p>参考：打造廉价橡皮鸭 <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1358453">https://cloud.tencent.com/developer/article/1358453</a> </p>
+<h2 id="模拟鼠标滑动和点击"><a href="#模拟鼠标滑动和点击" class="headerlink" title="模拟鼠标滑动和点击"></a>模拟鼠标滑动和点击</h2><p>我一个朋友问我如何给他女朋友的直播间不停的刷赞，于是我想到了Digispark， 同样的，在Digispark 库中也有对鼠标支持的API，并且实现功能的思路一样简单。</p>
+<p>模拟鼠标<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/bjbz_cxy/article/details/120322499">https://blog.csdn.net/bjbz_cxy/article/details/120322499</a></p>
+<p>有关鼠标的API 再DigiMouse.h 中<br><img src="/53__Digispark_%E5%AE%9E%E7%8E%B0%E9%94%AE%E7%9B%98%E5%92%8C%E9%BC%A0%E6%A0%87.assets/image-20241023224525991.png" srcset="/img/loading.gif" lazyload><br>其中的readme 阐述了mouse 的代码主要借鉴了Digispark键盘库以及Raphaël Assénat使用atmega8作为任天堂Gamecube&#x2F;N64控制器到USB桥接器的代码：<a target="_blank" rel="noopener" href="http://www.raphnet.net/electronique/gc_n64_usb/index_en.php">http://www.raphnet.net/electronique/gc_n64_usb&#x2F;index_en.php</a> ，以及康奈尔大学的Yiyin Ma和Abby Lin的工作 <a target="_blank" rel="noopener" href="https://instruct1.cit.cornell.edu/courses/ee476/FinalProjects/s2007/ayl26_ym82/ayl26_ym82/index.htm">https://instruct1.cit.cornell.edu/courses/ee476/FinalProjects/s2007/ayl26_ym82&#x2F;ayl26_ym82&#x2F;index.htm</a></p>
+<p>其中提供可以模拟鼠标操作的API 有如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DigiMouseDevice</span> &#123;<br> <span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">DigiMouseDevice</span> () &#123;<br><br>		rt_usbHidReportDescriptor = mouse_usbHidReportDescriptor;<br>		rt_usbHidReportDescriptorSize = <span class="hljs-built_in">sizeof</span>(mouse_usbHidReportDescriptor);<br>		rt_usbDeviceDescriptor = usbDescrDevice;<br>		rt_usbDeviceDescriptorSize = <span class="hljs-built_in">sizeof</span>(usbDescrDevice);<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">begin</span><span class="hljs-params">()</span> </span>&#123;<br>		<span class="hljs-built_in">cli</span>();<br>		<span class="hljs-built_in">usbDeviceDisconnect</span>();<br>		_delay_ms(<span class="hljs-number">200</span>);<br>		<span class="hljs-built_in">usbDeviceConnect</span>();	<br>		<br>		<span class="hljs-built_in">usbInit</span>();<br>		<br>		<span class="hljs-built_in">sei</span>();<br>		last_report_time = <span class="hljs-built_in">millis</span>();<br>	&#125;<br>	<br><br>	<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">refresh</span><span class="hljs-params">()</span> </span>&#123;<br>		<span class="hljs-built_in">update</span>();<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">poll</span><span class="hljs-params">()</span> </span>&#123;<br>		<span class="hljs-built_in">update</span>();<br>	&#125;<br><br>	<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">update</span><span class="hljs-params">()</span> </span>&#123;<br>		<span class="hljs-built_in">usbPoll</span>();<br>		<br>		<span class="hljs-comment">// instead of above code, use millis arduino system to enforce minimum reporting frequency</span><br>		<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> time_since_last_report = <span class="hljs-built_in">millis</span>() - last_report_time;<br>		<span class="hljs-keyword">if</span> (time_since_last_report &gt;= (idle_rate * <span class="hljs-number">4</span> <span class="hljs-comment">/* in units of 4ms - usb spec stuff */</span>)) &#123;<br>			last_report_time += idle_rate * <span class="hljs-number">4</span>;<br>			must_report = <span class="hljs-number">1</span>;<br>		&#125;<br>		<br>		<span class="hljs-comment">// if the report has changed, try force an update anyway</span><br>		<span class="hljs-keyword">if</span> (<span class="hljs-built_in">memcmp</span>(last_built_report, last_sent_report, REPORT_SIZE)) &#123;<br>			must_report = <span class="hljs-number">1</span>;<br>		&#125;<br>		<br>		<span class="hljs-comment">// if we want to send a report, signal the host computer to ask us for it with a usb &#x27;interrupt&#x27;</span><br>		<span class="hljs-keyword">if</span> (must_report) &#123;<br>			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">usbInterruptIsReady</span>()) &#123;<br>				must_report = <span class="hljs-number">0</span>;<br>				<span class="hljs-built_in">buildReport</span>(reportBuffer); <span class="hljs-comment">// put data into reportBuffer</span><br>				<span class="hljs-built_in">clearMove</span>(); <span class="hljs-comment">// clear deltas</span><br>				<span class="hljs-built_in">usbSetInterrupt</span>(reportBuffer, REPORT_SIZE);<br>			&#125;<br>		&#125;<br>	&#125;<br>	<br>	<span class="hljs-comment">// delay while updating until we are finished</span><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">delay</span><span class="hljs-params">(<span class="hljs-type">long</span> milli)</span> </span>&#123;<br>		<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> last = <span class="hljs-built_in">millis</span>();<br>	  <span class="hljs-keyword">while</span> (milli &gt; <span class="hljs-number">0</span>) &#123;<br>	    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> now = <span class="hljs-built_in">millis</span>();<br>	    milli -= now - last;<br>	    last = now;<br>	    <span class="hljs-built_in">update</span>();<br>	  &#125;<br>	&#125;<br>	<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">moveX</span><span class="hljs-params">(<span class="hljs-type">char</span> deltaX)</span>	</span>&#123;<br>		<span class="hljs-keyword">if</span> (deltaX == <span class="hljs-number">-128</span>) deltaX = <span class="hljs-number">-127</span>;<br>		last_built_report[<span class="hljs-number">1</span>] = *(<span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *&gt;(&amp;deltaX));<br>	&#125;<br>	<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">moveY</span><span class="hljs-params">(<span class="hljs-type">char</span> deltaY)</span> </span>&#123;<br>		<span class="hljs-keyword">if</span> (deltaY == <span class="hljs-number">-128</span>) deltaY = <span class="hljs-number">-127</span>;<br>		last_built_report[<span class="hljs-number">2</span>] = *(<span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *&gt;(&amp;deltaY));<br>	&#125;<br>	<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">scroll</span><span class="hljs-params">(<span class="hljs-type">char</span> deltaS)</span>	</span>&#123;<br>		<span class="hljs-keyword">if</span> (deltaS == <span class="hljs-number">-128</span>) deltaS = <span class="hljs-number">-127</span>;<br>		last_built_report[<span class="hljs-number">3</span>] = *(<span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *&gt;(&amp;deltaS));	 <br>	&#125;<br>	<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">move</span><span class="hljs-params">(<span class="hljs-type">char</span> deltaX, <span class="hljs-type">char</span> deltaY, <span class="hljs-type">char</span> deltaS)</span> </span>&#123;<br>		<span class="hljs-keyword">if</span> (deltaX == <span class="hljs-number">-128</span>) deltaX = <span class="hljs-number">-127</span>;<br>		<span class="hljs-keyword">if</span> (deltaY == <span class="hljs-number">-128</span>) deltaY = <span class="hljs-number">-127</span>;<br>		<span class="hljs-keyword">if</span> (deltaS == <span class="hljs-number">-128</span>) deltaS = <span class="hljs-number">-127</span>;<br>		last_built_report[<span class="hljs-number">1</span>] = *(<span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *&gt;(&amp;deltaX));<br>		last_built_report[<span class="hljs-number">2</span>] = *(<span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *&gt;(&amp;deltaY));<br>		last_built_report[<span class="hljs-number">3</span>] = *(<span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *&gt;(&amp;deltaS));<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">move</span><span class="hljs-params">(<span class="hljs-type">char</span> deltaX, <span class="hljs-type">char</span> deltaY, <span class="hljs-type">char</span> deltaS, <span class="hljs-type">char</span> buttons)</span> </span>&#123;<br>		<span class="hljs-keyword">if</span> (deltaX == <span class="hljs-number">-128</span>) deltaX = <span class="hljs-number">-127</span>;<br>		<span class="hljs-keyword">if</span> (deltaY == <span class="hljs-number">-128</span>) deltaY = <span class="hljs-number">-127</span>;<br>		<span class="hljs-keyword">if</span> (deltaS == <span class="hljs-number">-128</span>) deltaS = <span class="hljs-number">-127</span>;<br>		last_built_report[<span class="hljs-number">0</span>] = buttons;<br>		last_built_report[<span class="hljs-number">1</span>] = *(<span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *&gt;(&amp;deltaX));<br>		last_built_report[<span class="hljs-number">2</span>] = *(<span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *&gt;(&amp;deltaY));<br>		last_built_report[<span class="hljs-number">3</span>] = *(<span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> *&gt;(&amp;deltaS));<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">rightClick</span><span class="hljs-params">()</span></span>&#123;<br>		last_built_report[<span class="hljs-number">0</span>] = MOUSEBTN_RIGHT_MASK;<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">leftClick</span><span class="hljs-params">()</span></span>&#123;<br>		last_built_report[<span class="hljs-number">0</span>] = MOUSEBTN_RIGHT_MASK;<br>	&#125;<br>	<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">middleClick</span><span class="hljs-params">()</span></span>&#123;<br>		last_built_report[<span class="hljs-number">0</span>] = MOUSEBTN_RIGHT_MASK;<br>	&#125;<br>	<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setButtons</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> buttons)</span> </span>&#123;<br>		last_built_report[<span class="hljs-number">0</span>] = buttons;<br>	&#125;<br>	<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setValues</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> values[])</span> </span>&#123;<br>		<span class="hljs-built_in">memcpy</span>(last_built_report, values, REPORT_SIZE);<br>	&#125;<br>	<br>	<span class="hljs-comment">//private: <span class="hljs-doctag">TODO:</span> Make friend?</span><br>	<span class="hljs-comment">// what does this even mean? -- Bluebie</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>关于在Arduino中使用这个代码，像使用其他库一样#include “DigiMouse.h”。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Digispark_实现键盘和鼠标应用</div>
+      <div>https://tig3rhu.github.io/2024/10/27/53__Digispark_实现键盘和鼠标/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Tig3rHu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 27, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/12/Build_LineageOS_for_pixel6P/" title="Build LineageOS for pixel6">
+                        <span class="hidden-mobile">Build LineageOS for pixel6</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
